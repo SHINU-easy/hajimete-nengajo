@@ -1,0 +1,1482 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>はじめての年賀状</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Klee+One:wght@400;600&family=Yuji+Syuku&family=Noto+Sans:wght@400;600&family=Noto+Sans+SC:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Myanmar:wght@400;600&display=swap">
+<style>
+/* Layout: sticky header + tab bar, one column of "paper" sections; the write tab is a two-pane studio (form | live postcard). */
+:root{
+  --bg:#ECEFEA;          /* 白鼠 with a pine bias */
+  --surface:#FFFFFF;
+  --surface-2:#F5F7F3;
+  --ink:#1D2320;
+  --muted:#59635E;
+  --line:#D3D9D2;
+  --shu:#C3352A;         /* 朱 vermilion */
+  --shu-soft:#F8E2DE;
+  --pine:#2C6651;        /* 松葉 pine */
+  --pine-soft:#DDEBE4;
+  --gold:#9C7A2C;
+  --p1:#2C78B8; --p1bg:#DCEAF6;   /* 前文 blue (textbook color code) */
+  --p2:#A27B00; --p2bg:#FFF2BF;   /* 主文 yellow */
+  --p3:#C34A6E; --p3bg:#FADDE6;   /* 末文 pink */
+  --p4:#2F8A4F; --p4bg:#DAEEDF;   /* 後付け green */
+  --f-ui:"BIZ UDPGothic","Noto Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",system-ui,sans-serif;
+  --f-card:"Klee One","UD Digi Kyokasho N-R","Yu Kyokasho","YuKyokasho","Hiragino Mincho ProN",serif;
+  --f-disp:"Yuji Syuku","Klee One","Yu Mincho","Hiragino Mincho ProN",serif;
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121614;--surface:#1B201E;--surface-2:#222825;--ink:#E9ECE8;--muted:#A3ACA7;--line:#343C38;
+  --shu:#F0705F;--shu-soft:#3A2220;--pine:#78C3A3;--pine-soft:#1E3129;--gold:#D6B66A;
+  --p1:#7DB6EA;--p1bg:#1C2B3A;--p2:#E6C55A;--p2bg:#332C12;--p3:#EE8FAA;--p3bg:#3A1F28;--p4:#7ED19A;--p4bg:#1C3324;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121614;--surface:#1B201E;--surface-2:#222825;--ink:#E9ECE8;--muted:#A3ACA7;--line:#343C38;
+  --shu:#F0705F;--shu-soft:#3A2220;--pine:#78C3A3;--pine-soft:#1E3129;--gold:#D6B66A;
+  --p1:#7DB6EA;--p1bg:#1C2B3A;--p2:#E6C55A;--p2bg:#332C12;--p3:#EE8FAA;--p3bg:#3A1F28;--p4:#7ED19A;--p4bg:#1C3324;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+ruby{ruby-align:center}
+html{font-size:16px}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);line-height:1.7;margin:0}
+body.big{font-size:1.32rem}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+:lang(zh),.tr[lang="zh"]{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",var(--f-ui)}
+.tr[lang="vi"],.tr[lang="en"]{font-family:"Noto Sans","Segoe UI",Arial,var(--f-ui)}
+.tr[lang="ne"]{font-family:"Noto Sans Devanagari","Nirmala UI","Mangal",var(--f-ui)}
+.tr[lang="my"]{font-family:"Noto Sans Myanmar","Myanmar Text","Padauk",var(--f-ui);line-height:2}
+ruby rt{font-size:.52em;color:var(--muted);font-weight:400}
+body.no-furi .ja rt{display:none}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--shu);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-inner{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.seal{flex:none;width:42px;height:42px;border-radius:6px;background:var(--shu);color:#fff;display:grid;place-items:center;font-family:var(--f-disp);font-size:1.25rem;line-height:1;writing-mode:vertical-rl;letter-spacing:.05em}
+.brand h1{margin:0;font-family:var(--f-disp);font-weight:400;font-size:1.55rem;line-height:1.2;letter-spacing:.04em}
+.brand small{display:block;font-family:var(--f-ui);font-size:.72rem;color:var(--muted);letter-spacing:.02em}
+.controls{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ctl{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--muted)}
+.ctl select{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:6px 8px;color:var(--ink)}
+.toggle{border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:.85rem}
+.toggle[aria-pressed="true"]{background:var(--pine);border-color:var(--pine);color:#fff}
+.langs{flex-wrap:wrap}
+.langbtns{display:flex;flex-wrap:wrap;gap:4px}
+.langbtns .toggle{padding:4px 10px;color:var(--ink);display:inline-flex;flex-direction:column;align-items:center;line-height:1.25}
+.langbtns .nat{font-size:.68rem;opacity:.8;white-space:nowrap}
+.langbtns .nat[lang="ne"]{font-family:"Noto Sans Devanagari","Nirmala UI","Mangal",var(--f-ui)}
+.langbtns .nat[lang="my"]{font-family:"Noto Sans Myanmar","Myanmar Text","Padauk",var(--f-ui)}
+.langbtns .nat[lang="zh"]{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",var(--f-ui)}
+.langbtns .nat[lang="vi"],.langbtns .nat[lang="en"]{font-family:"Noto Sans","Segoe UI",Arial,var(--f-ui)}
+.ctl-toggle{display:none;align-items:center;gap:6px;margin-left:auto;border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:5px 10px 5px 8px;cursor:pointer;font-size:.85rem;color:var(--ink);max-width:100%}
+.ctl-toggle svg{width:18px;height:18px;flex:none}
+.ctl-toggle .ct-sum{color:var(--pine);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:9em}
+.ctl-toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.langbtns .toggle[aria-pressed="true"]{color:#fff}
+.langbtns .toggle.only{border-style:dashed}
+.tr + .tr{margin-top:0}
+nav.tabs button .tr + .tr{margin-top:0}
+body.multi .tr[data-l]::before{content:attr(data-l);display:inline-block;min-width:2.2em;margin-right:.45em;padding:0 .3em;border-radius:4px;background:var(--surface-2);border:1px solid var(--line);font-size:.72em;font-family:var(--f-ui);text-align:center;vertical-align:.1em;color:var(--muted)}
+body.multi nav.tabs .tr::before,body.multi .btn .tr::before,body.multi .choice label .tr::before{display:none}
+.hide-head,.show-head{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:999px;padding:4px 10px 4px 6px;cursor:pointer;font-size:.82rem;line-height:1.15}
+.hide-head svg,.show-head svg{width:18px;height:18px;flex:none}
+.hide-head span,.show-head span{display:flex;flex-direction:column;align-items:flex-start}
+.hide-head small,.show-head small{font-size:.66rem;color:var(--muted)}
+.top-inner{position:relative}
+.hide-head{position:absolute;top:16px;right:max(16px,env(safe-area-inset-right,0px))}
+.controls{margin-right:92px}
+.show-head{position:fixed;z-index:40;top:calc(env(safe-area-inset-top,0px) + 8px);right:max(12px,calc(env(safe-area-inset-right,0px) + 8px));box-shadow:0 2px 10px rgba(0,0,0,.18);background:var(--surface)}
+body.head-hidden .top{display:none}
+body.head-hidden::before{background:var(--bg)}
+body.head-hidden .preview-col{top:calc(env(safe-area-inset-top,0px) + 56px)}
+body.head-hidden #yearCard{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 56px)}
+nav.tabs{flex-basis:100%;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin;margin-top:4px}
+nav.tabs button{flex:none;border:0;background:none;padding:8px 14px 10px;border-bottom:3px solid transparent;cursor:pointer;color:var(--muted);line-height:1.25;text-align:center}
+nav.tabs button .ja{display:block;font-weight:700;font-size:1rem}
+nav.tabs button .tr{display:block;font-size:.7rem}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--shu)}
+
+main{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:22px 40px}
+.panel[hidden]{display:none}
+.lead{display:flex;flex-direction:column;gap:2px;margin:0 0 18px}
+.lead h2{margin:0;font-size:1.45rem;line-height:1.5;text-wrap:balance}
+.banner{display:flex;gap:12px;align-items:flex-start;margin:0 0 16px;padding:12px 14px;border:1.5px solid var(--shu);border-radius:var(--radius);background:var(--shu-soft);max-width:860px}
+.banner p{margin:0 0 4px}
+.bmark{flex:none;background:var(--shu);color:#fff;border-radius:6px;padding:2px 8px;font-size:.8rem;line-height:1.6}
+.alert-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--shu);margin-left:4px;vertical-align:super}
+#yearCard{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 150px)}
+#yearCard.flash{outline:3px solid var(--shu);outline-offset:3px}
+.yearchip{align-self:flex-start;font-size:.85rem;color:var(--shu);border:1px solid var(--shu);border-radius:999px;padding:1px 12px;margin-bottom:6px}
+.lead h2 .tr{display:block;font-size:.85rem;font-weight:400;color:var(--muted)}
+.tr{display:block;color:var(--muted);font-size:.86em;line-height:1.6;margin-top:2px}
+.inline-tr .tr{display:inline;margin-left:.5em}
+
+.grid{display:grid;gap:14px}
+.grid.cols{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;min-width:0}
+.card h3{margin:0 0 6px;font-size:1.1rem;line-height:1.5;display:flex;gap:10px;align-items:baseline}
+.card h3 .num{flex:none;font-family:var(--f-disp);color:var(--shu);font-size:1.25rem;font-weight:400}
+.card h3 .tr{font-weight:400}
+.card p{margin:0}
+.card.wide{grid-column:1/-1}
+.flow{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;counter-reset:none}
+.flow li{position:relative;display:flex;gap:8px;align-items:flex-start;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:10px;min-width:0}
+.flow li b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--shu);color:#fff;display:grid;place-items:center;font-family:var(--f-disp);font-weight:400}
+.flow li > span{min-width:0}
+.flow li:last-child{border-color:var(--shu);background:var(--shu-soft)}
+.eto-ring{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px;margin-top:12px}
+.eto{display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 4px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);line-height:1.3}
+.eto b{font-family:var(--f-card);font-size:1.35rem;font-weight:600}
+.eto small{font-size:.72rem;color:var(--muted)}
+.eto.on{border-color:var(--shu);background:var(--shu-soft)}
+.eto.on b{color:var(--shu)}
+.born{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);display:grid;gap:6px}
+.born label{font-weight:700}
+.born-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.born input{width:8em;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--surface);font-size:1.1rem}
+#bornOut{font-size:1.15rem;font-weight:700;min-width:0}
+#bornOut .tr{font-weight:400;font-size:.8em}
+.born .hint{margin:0;font-size:.8rem;color:var(--muted)}
+.mode-switch{display:flex;flex-wrap:wrap;gap:8px}
+.easy-fixed{font-family:var(--f-card);font-size:1.2rem;padding:8px 12px;background:var(--surface-2);border-radius:8px}
+.guides{position:absolute;inset:0;pointer-events:none}
+.guides i{position:absolute;width:0;height:0}
+.guides.v i{border-left:.25mm dashed #7FA9CF}
+.guides.h i{border-top:.25mm dashed #7FA9CF}
+.mode-trace .card-text{z-index:1}
+.a-to-name .nc{display:flex;justify-content:space-between;align-items:center;inline-size:100%}
+.fact{margin-top:10px;padding:8px 10px;background:var(--surface-2);border-radius:8px;font-size:.88rem}
+.fact b{color:var(--shu)}
+.src{font-size:.75rem;color:var(--muted);margin-top:8px}
+
+/* words */
+.gashi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.gashi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.gashi .big{font-family:var(--f-card);font-size:1.7rem;line-height:1.5;font-weight:600}
+.gashi .big rt{font-family:var(--f-ui)}
+.tag{display:inline-block;font-size:.72rem;padding:1px 8px;border-radius:999px;border:1px solid currentColor;line-height:1.6;white-space:nowrap}
+.tag.up{color:var(--pine)}
+.tag.peer{color:var(--gold)}
+.tag.ex{color:var(--shu)}
+.say{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:.85rem}
+.say svg{width:18px;height:18px}
+.say:hover{border-color:var(--pine)}
+.say-mini{display:inline-flex;align-items:center;justify-content:center;vertical-align:-.25em;margin-left:.4em;width:1.9em;height:1.6em;padding:0;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;cursor:pointer}
+.say-mini svg{width:1.05em;height:1.05em}
+.say-mini:hover{color:var(--pine);border-color:var(--pine)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;max-width:min(92vw,520px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:.92rem;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+#toast .tr{color:var(--bg);opacity:.8}
+#toast rt{color:var(--bg)}
+.vtable td.ok{color:var(--pine);font-weight:700}
+.vtable td.no{color:var(--shu);font-weight:700}
+.ng{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.ng .card{border-left:0;position:relative;padding-left:52px}
+.ng .mark{position:absolute;left:14px;top:14px;width:26px;height:26px;border-radius:50%;background:var(--shu);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.9rem}
+.phr{display:grid;gap:8px}
+.phr-row{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.phr-row .txt{flex:1;min-width:0;font-family:var(--f-card);font-size:1.12rem}
+.phr-row .txt .tr{font-family:var(--f-ui)}
+h3.sec{margin:26px 0 10px;font-size:1.15rem}
+h3.sec .tr{display:inline;margin-left:.6em;font-weight:400}
+
+/* parts */
+.parts-wrap{display:grid;grid-template-columns:minmax(260px,360px) 1fr;gap:22px;align-items:start}
+.part-list{display:grid;gap:10px}
+.part{border-radius:var(--radius);padding:12px 14px;border:2px solid transparent;cursor:pointer;background:var(--surface)}
+.part h4{margin:0 0 4px;font-size:1.05rem;display:flex;gap:8px;align-items:center}
+.part .dot{width:24px;height:24px;border-radius:50%;color:#fff;display:grid;place-items:center;font-size:.85rem;flex:none}
+.part.k1{border-color:var(--p1)} .part.k1 .dot{background:var(--p1)}
+.part.k2{border-color:var(--p2)} .part.k2 .dot{background:var(--p2)}
+.part.k3{border-color:var(--p3)} .part.k3 .dot{background:var(--p3)}
+.part.k4{border-color:var(--p4)} .part.k4 .dot{background:var(--p4)}
+.part.on.k1{background:var(--p1bg)} .part.on.k2{background:var(--p2bg)} .part.on.k3{background:var(--p3bg)} .part.on.k4{background:var(--p4bg)}
+
+/* hagaki (fixed paper colors in both themes: it is a physical postcard) */
+.hagaki{position:relative;width:100%;aspect-ratio:100/148;background:#FFFFFF;color:#1A1A1A;container-type:size;overflow:hidden;font-family:var(--f-card);border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.12),0 8px 24px rgba(30,40,35,.14)}
+.card-text{position:absolute;top:7cqh;bottom:7cqh;left:9cqw;right:9cqw;writing-mode:vertical-rl;font-size:calc(var(--fs,5) * 1cqw);line-height:1.8;overflow:hidden}
+.has-pic .card-text{bottom:31cqh}
+.yoko .card-text{writing-mode:horizontal-tb;line-height:1.75}
+.card-text p{margin:0}
+.c-gashi{font-weight:600;margin-block-end:.5em!important;letter-spacing:.06em;white-space:nowrap}
+.c-body{margin-block-end:.25em}
+.c-close{margin-block-end:.2em!important}
+.c-sign{display:flex;justify-content:space-between;gap:1.2em;padding-inline-start:1.6em}
+.c-name{font-weight:600}
+.c-pic{position:absolute;left:9cqw;right:9cqw;bottom:5cqh;height:24cqh;display:flex;align-items:center;justify-content:center}
+.c-pic svg,.c-pic img{max-width:100%;max-height:100%;height:100%}
+.mode-trace .card-text{color:#BDBDBD;font-weight:400}
+.mode-trace .c-gashi,.mode-trace .c-name{font-weight:400}
+.mode-trace .c-pic{opacity:.28;filter:grayscale(1)}
+.hagaki rt{font-family:var(--f-ui);font-size:.45em;color:#666}
+.blank{color:#C3352A;border-bottom:1px dashed #C3352A}
+.yoko .blank{border-bottom:1px dashed}
+.parts-on .seg{border-radius:4px;transition:background .15s}
+.parts-on .s1{background:#DCEAF6}.parts-on .s2{background:#FFF2BF}.parts-on .s3{background:#FADDE6}.parts-on .s4{background:#DAEEDF}
+.parts-on.focus-1 .seg:not(.s1),.parts-on.focus-2 .seg:not(.s2),.parts-on.focus-3 .seg:not(.s3),.parts-on.focus-4 .seg:not(.s4){opacity:.3}
+
+/* write studio */
+.studio{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,380px);gap:24px;align-items:start}
+.steps{display:grid;gap:14px;min-width:0}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;min-width:0}
+.step > h3{margin:0 0 10px;font-size:1.05rem;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.step > h3 .n{font-family:var(--f-disp);color:var(--shu);font-weight:400;font-size:1.3rem;line-height:1}
+.step > h3 .tr{display:inline;font-weight:400;font-size:.8rem}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice label{display:flex;flex-direction:column;gap:2px;border:1.5px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;background:var(--surface-2);line-height:1.5;min-width:0}
+.choice label .tr{font-size:.75rem;margin:0}
+.choice input:checked + label{border-color:var(--shu);background:var(--shu-soft)}
+.choice input:focus-visible + label{outline:3px solid var(--shu);outline-offset:2px}
+.choices.list{flex-direction:column}
+.choices.list .choice label{flex-direction:row;align-items:flex-start;gap:10px;font-family:var(--f-card);font-size:1.05rem}
+.choices.list .choice label > span{min-width:0}
+.choices.list .choice label .tr{font-family:var(--f-ui);display:block}
+.choices.list .tagcol{margin-left:auto;flex:none}
+.fill{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 4px 4px}
+.fill input{border:1.5px solid var(--line);border-radius:6px;padding:5px 8px;min-width:0;width:12em;background:var(--surface);font-family:var(--f-card);font-size:1.05rem}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 10px;cursor:pointer;font-size:.88rem}
+.chip:hover{border-color:var(--pine)}
+.warn{margin-top:8px;padding:8px 10px;border-radius:8px;background:var(--shu-soft);color:var(--ink);font-size:.88rem}
+.field{display:grid;gap:4px;margin-top:6px}
+.field > span{font-size:.88rem;font-weight:700}
+.field input[type=text],.field textarea{border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface);width:100%;min-width:0}
+.field textarea{min-height:4.5em;resize:vertical;font-family:var(--f-card);font-size:1.05rem}
+.field .hint{font-size:.78rem;color:var(--muted)}
+.preview-col{position:sticky;top:calc(env(safe-area-inset-top,0px) + 132px);display:grid;gap:12px}
+.preview-col .hagaki{max-width:380px;margin:0 auto}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--ink);background:var(--surface);border-radius:8px;padding:7px 14px;cursor:pointer;line-height:1.35;text-align:left}
+.btn .tr{font-size:.72rem;margin:0}
+.btn.primary{background:var(--shu);border-color:var(--shu);color:#fff}
+.btn.primary .tr{color:#fff;opacity:.85}
+.btn svg{width:18px;height:18px;flex:none}
+.note{font-size:.78rem;color:var(--muted);text-align:center}
+.example-flag{display:flex;gap:8px;align-items:center;justify-content:center;font-size:.8rem;color:var(--shu)}
+.draw-wrap{display:grid;gap:8px;margin-top:10px}
+#drawPad{width:100%;max-width:420px;aspect-ratio:5/3;background:#fff;border:1.5px dashed var(--line);border-radius:8px;touch-action:none;cursor:crosshair}
+.pens{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pen{width:28px;height:28px;border-radius:50%;border:2px solid var(--surface);box-shadow:0 0 0 1.5px var(--line);cursor:pointer}
+.pen[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
+.pic-choices .choice label{align-items:center;padding:6px 10px;width:96px}
+.pic-choices svg{width:64px;height:40px}
+
+/* address */
+.addr-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,380px);gap:24px;align-items:start}
+.addr-form{display:grid;gap:14px;min-width:0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px 12px}
+.check{display:flex;gap:8px;align-items:flex-start;margin-top:8px;font-size:.92rem}
+.check input{margin-top:.35em;width:18px;height:18px;flex:none}
+.tips{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.tips li{display:flex;gap:10px;align-items:flex-start;font-size:.95rem}
+.tips li b{flex:none;width:24px;height:24px;border-radius:50%;background:var(--pine);color:#fff;display:grid;place-items:center;font-size:.8rem}
+.tips li > span{min-width:0}
+.hagaki.addr{font-family:var(--f-card)}
+.a-stamp{position:absolute;left:6cqw;top:4cqh;width:20cqw;height:15.5cqh;border:.5cqw dashed #9AA39E;color:#9AA39E;display:grid;place-items:center;font-family:var(--f-ui);font-size:3.2cqw}
+.a-nenga{position:absolute;left:6cqw;top:21cqh;width:20cqw;text-align:center;color:#D0261C;font-size:6cqw;font-weight:600;letter-spacing:.1em}
+.zipbox{position:absolute;display:flex;align-items:stretch}
+.zipbox i{font-style:normal;display:grid;place-items:center;border:.35cqw solid #D0261C;color:#1A1A1A;font-family:var(--f-card);font-weight:600;position:absolute;top:0}
+.zip-to{top:8.1cqh;left:0;width:100%;height:5.4cqh}
+.zip-to i{width:5.7cqw;height:100%;font-size:5cqw}
+.zip-from{bottom:3.5cqh;left:0;width:100%;height:3.6cqh}
+.zip-from i{width:4cqw;height:100%;font-size:3.2cqw;border-width:.25cqw}
+.zip-to b,.zip-from b{position:absolute;top:50%;height:.35cqw;background:#D0261C}
+.a-to-addr{position:absolute;right:7cqw;top:19cqh;height:62cqh;writing-mode:vertical-rl;font-size:5cqw;line-height:1.55;text-orientation:upright;white-space:pre-wrap}
+.a-to-addr .l2{padding-inline-start:3em}
+.a-to-addr .l3{padding-inline-start:4.5em;font-size:.9em}
+.a-to-name{position:absolute;top:19cqh;height:67cqh;left:50%;transform:translateX(-50%);writing-mode:vertical-rl;font-weight:600;text-orientation:upright;white-space:nowrap;line-height:1.35}
+.a-from{position:absolute;left:7cqw;bottom:11cqh;height:46cqh;writing-mode:vertical-rl;font-size:3.4cqw;line-height:1.5;text-orientation:upright}
+.a-from .fa2{padding-inline-start:2em}
+.a-from .fn{font-size:1.35em;font-weight:600;text-align:end;margin-block-start:.3em;letter-spacing:.15em}
+.a-yoko{position:absolute;inset:0}
+.real-mode .a-stamp,.real-mode .zipbox{display:none}
+
+/* quiz */
+.quiz{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+.q h3{font-size:1.05rem}
+.opts{display:grid;gap:6px;margin-top:8px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--surface-2);border-radius:8px;padding:8px 12px;cursor:pointer;font-family:var(--f-card);font-size:1.05rem}
+.opt.right{border-color:var(--pine);background:var(--pine-soft)}
+.opt.wrong{border-color:var(--shu);background:var(--shu-soft)}
+.exp{margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--surface-2);font-size:.92rem}
+.exp .ok{font-weight:700;color:var(--pine)}
+.exp .ng2{font-weight:700;color:var(--shu)}
+.score{display:flex;gap:12px;align-items:center;margin-bottom:14px;font-size:1rem}
+.score strong{font-family:var(--f-disp);font-size:1.6rem;font-weight:400;color:var(--shu);font-variant-numeric:tabular-nums}
+
+/* teacher */
+.tdoc{max-width:860px;display:grid;gap:14px}
+.tdoc .card h3{font-size:1.08rem}
+.tdoc ul,.tdoc ol{margin:6px 0 0;padding-left:1.3em}
+.tdoc li{margin:3px 0}
+.tdoc table{border-collapse:collapse;width:100%;font-size:.9rem}
+.tdoc th,.tdoc td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.tdoc th{background:var(--surface-2);white-space:nowrap}
+.tbl{overflow-x:auto}
+.tdoc a{color:var(--pine)}
+blockquote{margin:6px 0;padding:6px 12px;border-left:3px solid var(--line);color:var(--muted);font-size:.88rem}
+
+/* confirm bar */
+.confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:10px;border:1.5px solid var(--shu);border-radius:8px;background:var(--shu-soft);font-size:.9rem}
+
+@media (max-width:400px){ .top .brand h1{font-size:1.06rem} .top .brand{gap:8px} .top .top-inner{column-gap:10px} }
+footer{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px 30px;color:var(--muted);font-size:.78rem}
+
+@media (max-width:860px){
+  .studio,.addr-wrap,.parts-wrap{grid-template-columns:1fr}
+  .preview-col{position:static}
+  .preview-col .hagaki{max-width:340px}
+}
+@media (max-width:720px){
+  .brand{flex:0 0 auto}
+  .brand h1{white-space:nowrap}
+  .ctl-toggle{margin-left:auto}
+  .brand small{display:none}
+  .ctl-toggle{display:inline-flex}
+  .hide-head small{display:none}
+  .hide-head{top:15px}
+  .ctl-toggle{margin-right:84px}
+  .controls{margin-right:0}
+  .controls{display:none;flex-basis:100%;margin-left:0;padding-bottom:6px}
+  .top.open .controls{display:flex}
+  nav.tabs button .tr + .tr{display:none}
+}
+@media (max-width:520px){
+  .seal{width:34px;height:34px;font-size:.88rem;letter-spacing:0}
+  .hide-head{top:12px;padding:5px}
+  .hide-head span{display:none}
+  .ctl-toggle{margin-right:42px}
+  .ctl-toggle .ct-lab{display:none}
+  .brand h1{font-size:1.25rem}
+  .controls{margin-left:0}
+}
+
+/* print */
+#printArea{position:fixed;left:-20000px;top:0;visibility:hidden;width:100mm}
+#printArea .hagaki{width:100mm;height:148mm;aspect-ratio:auto;box-shadow:none;border-radius:0}
+@media print{
+  body{background:#fff}
+  body::before{display:none}
+  body > *:not(#printArea){display:none!important}
+  #printArea{position:static;visibility:visible;left:auto}
+  .hagaki{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+
+<header class="top" id="topBar">
+  <div class="top-inner">
+    <div class="brand">
+      <div class="seal" aria-hidden="true">年賀</div>
+      <h1>はじめての年賀状<small>夜間中学・日本語クラスのための 年賀状ワークショップ</small></h1>
+    </div>
+    <button type="button" class="ctl-toggle" id="ctlToggle" aria-label="言語・表示 / Language" aria-expanded="false" aria-controls="controls"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="ct-lab">言語・表示</span><span class="ct-sum" id="ctlSum"></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <button type="button" class="hide-head" id="hideHead" aria-controls="topBar" aria-label="ヘッダーをかくす / Hide header"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>かくす<small lang="en">Hide</small></span></button>
+    <div class="controls" id="controls">
+      <div class="ctl langs" role="group" aria-label="ことば / Language"><span>ことば / Language</span><span class="langbtns" id="langBtns"></span></div>
+      <button class="toggle" id="furiBtn" aria-pressed="true">ふりがな</button>
+      <button class="toggle" id="bigBtn" aria-pressed="false">おおきい もじ</button>
+    </div>
+    <nav class="tabs" id="tabs" role="tablist"></nav>
+  </div>
+</header>
+<button type="button" class="show-head" id="showHead" aria-controls="topBar" aria-label="ヘッダーを出す / Show header" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>メニュー<small lang="en">Menu</small></span></button>
+
+<main id="main">
+  <section class="panel" id="p-learn" role="tabpanel"></section>
+  <section class="panel" id="p-words" role="tabpanel" hidden></section>
+  <section class="panel" id="p-parts" role="tabpanel" hidden></section>
+  <section class="panel" id="p-write" role="tabpanel" hidden></section>
+  <section class="panel" id="p-address" role="tabpanel" hidden></section>
+  <section class="panel" id="p-quiz" role="tabpanel" hidden></section>
+  <section class="panel" id="p-teacher" role="tabpanel" hidden></section>
+</main>
+
+<footer>
+  © 上野振宇　学校教育・個人の学習での利用は自由です。商用利用の際は作者へご一報ください。　参考：日本郵便「手紙の書き方体験授業」2026年度教材（中学生用 P3・P4–5・P14–15、同指導書）、日本郵便 年賀はがきに関する報道資料（各年）、国立天文台 暦要項（各年）。
+</footer>
+
+<div id="printArea" aria-hidden="true"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- helpers ---------- */
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+// furigana notation: {漢字|かんじ}
+const RB = /\{([^|{}]+)\|([^{}]+)\}/g;
+const rb = s => s.replace(RB, "<ruby>$1<rt>$2</rt></ruby>");
+const plain = s => s.replace(RB, "$1");
+const kana = s => s.replace(RB, "$2");
+const X = (ja, en, zh, vi, ne, my) => ({ja, en, zh, vi, ne, my});
+const BLANK = "＿＿";
+
+const LANGS = [["ja","日本語だけ"],["en","英語"],["zh","中国語"],["vi","ベトナム語"],["ne","ネパール語"],["my","ミャンマー語"]];
+
+/* ---------- state ---------- */
+const KEY = "hajimete-nengajo-v1";
+const SAMPLE_CARD = {partner:"teacher", gashi:"g1", thanks:"b1",
+  news:[{id:"n3", fill:"ひらがなが読めること"},{id:"n1", fill:"漢字"}],
+  free:"", memo:"", closing:"c1", date:"d1", name:"マイ", pic:"eto", dir:"tate", drawing:null, sample:true};
+const SAMPLE_ADDR = {toZip:"1234567", toAddr1:"東京都みどり区さくら町1-2-3", toAddr2:"みどり夜間中学校", toAddr3:"", toName:"山田 花子", keisho:"先生",
+  fromZip:"1234568", fromAddr1:"東京都みどり区もみじ町4-5-6", fromAddr2:"", fromName:"マイ", kanji:true, real:false, nenga:false, sample:true};
+let state = {langs:["en"], yearOverride:null, furi:true, big:false, tab:"learn", card:clone(SAMPLE_CARD), addr:clone(SAMPLE_ADDR), quiz:{}};
+function clone(o){return JSON.parse(JSON.stringify(o))}
+try{ const s = JSON.parse(localStorage.getItem(KEY) || "null"); if(s && s.card){ state = Object.assign(state, s); if(!Array.isArray(s.langs)) state.langs = (s.lang && s.lang!=="ja") ? [s.lang] : (s.lang==="ja" ? [] : ["en"]); delete state.lang; } }catch(e){}
+const LANG_ORDER = ["en","zh","vi","ne","my"];
+if(state.card && state.card.pic === "sheep") state.card.pic = "eto";
+const LCODE = {en:"EN",zh:"中",vi:"VI",ne:"NE",my:"MY"};
+state.langs = LANG_ORDER.filter(l => (state.langs||[]).includes(l));
+let saveTimer = null;
+function save(){ clearTimeout(saveTimer); saveTimer = setTimeout(()=>{ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }, 250); }
+
+/* ---------- bilingual rendering ---------- */
+function L(o, opts={}){
+  const tag = opts.tag || "span";
+  let h = `<span class="ja">${rb(o.ja)}</span>`;
+  h += state.langs.filter(l=>o[l]).map(l=>`<${tag} class="tr" lang="${l}" data-l="${LCODE[l]}">${esc(o[l])}${opts.say?miniSay(o[l],l):""}</${tag}>`).join("");
+  return h;
+}
+function TR(o, say){ return state.langs.filter(l=>o[l]).map(l=>`<span class="tr" lang="${l}" data-l="${LCODE[l]}">${esc(o[l])}${say?miniSay(o[l],l):""}</span>`).join(""); }
+const LNAME = {ja:"日本語",en:"English",zh:"中文",vi:"Tiếng Việt",ne:"नेपाली",my:"မြန်မာ"};
+function miniSay(text, l){ return `<button type="button" class="say-mini" data-say="${esc(text)}" data-sl="${l}" aria-label="${esc(LNAME[l])}: 音声 / audio">${ICON_SAY}</button>`; }
+
+const ICON_SAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a4.5 4.5 0 0 1 0 7M18.5 6a8 8 0 0 1 0 12" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"/></svg>';
+const ICON_PRINT = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 17H4v-7h16v7h-3M7 14h10v7H7z" stroke="currentColor" fill="none" stroke-width="2" stroke-linejoin="round"/></svg>';
+function sayBtn(text, label){ return `<button class="say" data-say="${esc(text)}" type="button">${ICON_SAY}<span>${label||"きく"}</span></button>`; }
+
+/* ---------- speech ---------- */
+/* multilingual speech (Web Speech API; uses the voices installed on / offered by the device's browser) */
+const VOICE_TAG = {ja:["ja-jp","ja"], en:["en-us","en-gb","en"], zh:["zh-cn","cmn-hans-cn","cmn-cn","zh-hans","cmn","zh"], vi:["vi-vn","vi"], ne:["ne-np","ne"], my:["my-mm","my"]};
+const VOICE_BCP = {ja:"ja-JP", en:"en-US", zh:"zh-CN", vi:"vi-VN", ne:"ne-NP", my:"my-MM"};
+const RATE = {ja:.85, en:.9, zh:.85, vi:.9, ne:.9, my:.9};
+let voices = [];
+function loadVoices(){ try{ voices = speechSynthesis.getVoices() || []; }catch(e){ voices = []; } if(typeof renderVoiceStatus==="function") renderVoiceStatus(); }
+if("speechSynthesis" in window){ loadVoices(); try{ speechSynthesis.addEventListener("voiceschanged", loadVoices); }catch(e){ speechSynthesis.onvoiceschanged = loadVoices; } }
+function findVoice(l){
+  const norm = v => (v.lang||"").replace(/_/g,"-").toLowerCase();
+  for(const tag of VOICE_TAG[l]||[]){
+    const exact = voices.filter(v => norm(v) === tag || norm(v).startsWith(tag + "-"));
+    if(exact.length){ return exact.find(v=>/natural|online|google/i.test(v.name)) || exact.find(v=>v.localService) || exact[0]; }
+  }
+  return null;
+}
+let toastTimer = null;
+function toast(html){
+  let t = document.getElementById("toast");
+  if(!t){ t = document.createElement("div"); t.id = "toast"; t.setAttribute("role","status"); document.body.appendChild(t); }
+  t.innerHTML = html; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(()=>{ t.hidden = true; }, 5000);
+}
+function speak(text, l="ja"){
+  if(!("speechSynthesis" in window)){ toast(`${rb("この ブラウザは {音声|おんせい}に {対応|たいおう}して いません。")}<span class="tr">This browser does not support speech.</span>`); return; }
+  const v = findVoice(l);
+  if(!v && voices.length){
+    toast(`${rb(`この {端末|たんまつ}には「${LNAME[l]}」の {音声|おんせい}が ありません。`)}<span class="tr">No ${esc(LNAME[l])} voice on this device. (See 先生へ → 音声)</span>`);
+    return;
+  }
+  try{ speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = VOICE_BCP[l]; if(v) u.voice = v; u.rate = RATE[l]||.9; speechSynthesis.speak(u); }catch(e){}
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-say]"); if(b){ e.stopPropagation(); speak(b.dataset.say, b.dataset.sl || "ja"); } }, true);
+
+/* ---------- content ---------- */
+/* =====================================================================
+   年ごとの設定 —— 毎年ここだけ更新すれば、翌年以降もそのまま使えます
+   ・干支、和暦（令和○年）、西暦、クイズの干支問題は今日の日付から自動で切り替わります。
+   ・郵便の日程と料金は毎年変わるため、日本郵便の発表（例年8〜9月ごろ）を見て posts に1行追加します。
+     登録のない年は「12月25日ごろまで」「値段は郵便局で確認」という一般的な表示になります。
+   ===================================================================== */
+const CONFIG = {
+  year: null,            // 対象の年を固定したいときだけ数字を入れる（例：2028）。null なら自動。
+  era: {name:"令和", kana:"れいわ", start:2019},   // 改元があったときはここを直す
+  posts: {
+    // 年賀状の年: {start:引受開始日, by:元日配達の差出し目安, price:年賀はがき料金(円), kanchuEnd:寒中見舞いの期限(立春の前日), lottery:お年玉くじ抽選日, sale:販売期間, notes:先生向けメモ, source:出典}
+    2027: {start:"2026-12-20", by:"2026-12-27", price:85, kanchuEnd:"2027-02-03", lottery:"2027-01-25", sale:"2026年11月2日（月）〜2027年1月15日（金）",
+           notes:"第24回全日本年賀状大賞コンクール（予定）応募期間 2026年10月5日〜2027年1月8日当日消印有効（版画・絵手紙・ことば部門）。",
+           source:"日本郵便 報道資料（2026年8月31日）、国立天文台 令和9年暦要項（立春 2月4日）、日本郵便『楽しい年賀状を作ろう！』令和9年版（お年玉くじ抽選日 1月25日）"}
+  }
+};
+
+/* ---------- year engine ---------- */
+function autoYear(d = new Date()){ return d.getMonth() === 0 ? d.getFullYear() : d.getFullYear() + 1; } // Feb–Dec: next New Year; January: this one
+function cardYear(){ return +(state.yearOverride || CONFIG.year || autoYear()); }
+const KN = "〇一二三四五六七八九";
+function kNum(n){ if(n < 10) return KN[n]; const t = Math.floor(n/10), o = n % 10; return (t > 1 ? KN[t] : "") + "十" + (o ? KN[o] : ""); }
+function nenRead(n){
+  const one = {1:"いち",2:"に",3:"さん",4:"よ",5:"ご",6:"ろく",7:"しち",8:"はち",9:"く"};
+  const ten = {2:"に",3:"さん",4:"よん",5:"ご",6:"ろく",7:"なな",8:"はち",9:"きゅう"};
+  if(n < 10) return one[n] + "ねん";
+  const t = Math.floor(n/10), o = n % 10; return (t > 1 ? ten[t] : "") + "じゅう" + (o ? one[o] : "") + "ねん";
+}
+function eraNum(y){ return y - CONFIG.era.start + 1; }
+function eraRuby(y){ const r = eraNum(y); return `{${CONFIG.era.name}|${CONFIG.era.kana}}` + (r === 1 ? "{元年|がんねん}" : `{${kNum(r)}年|${nenRead(r)}}`); }
+function eraPlainJ(y){ const r = eraNum(y); return CONFIG.era.name + (r === 1 ? "元年" : kNum(r) + "年"); }
+const ROMAJI_ERA = {"令和":"Reiwa"};
+function eraLatin(y){ return `${ROMAJI_ERA[CONFIG.era.name] || CONFIG.era.name} ${eraNum(y)}`; }
+const westKanji = y => [...String(y)].map(c => KN[+c]).join("") + "{年|ねん}";
+const dev = n => String(n).replace(/\d/g, c => "०१२३४५६७८९"[c]);
+const mmr = n => String(n).replace(/\d/g, c => "၀၁၂၃၄၅၆၇၈၉"[c]);
+const DAYR = ["","ついたち","ふつか","みっか","よっか","いつか","むいか","なのか","ようか","ここのか","とおか","じゅういちにち","じゅうににち","じゅうさんにち","じゅうよっか","じゅうごにち","じゅうろくにち","じゅうしちにち","じゅうはちにち","じゅうくにち","はつか","にじゅういちにち","にじゅうににち","にじゅうさんにち","にじゅうよっか","にじゅうごにち","にじゅうろくにち","にじゅうしちにち","にじゅうはちにち","にじゅうくにち","さんじゅうにち","さんじゅういちにち"];
+const EN_M = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const NE_M = ["जनवरी","फेब्रुअरी","मार्च","अप्रिल","मे","जुन","जुलाई","अगस्ट","सेप्टेम्बर","अक्टोबर","नोभेम्बर","डिसेम्बर"];
+const MY_M = ["ဇန်နဝါရီ","ဖေဖော်ဝါရီ","မတ်","ဧပြီ","မေ","ဇွန်","ဇူလိုင်","ဩဂုတ်","စက်တင်ဘာ","အောက်တိုဘာ","နိုဝင်ဘာ","ဒီဇင်ဘာ"];
+const WD = "日月火水木金土";
+function ymd(iso){ return iso.split("-").map(Number); }
+const D = {
+  ja: iso => { const [y,m,d] = ymd(iso); return `${y}{年|ねん}${m}{月|がつ}{${d}日|${DAYR[d]}}`; },
+  jaT: iso => { const [y,m,d] = ymd(iso); return `${y}年${m}月${d}日（${WD[new Date(y,m-1,d).getDay()]}）`; },
+  en: iso => { const [y,m,d] = ymd(iso); return `${EN_M[m-1]} ${d}, ${y}`; },
+  zh: iso => { const [y,m,d] = ymd(iso); return `${y}年${m}月${d}日`; },
+  vi: iso => { const [y,m,d] = ymd(iso); return `${d}/${m}/${y}`; },
+  ne: iso => { const [y,m,d] = ymd(iso); return `सन् ${dev(y)} ${NE_M[m-1]} ${dev(d)}`; },
+  my: iso => { const [y,m,d] = ymd(iso); return `${mmr(y)} ခုနှစ် ${MY_M[m-1]} ${mmr(d)} ရက်`; }
+};
+// 干支. vJ = the Japanese animal in Vietnamese, vV = the animal used in Vietnam (differs for 丑・卯・未)
+const ETO = [
+  {k:"子",r:"ね",a:"ねずみ",en:"Rat",zh:"鼠",vi:"Tý",vJ:"chuột",vV:"chuột",ne:"मुसा",my:"ကြွက်"},
+  {k:"丑",r:"うし",a:"うし",en:"Ox",zh:"牛",vi:"Sửu",vJ:"bò",vV:"trâu",ne:"गोरु",my:"နွား"},
+  {k:"寅",r:"とら",a:"とら",en:"Tiger",zh:"虎",vi:"Dần",vJ:"hổ",vV:"hổ",ne:"बाघ",my:"ကျား"},
+  {k:"卯",r:"う",a:"うさぎ",en:"Rabbit",zh:"兔",vi:"Mão",vJ:"thỏ",vV:"mèo",ne:"खरायो",my:"ယုန်"},
+  {k:"辰",r:"たつ",a:"りゅう",en:"Dragon",zh:"龙",vi:"Thìn",vJ:"rồng",vV:"rồng",ne:"ड्रागन",my:"နဂါး"},
+  {k:"巳",r:"み",a:"へび",en:"Snake",zh:"蛇",vi:"Tỵ",vJ:"rắn",vV:"rắn",ne:"सर्प",my:"မြွေ"},
+  {k:"午",r:"うま",a:"うま",en:"Horse",zh:"马",vi:"Ngọ",vJ:"ngựa",vV:"ngựa",ne:"घोडा",my:"မြင်း"},
+  {k:"未",r:"ひつじ",a:"ひつじ",en:"Sheep",zh:"羊",vi:"Mùi",vJ:"cừu",vV:"dê",ne:"भेडा",my:"သိုး"},
+  {k:"申",r:"さる",a:"さる",en:"Monkey",zh:"猴",vi:"Thân",vJ:"khỉ",vV:"khỉ",ne:"बाँदर",my:"မျောက်"},
+  {k:"酉",r:"とり",a:"にわとり",en:"Rooster",zh:"鸡",vi:"Dậu",vJ:"gà",vV:"gà",ne:"कुखुरा",my:"ကြက်"},
+  {k:"戌",r:"いぬ",a:"いぬ",en:"Dog",zh:"狗",vi:"Tuất",vJ:"chó",vV:"chó",ne:"कुकुर",my:"ခွေး"},
+  {k:"亥",r:"い",a:"いのしし",en:"Wild Boar",zh:"猪（日本为野猪）",vi:"Hợi",vJ:"lợn rừng",vV:"lợn",ne:"बँदेल",my:"ဝက်"}
+];
+const etoOf = y => ETO[((y - 4) % 12 + 12) % 12];
+
+function buildYear(){
+  const Y = cardYear(), P = CONFIG.posts[Y], e = etoOf(Y), ep = etoOf(Y-1), en = etoOf(Y+1);
+  // ③ いつ出す？
+  LEARN[2] = {t:X("いつ {出|だ}す？","When do you send it?","什么时候寄？","Gửi khi nào?","कहिले पठाउने?","ဘယ်အချိန် ပို့မလဲ။"),
+    b: P ? X(
+      `1{月|がつ}1{日|ついたち}（{元日|がんじつ}）に とどくように {出|だ}します。${D.ja(P.start)}から ${D.ja(P.by).replace(/^\d+\{年\|ねん\}/, "")}までに ポストに {入|い}れると、1{月|がつ}1{日|ついたち}に とどきます（{日本郵便|にほんゆうびん}の めやす）。おそくても 1{月|がつ}7{日|なのか}（{松|まつ}の{内|うち}）までに とどくように しましょう（1{月|がつ}15{日|にち}までの {地域|ちいき}も あります）。`,
+      `Send it so it arrives on January 1. If you post it between ${D.en(P.start)} and ${D.en(P.by)}, it should arrive on Jan 1 (Japan Post's guideline). At the latest, it should arrive by Jan 7, the end of "matsu-no-uchi" (Jan 15 in some areas).`,
+      `要让贺卡在1月1日（元日）送达。${D.zh(P.start)}至${D.zh(P.by)}投入邮筒，即可在1月1日送达（日本邮政的参考标准）。最晚也要在1月7日（“松之内”结束）前送达（有些地区到1月15日）。`,
+      `Gửi sao cho thiệp đến vào ngày 1/1. Nếu bỏ vào hòm thư từ ngày ${D.vi(P.start)} đến ${D.vi(P.by)}, thiệp sẽ đến vào ngày 1/1 (mốc tham khảo của Bưu điện Nhật Bản). Muộn nhất cũng nên đến trước ngày 7/1 – hết “Matsu-no-uchi” (có nơi là 15/1).`,
+      `जनवरी १ मा पुग्ने गरी पठाउनुहोस्। ${D.ne(P.start)} देखि ${D.ne(P.by)} सम्म पोस्टबक्समा हाल्नुभयो भने जनवरी १ मा पुग्छ (जापान पोस्टको अनुमान)। ढिलोमा पनि जनवरी ७ (मात्सु-नो-उचि) सम्म पुग्ने गरी पठाउनुहोस् (कतै जनवरी १५ सम्म)।`,
+      `ဇန်နဝါရီ ၁ ရက်နေ့တွင် ရောက်အောင် ပို့ပါ။ ${D.my(P.start)}မှ ${D.my(P.by)}အတွင်း စာတိုက်ပုံးထဲ ထည့်လျှင် ဇန်နဝါရီ ၁ ရက်နေ့တွင် ရောက်မည် (ဂျပန်စာတိုက်၏ ခန့်မှန်းချက်)။ နောက်အကျဆုံး ဇန်နဝါရီ ၇ ရက် (မာဆုနိုအုချိ) အတွင်း ရောက်အောင် ပို့ပါ (တချို့ဒေသတွင် ဇန်နဝါရီ ၁၅ ရက်)။`)
+    : X(
+      `1{月|がつ}1{日|ついたち}（{元日|がんじつ}）に とどくように {出|だ}します。12{月|がつ}の なかごろから ポストに {入|い}れられます。12{月|がつ}25{日|にち}ごろまでに {出|だ}すと、1{月|がつ}1{日|ついたち}に とどきます。{正|ただ}しい {日|ひ}は {毎年|まいとし} {日本郵便|にほんゆうびん}が {発表|はっぴょう}します。おそくても 1{月|がつ}7{日|なのか}（{松|まつ}の{内|うち}）までに とどくように しましょう（1{月|がつ}15{日|にち}までの {地域|ちいき}も あります）。`,
+      `Send it so it arrives on January 1. You can post New Year cards from about mid-December. If you post by about December 25, it should arrive on Jan 1. Japan Post announces the exact dates every year. At the latest, it should arrive by Jan 7, the end of "matsu-no-uchi" (Jan 15 in some areas).`,
+      `要让贺卡在1月1日（元日）送达。大约从12月中旬开始可以投寄年贺状，12月25日左右之前寄出，就能在1月1日送达。准确日期每年由日本邮政公布。最晚也要在1月7日（“松之内”结束）前送达（有些地区到1月15日）。`,
+      `Gửi sao cho thiệp đến vào ngày 1/1. Từ khoảng giữa tháng 12 có thể bỏ thiệp vào hòm thư. Nếu gửi trước khoảng ngày 25/12, thiệp sẽ đến vào ngày 1/1. Ngày chính xác do Bưu điện Nhật Bản công bố mỗi năm. Muộn nhất cũng nên đến trước ngày 7/1 – hết “Matsu-no-uchi” (có nơi là 15/1).`,
+      `जनवरी १ मा पुग्ने गरी पठाउनुहोस्। डिसेम्बरको मध्यतिरदेखि पोस्टबक्समा हाल्न सकिन्छ। डिसेम्बर २५ तिरसम्म पठाउनुभयो भने जनवरी १ मा पुग्छ। ठ्याक्कै मिति जापान पोस्टले हरेक वर्ष घोषणा गर्छ। ढिलोमा पनि जनवरी ७ (मात्सु-नो-उचि) सम्म पुग्ने गरी पठाउनुहोस् (कतै जनवरी १५ सम्म)।`,
+      `ဇန်နဝါရီ ၁ ရက်နေ့တွင် ရောက်အောင် ပို့ပါ။ ဒီဇင်ဘာလလယ်ခန့်မှစ၍ စာတိုက်ပုံးထဲ ထည့်နိုင်သည်။ ဒီဇင်ဘာ ၂၅ ရက်ခန့်အထိ ပို့လျှင် ဇန်နဝါရီ ၁ ရက်နေ့တွင် ရောက်မည်။ တိကျသောရက်စွဲကို ဂျပန်စာတိုက်က နှစ်စဉ် ကြေညာသည်။ နောက်အကျဆုံး ဇန်နဝါရီ ၇ ရက် (မာဆုနိုအုချိ) အတွင်း ရောက်အောင် ပို့ပါ (တချို့ဒေသတွင် ဇန်နဝါရီ ၁၅ ရက်)။`),
+    fact: P ? `<b>${Y}年用</b>　引受開始 ${D.jaT(P.start)}・元日配達の差出し目安 ${D.jaT(P.by)}まで（日本郵便）` : `<b>${Y}年用</b>　正確な日程は未登録です。日本郵便の発表で確認してください（先生へ →「年の設定」）。`};
+  // ④ どんな はがき？（料金）
+  const pr = P && P.price, lot = P && P.lottery;
+  LEARN[3] = {t:X("どんな はがき？","Which postcard?","用什么明信片？","Dùng bưu thiếp nào?","कस्तो पोस्टकार्ड?","ဘယ်လို ပို့စကတ်လဲ။"),
+    b:X(`{年賀|ねんが}はがきは、{郵便局|ゆうびんきょく}や コンビニで {買|か}えます（${pr ? `1{枚|まい} ${pr}{円|えん}` : `{値段|ねだん}は {郵便局|ゆうびんきょく}で {確|たし}かめましょう`}）。ふつうの はがきと ちがう ところが 3つ あります。①お{正月|しょうがつ}の {絵|え}の {切手|きって}が {印刷|いんさつ}されて いて、{切手|きって}を はらずに {日本|にほん}{全国|ぜんこく}に {送|おく}れます。②「{年賀|ねんが}」と {書|か}いて あるので、お{正月|しょうがつ}に とどきます。③お{年玉|としだま}くじが ついています（${lot ? `{抽選日|ちゅうせんび}は ${D.ja(lot)}` : `{抽選日|ちゅうせんび}は {日本郵便|にほんゆうびん}が {発表|はっぴょう}します`}）。ふつうの はがきを {使|つか}うときは、{切手|きって}の {下|した}に {赤|あか}い {字|じ}で「{年賀|ねんが}」と {書|か}きます。{書|か}かないと、お{正月|しょうがつ}より {前|まえ}に とどいて しまいます。`,
+      `You can buy nenga hagaki (New Year postcards) at post offices and convenience stores (${pr ? `${pr} yen each` : "check the price at the post office"}). They differ from ordinary postcards in three ways: (1) a New Year stamp is already printed, so you can send them anywhere in Japan without a stamp; (2) they are marked 年賀, so they are delivered at New Year; (3) they have a lottery number (${lot ? `drawing on ${D.en(lot)}` : "Japan Post announces the drawing date"}). If you use an ordinary postcard, write 年賀 in red under the stamp. Otherwise it will be delivered before New Year.`,
+      `年贺明信片可以在邮局或便利店买到（${pr ? `每张${pr}日元` : "价格请在邮局确认"}）。它和普通明信片有三点不同：①已经印有新年图案的邮票，不用贴邮票就能寄往日本全国；②写着“年贺”，所以会在新年送达；③附有压岁钱抽奖号码（${lot ? `开奖日为${D.zh(lot)}` : "开奖日由日本邮政公布"}）。用普通明信片时，要在邮票下方用红字写“年贺”，不写的话会在新年前就送到。`,
+      `Có thể mua nenga hagaki (bưu thiếp năm mới) ở bưu điện hoặc cửa hàng tiện lợi (${pr ? `${pr} yên/tấm` : "hãy hỏi giá ở bưu điện"}). Thiệp này khác bưu thiếp thường ở 3 điểm: (1) đã in sẵn tem năm mới nên gửi đi khắp Nhật Bản mà không cần dán tem; (2) có ghi chữ “年賀” nên được phát vào dịp năm mới; (3) có kèm số xổ số (${lot ? `ngày quay số: ${D.vi(lot)}` : "Bưu điện Nhật Bản sẽ công bố ngày quay số"}). Nếu dùng bưu thiếp thường, hãy viết chữ “年賀” màu đỏ dưới con tem. Nếu không viết, thiệp sẽ được phát trước năm mới.`,
+      `नेन्गा हागाकी (नयाँ वर्षको पोस्टकार्ड) हुलाक कार्यालय वा कन्भिनियन्स स्टोरमा किन्न सकिन्छ (${pr ? `एउटाको ${dev(pr)} येन` : "मूल्य हुलाक कार्यालयमा सोध्नुहोस्"})। यो साधारण पोस्टकार्डभन्दा तीन कुरामा फरक छ: (१) नयाँ वर्षको टिकट पहिल्यै छापिएको हुन्छ, त्यसैले टिकट नटाँसी जापानभर पठाउन सकिन्छ; (२) “年賀” लेखिएको हुनाले नयाँ वर्षमा वितरण हुन्छ; (३) चिट्ठा नम्बर हुन्छ (${lot ? `चिट्ठा निकाल्ने मिति ${D.ne(lot)}` : "चिट्ठाको मिति जापान पोस्टले घोषणा गर्छ"})। साधारण पोस्टकार्ड प्रयोग गर्दा टिकटको तल रातो अक्षरले “年賀” लेख्नुहोस्। नलेखे नयाँ वर्षअघि नै पुग्छ।`,
+      `နဲန်ဂါ ဟာဂါကိ (နှစ်သစ်ပို့စကတ်) ကို စာတိုက် သို့မဟုတ် ကွန်ဗီနီယန့်စတိုးတွင် ဝယ်နိုင်သည် (${pr ? `တစ်ကတ် ယန်း ${mmr(pr)}` : "စျေးနှုန်းကို စာတိုက်တွင် မေးပါ"})။ သာမန်ပို့စကတ်နှင့် ၃ ချက် ကွာသည်- (၁) နှစ်သစ်တံဆိပ်ခေါင်း ပုံနှိပ်ပြီးသားဖြစ်၍ တံဆိပ်ခေါင်း မကပ်ဘဲ ဂျပန်တစ်နိုင်ငံလုံးသို့ ပို့နိုင်သည်၊ (၂) “年賀” ဟု ရေးထားသဖြင့် နှစ်သစ်တွင် ပို့ဆောင်သည်၊ (၃) ထီနံပါတ် ပါသည် (${lot ? `ထီဖွင့်ရက် ${D.my(lot)}` : "ထီဖွင့်ရက်ကို ဂျပန်စာတိုက်က ကြေညာသည်"})။ သာမန်ပို့စကတ် သုံးလျှင် တံဆိပ်ခေါင်းအောက်တွင် အနီရောင်ဖြင့် “年賀” ဟု ရေးပါ။ မရေးလျှင် နှစ်သစ်မတိုင်မီ ရောက်သွားမည်။`)};
+  // ⑤ 喪中・寒中見舞い：期限が登録済みなら具体日
+  LEARN[4].fact = (P && P.kanchuEnd) ? `<b>${Y}年</b>　寒中見舞いは ${D.jaT(P.kanchuEnd)}まで（立春の前日）` : "";
+  // ⑥ 干支
+  const viNote = e.vJ !== e.vV ? ` (ở Việt Nam là con ${e.vV})` : "";
+  LEARN[5] = {eto:true, t:X("{干支|えと}と あなたの {国|くに}の {新年|しんねん}","The zodiac and New Year in your country","生肖与你的国家的新年","Con giáp và năm mới ở nước bạn","राशि जनावर र तपाईंको देशको नयाँ वर्ष","တိရစ္ဆာန်နှစ်နှင့် သင့်နိုင်ငံ၏ နှစ်သစ်"),
+    b:X(`${Y}{年|ねん}は「${e.a}（{${e.k}|${e.r}}）」の {年|とし}です。「{十二支|じゅうにし}」は、むかし {年|とし}や {時|じ}こく、{方角|ほうがく}を あらわすのに {使|つか}いました。おぼえやすいように、{身近|みぢか}な {動物|どうぶつ}を あてはめたと いわれています。{年賀状|ねんがじょう}には、その {年|とし}の {動物|どうぶつ}の {絵|え}を よく かきます。あなたの {国|くに}の {新年|しんねん}は いつですか？ どんな あいさつを しますか？ みんなに {教|おし}えて ください。`,
+      `In Japan, ${Y} is the Year of the ${e.en} (${e.k}). The twelve zodiac signs (jūnishi) were once used to show years, times of day and directions; familiar animals are said to have been matched to them to make them easy to remember. People often draw that year's animal on their nengajō. When is New Year in your country? What greetings do people say? Please tell the class.`,
+      `${Y}年是${e.k}年，生肖是${e.zh}。“十二支”过去用来表示年份、时辰和方位，据说为了便于记忆，配上了身边常见的动物。年贺状上常画当年的生肖动物。你的国家什么时候过新年？大家说什么祝福语？请告诉大家。`,
+      `Năm ${Y} là năm ${e.vi}. Ở Nhật, con vật của năm ${e.vi} là con ${e.vJ}${viNote}. “Thập nhị chi” ngày xưa dùng để chỉ năm, giờ và phương hướng; người ta cho rằng các con vật quen thuộc được gán vào để dễ nhớ. Trên nengajō, người ta thường vẽ con vật của năm. Ở nước bạn, năm mới là khi nào? Mọi người chúc nhau thế nào? Hãy kể cho cả lớp nghe.`,
+      `जापानमा सन् ${dev(Y)} “${e.ne}” को वर्ष हो। बाह्र राशि जनावर (जुनिसी) पहिले वर्ष, समय र दिशा जनाउन प्रयोग गरिन्थ्यो; सम्झन सजिलो होस् भनेर चिनजानका जनावरहरू जोडिएको भनिन्छ। नेन्गाजोमा प्रायः त्यस वर्षको जनावरको चित्र कोरिन्छ। तपाईंको देशमा नयाँ वर्ष कहिले हो? कस्तो शुभकामना भनिन्छ? कक्षामा सबैलाई सुनाउनुहोस्।`,
+      `ဂျပန်တွင် ${mmr(Y)} ခုနှစ်သည် “${e.my}” နှစ် ဖြစ်သည်။ ၁၂ ရာသီတိရစ္ဆာန် (ဂျူးနိရှိ) ကို ရှေးက နှစ်၊ အချိန်နှင့် အရပ်မျက်နှာ ပြရန် သုံးခဲ့ပြီး မှတ်ရလွယ်အောင် ရင်းနှီးသော တိရစ္ဆာန်များကို တွဲထားသည်ဟု ဆိုကြသည်။ နင်ဂါဂျောတွင် ထိုနှစ်၏ တိရစ္ဆာန်ပုံကို မကြာခဏ ဆွဲကြသည်။ သင့်နိုင်ငံ၏ နှစ်သစ်ကူးသည် ဘယ်အချိန်လဲ။ ဘယ်လို နှုတ်ခွန်းဆက်ကြသလဲ။ အတန်းထဲက လူတွေကို ပြောပြပေးပါ။`)};
+  // 日付（後付け）
+  const r = eraNum(Y);
+  DATES.length = 0;
+  DATES.push(
+    {id:"d1", ja:`${eraRuby(Y)}　{元旦|がんたん}`, m:X("",`${eraLatin(Y)} (${Y}), New Year's Day`,`${eraPlainJ(Y)}（${Y}年）元旦`,`Năm ${eraLatin(Y)} (${Y}), ngày 1/1`,`${eraLatin(Y).replace(/\d+/,dev)} (${dev(Y)}), नयाँ वर्षको पहिलो दिन`,`${eraLatin(Y).replace(/\d+/,mmr)} (${mmr(Y)})၊ နှစ်သစ်ကူးနေ့`)},
+    {id:"d2", ja:`${westKanji(Y)}　{元旦|がんたん}`, m:X("",`${Y}, New Year's Day (Western year)`,`${Y}年 元旦（公历）`,`Năm ${Y}, ngày 1/1 (dương lịch)`,`${dev(Y)}, नयाँ वर्षको पहिलो दिन (ईस्वी)`,`${mmr(Y)}၊ နှစ်သစ်ကူးနေ့ (ခရစ်နှစ်)`)},
+    {id:"d3", ja:`${eraRuby(Y)}　{正月|しょうがつ}`, m:X("",`${eraLatin(Y)}, New Year (if it arrives after Jan 1)`,`${eraPlainJ(Y)} 正月（1月1日以后送达时）`,`${eraLatin(Y)}, tháng Giêng (nếu đến sau ngày 1/1)`,`${eraLatin(Y).replace(/\d+/,dev)}, नयाँ वर्ष (जनवरी १ पछि पुग्ने भए)`,`${eraLatin(Y).replace(/\d+/,mmr)}၊ နှစ်ဆန်း (ဇန်နဝါရီ ၁ ရက်နောက် ရောက်လျှင်)`)}
+  );
+  PARTS_SAMPLE.date = DATES[0].ja;
+  EASY.date = `${CONFIG.era.kana}{${kNum(r)}年|${nenRead(r)}}　{元|がん}たん`;
+  // クイズ⑥：干支（答えの位置は年ごとに変わる）
+  const trio = [ep, e, en], rot = Y % 3, opts = trio.map((_,i) => trio[(i + rot) % 3]);
+  QUIZ[5] = {q:X(`${Y}{年|ねん}の {干支|えと}は？`,`What is the zodiac animal of ${Y} in Japan?`,`${Y}年的生肖是什么？`,`Con giáp của năm ${Y} là gì?`,`सन् ${dev(Y)} को राशि जनावर कुन हो?`,`${mmr(Y)} ခုနှစ်၏ တိရစ္ဆာန်က ဘာလဲ။`),
+    o: opts.map(x => x.a), a: opts.indexOf(e),
+    e:X(`${Y-1}{年|ねん}は ${ep.a}、${Y}{年|ねん}は ${e.a}、${Y+1}{年|ねん}は ${en.a}です。`,
+      `${Y-1}: ${ep.en.toLowerCase()}, ${Y}: ${e.en.toLowerCase()}, ${Y+1}: ${en.en.toLowerCase()}.`,
+      `${Y-1}年${ep.zh}，${Y}年${e.zh}，${Y+1}年${en.zh}。`,
+      `${Y-1}: ${ep.vi}, ${Y}: ${e.vi} (ở Nhật là con ${e.vJ}), ${Y+1}: ${en.vi}.`,
+      `${dev(Y-1)} ${ep.ne}, ${dev(Y)} ${e.ne}, ${dev(Y+1)} ${en.ne}।`,
+      `${mmr(Y-1)} ${ep.my}၊ ${mmr(Y)} ${e.my}၊ ${mmr(Y+1)} ${en.my}။`)};
+  // 絵の選択肢ラベル
+  PICS.eto = X(`えと（{${e.k}|${e.r}}）`,`Zodiac: ${e.en}`,`生肖：${e.zh}`,`Con giáp: ${e.vi}`,`राशि: ${e.ne}`,`တိရစ္ဆာန်: ${e.my}`);
+}
+
+function missingBanner(){
+  const Y = cardYear(); if(CONFIG.posts[Y]) return "";
+  const m = new Date().getMonth() + 1;  // 1–12
+  const timing = (m >= 2 && m <= 7)
+    ? `日本郵便の発表は例年8〜9月ごろです（2027年用は2026年8月31日）。発表されたら登録してください。`
+    : `すでに日本郵便から発表されている可能性があります。日本郵便のウェブサイト（ニュースリリース）で「${Y}年用年賀はがき」を確認してください。`;
+  return `<div class="banner" role="status"><b class="bmark">要更新</b><div><p><b>${Y}年用の郵便の日程・料金が未登録です。</b>生徒の画面では一般的な案内（12月中旬から受付・12月25日ごろまでに出すと元日に届く・値段は郵便局で確認・寒中見舞いは2月3日ごろまで）を表示しています。</p><p>${timing}</p><button type="button" class="btn" id="toYearCard" style="margin-top:6px">「年の設定」の登録方法を見る</button></div></div>`;
+}
+document.addEventListener("click", e => { if(e.target.closest("#toYearCard")){ const c = document.getElementById("yearCard"); if(c){ c.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"}); c.classList.add("flash"); setTimeout(()=>c.classList.remove("flash"), 1600); } } });
+function teacherYearHTML(){
+  const Y = cardYear(), A0 = autoYear(), P = CONFIG.posts[Y], e = etoOf(Y);
+  const opts = [`<option value="">自動（今日の日付から → ${A0}年用）</option>`].concat([A0-1, A0, A0+1, A0+2, A0+3].map(y => `<option value="${y}" ${+state.yearOverride===y?"selected":""}>${y}年用で固定（この端末のみ）</option>`)).join("");
+  const regd = Object.keys(CONFIG.posts).sort().map(y => y+"年用").join("・") || "なし";
+  const rows = P ? `<tr><th>年賀はがき販売</th><td>${esc(P.sale||"—")}</td></tr>
+      <tr><th>年賀状の引受開始</th><td>${D.jaT(P.start)}</td></tr>
+      <tr><th>元日配達の差出し目安</th><td>${D.jaT(P.by)}まで</td></tr>
+      <tr><th>年賀はがき料金</th><td>${P.price ? P.price + "円" : "—"}</td></tr>
+      <tr><th>お年玉くじ抽選日</th><td>${P.lottery ? D.jaT(P.lottery) : "—"}</td></tr>
+      <tr><th>寒中見舞い</th><td>松の内明け（1月8日）ごろ〜${P.kanchuEnd ? D.jaT(P.kanchuEnd) + "（立春の前日）" : "2月3日ごろ（立春の前日）"}</td></tr>`
+    : `<tr><th>郵便の日程・料金</th><td><b style="color:var(--shu)">未登録</b>。生徒の画面では「12月中旬から受付・12月25日ごろまでに出すと元日に届く・値段は郵便局で確認・寒中見舞いは2月3日ごろまで」という一般的な表示になります。</td></tr>`;
+  return `<div class="card" id="yearCard"><h3>年の設定（${Y}年用・${eraPlainJ(Y)}・${e.k}〈${e.a}〉年）</h3>
+    <label class="field" for="yearSel"><span>対象の年賀状の年</span><select id="yearSel" style="border:1.5px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--surface);max-width:100%">${opts}</select>
+    <span class="hint">2〜12月は翌年用、1月はその年用に自動で切り替わります。干支・和暦・西暦・後付けの日付・干支クイズ・「えと」の絵が連動します。固定はこの端末のブラウザにだけ保存されます（生徒の端末には反映されません）。</span></label>
+    <div class="tbl" style="margin-top:10px"><table>${rows}</table></div>
+    ${P && P.notes ? `<p style="margin-top:8px;font-size:.9rem">参考：${esc(P.notes)}なお、日本郵便から授業用に提供されたはがきは、コンクール応募ではなく実際のやり取りに使うよう求められています（中学生用指導書P14）。</p>` : ""}
+    ${P && P.source ? `<p class="src">出典：${esc(P.source)}</p>` : ""}
+    <p style="margin-top:10px;font-size:.9rem"><b>毎年の更新（年1回・数分）</b>：日本郵便が翌年用の年賀はがきを発表したら（2027年用は2026年8月31日発表）、HTMLファイルをメモ帳などで開き、<code>const CONFIG</code> の <code>posts</code> に1行追加して保存し、Googleサイトに貼り直します。寒中見舞いの期限は国立天文台「暦要項」の立春の前日です。登録済み：${regd}</p>
+    <pre style="overflow-x:auto;background:var(--surface-2);padding:10px;border-radius:8px;font-size:.8rem;margin:8px 0 0">${(P?Y+1:Y)}: {start:"${(P?Y:Y-1)}-12-??", by:"${(P?Y:Y-1)}-12-??", price:??, kanchuEnd:"${(P?Y+1:Y)}-02-0?", lottery:"${(P?Y+1:Y)}-01-??",
+       sale:"", notes:"", source:"日本郵便 報道資料（○年○月○日）"},</pre>
+    <p style="margin-top:8px;font-size:.85rem">和暦は「${CONFIG.era.name}」（${CONFIG.era.start}年＝元年）で計算しています。改元があった場合は <code>CONFIG.era</code> を直してください。</p></div>`;
+}
+document.addEventListener("change", e => {
+  if(e.target.id !== "yearSel") return;
+  state.yearOverride = e.target.value ? +e.target.value : null; save(); buildYear(); renderAll();
+});
+
+const UI = {
+  tabs: [
+    ["learn", X("{知|し}る","Learn","了解","Tìm hiểu","जान्नुहोस्","သိရှိရန်")],
+    ["words", X("ことば","Words","词语","Từ ngữ","शब्दहरू","စကားလုံး")],
+    ["parts", X("かたち","Structure","结构","Bố cục","संरचना","ပုံစံ")],
+    ["write", X("{書|か}く","Write","写贺卡","Viết thiệp","लेख्नुहोस्","ရေးရန်")],
+    ["address", X("あてな","Address","写地址","Địa chỉ","ठेगाना","လိပ်စာ")],
+    ["quiz", X("クイズ","Quiz","测验","Câu đố","प्रश्नोत्तरी","ပဟေဠိ")],
+    ["teacher", X("{先生|せんせい}へ","For teachers","教师用","Cho giáo viên","शिक्षकका लागि","ဆရာများအတွက်")]
+  ]
+};
+
+const LEARN = [
+  {t:X("{年賀状|ねんがじょう}って なに？","What is a nengajō?","什么是年贺状？","Nengajō là gì?","नेन्गाजो भनेको के हो?","နင်ဂါဂျောဆိုတာ ဘာလဲ။"),
+   b:X("{年賀状|ねんがじょう}は、{新|あたら}しい {年|とし}の はじめに おくる あいさつの はがきです。「ありがとう」と「{今年|ことし}も よろしく」の {気持|きも}ちを {書|か}きます。",
+     "A nengajō is a greeting postcard sent at the very start of the new year. You write \"thank you\" and \"I hope we can keep our good relationship this year too.\"",
+     "年贺状是新年伊始寄出的问候明信片，表达“谢谢关照”和“今年也请多关照”的心意。",
+     "Nengajō là bưu thiếp chúc mừng gửi vào đầu năm mới. Trong thiệp, bạn viết lời “cảm ơn” và “năm nay cũng mong được giúp đỡ”.",
+     "नेन्गाजो नयाँ वर्षको सुरुमा पठाइने शुभकामना पोस्टकार्ड हो। यसमा “धन्यवाद” र “यो वर्ष पनि सहयोग गर्नुहोला” भन्ने भावना लेखिन्छ।",
+     "နင်ဂါဂျောသည် နှစ်သစ်အစတွင် ပို့သော နှုတ်ခွန်းဆက်ပို့စကတ် ဖြစ်သည်။ “ကျေးဇူးတင်ပါတယ်” နှင့် “ဒီနှစ်လည်း ဆက်ပြီး ခင်မင်ပေးပါ” ဟူသော စိတ်ကို ရေးသည်။")},
+  {t:X("むかしの {年賀状|ねんがじょう}","Origins","起源","Nguồn gốc","सुरुवात","မူလအစ"),
+   b:X("むかしの {日本|にほん}では、お{正月|しょうがつ}に お{世話|せわ}に なった {人|ひと}の {家|いえ}へ あいさつに {行|い}きました（{年始回|ねんしまわ}り）。{遠|とお}くて {会|あ}えない {人|ひと}に {書|か}いた あいさつの {手紙|てがみ}が、{年賀状|ねんがじょう}の はじまりと いわれています。",
+     "In old Japan, people visited the homes of those who had helped them to give New Year greetings (nenshi-mawari). Greeting letters written to people too far away to visit are said to be the origin of nengajō.",
+     "在古代日本，人们新年时会去关照过自己的人家里拜年（年始回り）。写给住得远、无法见面之人的问候信，据说就是年贺状的起源。",
+     "Ngày xưa ở Nhật, dịp năm mới người ta đến nhà những người đã giúp đỡ mình để chúc Tết (nenshi-mawari). Những lá thư chúc mừng gửi cho người ở xa không thể gặp được cho là khởi nguồn của nengajō.",
+     "पहिले जापानमा नयाँ वर्षमा मानिसहरू आफूलाई सहयोग गर्ने व्यक्तिको घरमा शुभकामना दिन जान्थे (नेन्सी-मावारी)। टाढा भएर भेट्न नसकिने मानिसलाई लेखिएको शुभकामना पत्रलाई नै नेन्गाजोको सुरुवात मानिन्छ।",
+     "ရှေးဂျပန်တွင် နှစ်သစ်ကူးချိန်၌ မိမိကို ကူညီခဲ့သူများ၏ အိမ်သို့ နှုတ်ခွန်းဆက်ရန် သွားကြသည် (နဲန်ရှိမာဝါရိ)။ အဝေးရောက်၍ မတွေ့နိုင်သူများထံ ရေးပို့သော နှုတ်ခွန်းဆက်စာသည် နင်ဂါဂျော၏ အစဟု ဆိုကြသည်။")},
+  null,
+  null,
+  {t:X("{喪中|もちゅう}と {寒中見舞|かんちゅうみま}い","Mourning notices and midwinter greetings","丧中明信片与寒中问候","Thiệp báo tang và thiệp thăm hỏi mùa đông","शोक सूचना र जाडोको शुभकामना","ဝမ်းနည်းကြောင်းကတ်နှင့် ဆောင်းရာသီကတ်"),
+   b:X("この 1{年|ねん}の あいだに {家族|かぞく}が {亡|な}くなった {人|ひと}は、{年賀状|ねんがじょう}を {出|だ}しません。かわりに 11{月|がつ}から 12{月|がつ}の はじめに「{喪中|もちゅう}はがき」を {出|だ}します。{喪中|もちゅう}はがきを もらったら、{年賀状|ねんがじょう}では なく「{寒中見舞|かんちゅうみま}い」を {出|だ}します。1{月|がつ}8{日|ようか}ごろから 2{月|がつ}3{日|みっか}ごろ（{立春|りっしゅん}の {前|まえ}の {日|ひ}）までに とどくように {出|だ}します（{年賀|ねんが}はがきは {使|つか}いません）。また、1{月|がつ}8{日|ようか}を すぎて {年賀状|ねんがじょう}の へんじを {出|だ}すときも、「{寒中見舞|かんちゅうみま}い」に します。",
+     "Someone whose family member died within the past year does not send nengajō. Instead, they send a \"mochū hagaki\" (mourning notice) between November and early December. If you receive one, send a \"kanchū mimai\" (midwinter greeting) instead of a nengajō, to arrive between about Jan 8 and about Feb 3, the day before Risshun (the start of spring) (do not use New Year postcards). Also, if you reply to a nengajō after Jan 7, send a kanchū mimai instead.",
+     "一年内有家人去世的人不寄年贺状，而是在11月至12月初寄出“丧中明信片”。收到丧中明信片后，不寄年贺状，改寄“寒中问候”（寒中見舞い），要在1月8日前后至2月3日左右（立春前一天）之间送达（不使用年贺明信片）。另外，1月8日以后再回复年贺状时，也改寄“寒中问候”。",
+     "Người có người thân qua đời trong vòng một năm sẽ không gửi nengajō, mà gửi “thiệp báo tang” (mochū hagaki) từ tháng 11 đến đầu tháng 12. Nếu nhận được thiệp này, bạn không gửi nengajō mà gửi “thiệp thăm hỏi giữa mùa đông” (kanchū mimai), sao cho đến trong khoảng từ 8/1 đến khoảng 3/2 – ngày trước Lập xuân (không dùng bưu thiếp năm mới). Ngoài ra, nếu trả lời thiệp năm mới sau ngày 7/1 thì cũng gửi “kanchū mimai”.",
+     "पछिल्लो एक वर्षभित्र परिवारको सदस्यको मृत्यु भएको व्यक्तिले नेन्गाजो पठाउँदैन। त्यसको सट्टा नोभेम्बरदेखि डिसेम्बरको सुरुसम्म “मोचू हागाकी” (शोक सूचना कार्ड) पठाउँछ। यस्तो कार्ड पाउनुभयो भने नेन्गाजोको सट्टा “कान्चू मिमाई” (जाडोको शुभकामना) जनवरी ८ तिरदेखि फेब्रुअरी ३ तिर (वसन्त सुरु हुने ‘रिस्सुन’ अघिको दिन) सम्म पुग्ने गरी पठाउनुहोस् (नयाँ वर्षको पोस्टकार्ड प्रयोग नगर्नुहोस्)। साथै, जनवरी ७ पछि नेन्गाजोको जवाफ पठाउँदा पनि “कान्चू मिमाई” पठाउनुहोस्।",
+     "လွန်ခဲ့သော တစ်နှစ်အတွင်း မိသားစုဝင် ကွယ်လွန်ခဲ့သူသည် နင်ဂါဂျော မပို့ပါ။ ယင်းအစား နိုဝင်ဘာမှ ဒီဇင်ဘာအစောပိုင်းအတွင်း “မိုချူး ဟာဂါကိ” (ဝမ်းနည်းကြောင်း အသိပေးကတ်) ကို ပို့သည်။ ထိုကတ်ကို ရရှိလျှင် နင်ဂါဂျောအစား “ကန်ချူး မိမိုင်း” (ဆောင်းရာသီ နှုတ်ခွန်းဆက်ကတ်) ကို ဇန်နဝါရီ ၈ ရက်ခန့်မှ ဖေဖော်ဝါရီ ၃ ရက်ခန့် (နွေဦးရာသီ မစမီနေ့) အတွင်း ရောက်အောင် ပို့ပါ (နှစ်သစ်ပို့စကတ် မသုံးပါ)။ ထို့ပြင် ဇန်နဝါရီ ၇ ရက်နောက်ပိုင်း နင်ဂါဂျောကို ပြန်စာပို့လျှင်လည်း “ကန်ချူး မိမိုင်း” ကို ပို့ပါ။"),
+   fact:""},
+  null
+];
+
+const DELIVERY = {
+  t:X("{年賀状|ねんがじょう}が とどくまで","How a nengajō is delivered","年贺状的投递过程","Hành trình của thiệp năm mới","नेन्गाजो पुग्ने प्रक्रिया","နင်ဂါဂျော ရောက်ရှိပုံ"),
+  b:X("{郵便局|ゆうびんきょく}では、みんなの {年賀状|ねんがじょう}を 1{月|がつ}1{日|ついたち}に とどけるために、{前|まえ}から じゅんびを しています。","Post offices prepare in advance to deliver everyone's nengajō on January 1.","邮局会提前做好准备，在1月1日把大家的年贺状送到。","Bưu điện chuẩn bị từ trước để phát thiệp của mọi người vào ngày 1/1.","सबैको नेन्गाजो जनवरी १ मा पुर्‍याउन हुलाक कार्यालयले पहिल्यैदेखि तयारी गर्छ।","လူတိုင်း၏ နင်ဂါဂျောကို ဇန်နဝါရီ ၁ ရက်နေ့ ပို့ဆောင်နိုင်ရန် စာတိုက်က ကြိုတင်ပြင်ဆင်သည်။"),
+  steps:[
+    X("{気持|きも}ちを こめて {書|か}く","Write it with care","用心写","Viết bằng cả tấm lòng","मन लगाएर लेख्ने","စိတ်ပါလက်ပါ ရေးသည်"),
+    X("ポストに {入|い}れる","Put it in a postbox","投入邮筒","Bỏ vào hòm thư","पोस्टबक्समा हाल्ने","စာတိုက်ပုံးထဲ ထည့်သည်"),
+    X("{郵便局|ゆうびんきょく}で {行|い}き{先|さき}ごとに {分|わ}ける","Sorted by destination at the post office","在邮局按目的地分拣","Bưu điện phân loại theo nơi đến","हुलाक कार्यालयमा गन्तव्यअनुसार छुट्याइन्छ","စာတိုက်တွင် သွားမည့်နေရာအလိုက် ခွဲသည်"),
+    X("{行|い}き{先|さき}の {郵便局|ゆうびんきょく}へ {運|はこ}ぶ","Carried to the destination's post office","运往目的地的邮局","Chuyển đến bưu điện nơi nhận","गन्तव्यको हुलाक कार्यालयमा पुर्‍याइन्छ","သွားမည့်နေရာ၏ စာတိုက်သို့ သယ်သည်"),
+    X("{相手|あいて}の {家|いえ}に {近|ちか}い {郵便局|ゆうびんきょく}に とどく","Arrives at the post office near the recipient's home","到达收件人家附近的邮局","Đến bưu điện gần nhà người nhận","प्रापकको घर नजिकको हुलाक कार्यालयमा पुग्छ","လက်ခံသူ၏ အိမ်နီး စာတိုက်သို့ ရောက်သည်"),
+    X("1{月|がつ}1{日|ついたち}に まとめて {配達|はいたつ}する","Delivered all together on January 1","1月1日统一投递","Phát cùng lúc vào ngày 1/1","जनवरी १ मा एकैपटक वितरण गरिन्छ","ဇန်နဝါရီ ၁ ရက်နေ့တွင် တစ်ပြိုင်နက် ပို့ဆောင်သည်"),
+    X("{年賀状|ねんがじょう}が とどく","The nengajō arrives!","年贺状送到了！","Thiệp đến tay người nhận!","नेन्गाजो पुग्छ!","နင်ဂါဂျော ရောက်ရှိသည်")
+  ]
+};
+const BORN = {
+  lab:X("あなたが {生|う}まれた {年|とし}（{西暦|せいれき}）は？","What year were you born? (Western calendar)","你出生的年份（公历）是？","Bạn sinh năm nào (dương lịch)?","तपाईं कुन वर्ष (ईस्वी) मा जन्मनुभयो?","သင် ဘယ်ခုနှစ် (ခရစ်နှစ်) မှာ မွေးသလဲ။"),
+  note:X("1{月|がつ}・2{月|がつ}{生|う}まれの {人|ひと}は、{旧正月|きゅうしょうがつ}で {数|かぞ}える {国|くに}では、ひとつ {前|まえ}の {干支|えと}に なる ことが あります。","If you were born in January or February, countries that count from the Lunar New Year may give you the previous year's animal.","1月、2月出生的人，在按农历新年计算的国家，可能属于前一个生肖。","Người sinh tháng 1, tháng 2 có thể thuộc con giáp của năm trước nếu tính theo Tết âm lịch.","जनवरी वा फेब्रुअरीमा जन्मनुभएको छ भने चान्द्र नयाँ वर्षअनुसार गणना गर्ने देशमा अघिल्लो वर्षको जनावर हुन सक्छ।","ဇန်နဝါရီ၊ ဖေဖော်ဝါရီတွင် မွေးသူများသည် တရုတ်နှစ်သစ်ဖြင့် ရေတွက်သော နိုင်ငံများတွင် ယခင်နှစ်၏ တိရစ္ဆာန် ဖြစ်နိုင်သည်။"),
+  save:X("{入|い}れた {年|とし}は {保存|ほぞん}しません。","The year you enter is not saved.","输入的年份不会被保存。","Năm bạn nhập sẽ không được lưu.","तपाईंले लेखेको वर्ष सुरक्षित गरिँदैन।","ထည့်သော ခုနှစ်ကို မသိမ်းဆည်းပါ။")
+};
+function bornResult(y){
+  const e = etoOf(y), viN = e.vJ !== e.vV ? ` (ở Nhật là con ${e.vJ})` : "";
+  return L(X(`${y}{年|ねん}{生|う}まれ → {${e.k}|${e.r}}（${e.a}）`,`Born in ${y}: ${e.en} (${e.k})`,`${y}年出生：属${e.zh}（${e.k}）`,`Sinh năm ${y}: tuổi ${e.vi}${viN}`,`सन् ${dev(y)} मा जन्म: ${e.ne} (${e.k})`,`${mmr(y)} ခုနှစ် မွေး: ${e.my} (${e.k})`),{say:true});
+}
+function etoWidget(){
+  const Y = cardYear(), cur = etoOf(Y), now = new Date().getFullYear();
+  return `<div class="eto-ring" aria-label="十二支">${ETO.map(e=>`<span class="eto ${e===cur?"on":""}"><b>${rb(`{${e.k}|${e.r}}`)}</b><small>${e.a}</small></span>`).join("")}</div>
+  <div class="born"><label for="bornYear">${L(BORN.lab)}</label>
+   <div class="born-row"><input type="number" id="bornYear" inputmode="numeric" min="1900" max="${now}" placeholder="${now-30}" autocomplete="off"><div id="bornOut" aria-live="polite"></div></div>
+   <p class="hint">${L(BORN.note)}</p><p class="hint">${L(BORN.save)}</p></div>`;
+}
+document.addEventListener("input", e => {
+  if(e.target.id !== "bornYear") return;
+  const y = parseInt(e.target.value, 10), now = new Date().getFullYear(), out = $("#bornOut");
+  out.innerHTML = (y >= 1900 && y <= now) ? bornResult(y) : "";
+});
+
+// かんたんモード（はじめ・なか・おわり）— 日本郵便『楽しい年賀状を作ろう！』低学年用P4の3部構成にならう
+const EASY = {
+  start:"あけましておめでとうございます",
+  date:"",
+  mid:[
+    {id:"e1", ja:"ことしがんばりたいことは＿＿です。", m:X("","What I want to do my best at this year is ___.","今年我想努力的是___。","Điều tôi muốn cố gắng năm nay là ___.","यो वर्ष म ___ मा मेहनत गर्न चाहन्छु।","ဒီနှစ် ကြိုးစားချင်တာက ___ ပါ။"),
+     chips:["にほんごのべんきょう","かんじ","ひらがなとカタカナ","しごと","りょうり","スポーツ"]},
+    {id:"e2", ja:"いつもありがとうございます。", m:X("","Thank you for always helping me.","一直以来谢谢您。","Cảm ơn vì luôn giúp đỡ tôi.","सधैं सहयोग गर्नुभएकोमा धन्यवाद।","အမြဲ ကူညီပေးလို့ ကျေးဇူးတင်ပါတယ်။"), chips:[]},
+    {id:"e3", ja:"わたしは＿＿がすきです。", m:X("","I like ___.","我喜欢___。","Tôi thích ___.","मलाई ___ मन पर्छ।","ကျွန်ုပ် ___ ကို ကြိုက်ပါတယ်။"),
+     chips:["にほんのたべもの","がっこう","にほんご","うた"]}
+  ],
+  end:[
+    {id:"x1", ja:"ことしもよろしくおねがいします。", m:X("","I hope for your continued kindness this year too.","今年也请多多关照。","Năm nay cũng mong tiếp tục được giúp đỡ.","यो वर्ष पनि सहयोग गर्नुहोला।","ဒီနှစ်လည်း ဆက်လက် ကူညီပေးပါ။")},
+    {id:"x2", ja:"ことしもよろしくね。", peer:true, m:X("","Let's keep being good friends this year!","今年也多关照哦！","Năm nay cũng nhờ bạn nhé!","यो वर्ष पनि साथ दिनू है!","ဒီနှစ်လည်း ခင်ခင်မင်မင်နေကြရအောင်နော်။")}
+  ],
+  ui:{
+    mode:X("{書|か}きかたを えらぶ","Choose a style","选择写法","Chọn cách viết","लेख्ने तरिका छान्नुहोस्","ရေးပုံကို ရွေးပါ"),
+    easy:X("かんたん（3つの ぶぶん）","Easy (3 parts)","简单（3个部分）","Dễ (3 phần)","सजिलो (३ भाग)","လွယ် (အပိုင်း ၃)"),
+    full:X("ふつう（4つの ぶぶん）","Standard (4 parts)","标准（4个部分）","Thông thường (4 phần)","सामान्य (४ भाग)","ပုံမှန် (အပိုင်း ၄)"),
+    easyHint:X("ひらがなが {中心|ちゅうしん}の、みじかい {年賀状|ねんがじょう}です。","A short card, mostly in hiragana.","以平假名为主的简短年贺状。","Thiệp ngắn, chủ yếu bằng hiragana.","मुख्यतः हिरागानामा लेखिने छोटो कार्ड।","ဟိရဂါနာ အဓိကဖြင့် ရေးသော တိုတောင်းသည့်ကတ်။"),
+    s:X("はじめ：おいわいの ことば","Beginning: the greeting","开头：祝贺的话","Mở đầu: lời chúc","सुरु: शुभकामना","အစ: နှုတ်ခွန်းဆက်စကား"),
+    sHint:X("{大|おお}きく {書|か}きます。","Write it large.","写得大一些。","Viết to.","ठूलो लेख्नुहोस्।","ကြီးကြီး ရေးပါ။"),
+    m:X("なか：ことしの こと（2つまで）","Middle: about this year (up to 2)","中间：今年的事（最多2个）","Giữa: về năm nay (tối đa 2 câu)","बीच: यो वर्षबारे (२ वटासम्म)","အလယ်: ဒီနှစ်အကြောင်း (၂ ခုအထိ)"),
+    e:X("おわり：むすびの ことば","End: closing words","结尾：结语","Kết: lời kết","अन्त्य: अन्तिम शब्द","အဆုံး: အဆုံးသတ်စကား"),
+    d:X("{日付|ひづけ}と なまえ（「{元|がん}たん」は 1{月|がつ}1{日|ついたち}の {朝|あさ}の ことです）","Date and your name (元たん means the morning of January 1)","日期和名字（“元旦”指1月1日早上）","Ngày tháng và tên (元たん là buổi sáng ngày 1/1)","मिति र नाम (元たん भनेको जनवरी १ को बिहान)","ရက်စွဲနှင့် အမည် (元たん ဆိုသည်မှာ ဇန်နဝါရီ ၁ ရက် နံနက်)")
+  }
+};
+
+const GASHI = [
+  {id:"g1", ja:"{明|あ}けましておめでとうございます", up:true, m:X("","Happy New Year (polite)","新年快乐（礼貌说法）","Chúc mừng năm mới (lịch sự)","नयाँ वर्षको शुभकामना (विनम्र)","နှစ်သစ်မှာ မင်္ဂလာပါ (ယဉ်ကျေးသောစကား)")},
+  {id:"g2", ja:"{謹賀新年|きんがしんねん}", up:true, m:X("","I respectfully celebrate the New Year","恭贺新年（谨贺新年）","Kính chúc mừng năm mới","सादर नयाँ वर्षको शुभकामना","နှစ်သစ်ကို လေးစားစွာ ဂုဏ်ပြုပါသည်")},
+  {id:"g3", ja:"{謹賀新春|きんがしんしゅん}", up:true, m:X("","I respectfully celebrate the new spring","恭贺新春（谨贺新春）","Kính chúc mừng xuân mới","सादर नयाँ वसन्तको शुभकामना","နွေဦးသစ်ကို လေးစားစွာ ဂုဏ်ပြုပါသည်")},
+  {id:"g4", ja:"{迎春|げいしゅん}", up:false, m:X("","Welcoming spring (= the New Year)","迎春","Đón xuân (= năm mới)","वसन्तको स्वागत (= नयाँ वर्ष)","နွေဦးကို ကြိုဆိုခြင်း (= နှစ်သစ်)")},
+  {id:"g5", ja:"{賀正|がしょう}", up:false, m:X("","Celebrating the New Year","贺正（庆贺新年）","Mừng năm mới","नयाँ वर्षको बधाई","နှစ်သစ်ကို ဂုဏ်ပြုခြင်း")},
+  {id:"g6", ja:"{寿|ことぶき}", up:false, m:X("","Celebration / long life","寿（喜庆、长寿）","Thọ (niềm vui, sống lâu)","उत्सव / दीर्घायु","မင်္ဂလာ / အသက်ရှည်ခြင်း")}
+];
+
+const NG = [
+  {mark:"✕", ja:"✕ {新年|しんねん}{明|あ}けまして… →「{新年|しんねん}」と「{明|あ}けまして」は {同|おな}じ {意味|いみ}です。「{明|あ}けましておめでとうございます」が {正|ただ}しいです。",
+   tr:X("","✕ 新年明けまして… — 新年 and 明けまして mean the same thing. The correct form is 明けましておめでとうございます.","✕ 新年明けまして… ——“新年”和“明けまして”意思重复。正确说法是“明けましておめでとうございます”。","✕ 新年明けまして… — “新年” và “明けまして” cùng nghĩa. Cách đúng là “明けましておめでとうございます”.","✕ 新年明けまして… — “新年” र “明けまして” को अर्थ एउटै हो। सही रूप “明けましておめでとうございます” हो।","✕ 新年明けまして… — “新年” နှင့် “明けまして” အဓိပ္ပာယ်တူသည်။ မှန်ကန်သောပုံစံမှာ “明けましておめでとうございます” ဖြစ်သည်။")},
+  {mark:"。", ja:"{賀詞|がし}の あとに「。」は {書|か}きません。",
+   tr:X("","Do not put \"。\" after the greeting.","贺词后面不加句号“。”。","Không viết dấu “。” sau lời chúc.","शुभकामना शब्दपछि “。” नलेख्नुहोस्।","နှုတ်ခွန်းဆက်စကား နောက်တွင် “。” မရေးပါ။")},
+  {mark:"4", ja:"{目上|めうえ}の {人|ひと}（{先生|せんせい}など）には、4{文字|もじ}{以上|いじょう}の {賀詞|がし}を {使|つか}います（{謹賀新年|きんがしんねん}・{謹賀新春|きんがしんしゅん}など）。",
+   tr:X("","For people above you (such as teachers), use a greeting of 4 or more characters (謹賀新年, 謹賀新春, etc.).","写给长辈或老师时，要用四个字以上的贺词（如“謹賀新年”“謹賀新春”）。","Với người trên (như thầy cô), dùng lời chúc từ 4 chữ trở lên (謹賀新年, 謹賀新春…).","मान्यजन (जस्तै शिक्षक) लाई ४ वा बढी अक्षरको शुभकामना शब्द प्रयोग गर्नुहोस् (謹賀新年, 謹賀新春 आदि)।","အကြီးအကဲများ (ဆရာ စသည်) ထံ စာလုံး ၄ လုံးနှင့်အထက် နှုတ်ခွန်းဆက်စကားကို သုံးပါ (謹賀新年၊ 謹賀新春 စသည်)။")},
+  {mark:"去", ja:"「{去年|きょねん}」は {使|つか}いません。「{去|さ}る」は {年賀状|ねんがじょう}で さける ことばです。「{昨年|さくねん}」「{旧年|きゅうねん}」を {使|つか}います。",
+   tr:X("","Don't use 去年 (last year): 去る (\"to leave\") is avoided on nengajō. Use 昨年 or 旧年 instead.","不用“去年”：“去る”（离去）是年贺状中忌讳的词。要用“昨年”或“旧年”。","Không dùng “去年”: chữ “去る” (rời đi) nên tránh trong nengajō. Hãy dùng “昨年” hoặc “旧年”.","“去年” प्रयोग नगर्नुहोस्: “去る” (छोडेर जानु) शब्द नेन्गाजोमा टारिन्छ। “昨年” वा “旧年” प्रयोग गर्नुहोस्।","“去年” ကို မသုံးပါ— “去る” (ထွက်ခွာသည်) ကို နင်ဂါဂျောတွင် ရှောင်သည်။ “昨年” သို့မဟုတ် “旧年” ကို သုံးပါ။")}
+];
+
+// phrases. up=true: for people above you; peer=true: friends/family; neither = everyone
+const THANKS = [
+  {id:"b1", ja:"{昨年|さくねん}は{大変|たいへん}お{世話|せわ}になりました。", up:true, m:X("","Thank you very much for all your help last year.","去年承蒙您多方关照。","Năm qua, cảm ơn rất nhiều vì đã giúp đỡ tôi.","गत वर्ष धेरै सहयोग गर्नुभएकोमा धन्यवाद।","မနှစ်က အများကြီး ကူညီပေးခဲ့လို့ ကျေးဇူးတင်ပါတယ်။")},
+  {id:"b2", ja:"{旧年中|きゅうねんちゅう}は{大変|たいへん}お{世話|せわ}になりました。", up:true, m:X("","Thank you very much for your help during the past year (more formal).","旧年中承蒙您多方关照（更正式）。","Cảm ơn rất nhiều vì sự giúp đỡ trong năm qua (trang trọng hơn).","गत वर्षभरि धेरै सहयोग गर्नुभएकोमा धन्यवाद (अझ औपचारिक)।","ပြီးခဲ့သောနှစ်တစ်လျှောက် အများကြီး ကူညီပေးခဲ့လို့ ကျေးဇူးတင်ပါတယ် (ပိုယဉ်ကျေး)။")},
+  {id:"b3", ja:"いつもやさしく{教|おし}えてくださって、ありがとうございます。", up:true, m:X("","Thank you for always teaching me so kindly.","感谢您一直耐心地教导我。","Cảm ơn thầy/cô đã luôn dạy em tận tình.","सधैं मायालु तरिकाले सिकाइदिनुभएकोमा धन्यवाद।","အမြဲ ကြင်ကြင်နာနာ သင်ပေးလို့ ကျေးဇူးတင်ပါတယ်။")},
+  {id:"b4", ja:"{昨年|さくねん}はありがとう。", peer:true, m:X("","Thanks for everything last year.","去年谢谢你。","Cảm ơn bạn vì năm qua.","गत वर्षको लागि धन्यवाद।","မနှစ်က ကျေးဇူးပဲနော်။")}
+];
+const NEWS = [
+  {id:"n1", ja:"{今年|ことし}は＿＿をがんばります。", m:X("","This year I will work hard at ___.","今年我要努力___。","Năm nay tôi sẽ cố gắng ___.","यो वर्ष म ___ मा मेहनत गर्छु।","ဒီနှစ် ___ ကို ကြိုးစားပါမယ်။"),
+   chips:["{漢字|かんじ}","{日本語|にほんご}の{勉強|べんきょう}","ひらがなとカタカナ","{数学|すうがく}","{仕事|しごと}"]},
+  {id:"n2", ja:"{今年|ことし}の{目標|もくひょう}は＿＿です。", m:X("","My goal this year is ___.","我今年的目标是___。","Mục tiêu năm nay của tôi là ___.","यो वर्षको मेरो लक्ष्य ___ हो।","ဒီနှစ် ကျွန်ုပ်ရဲ့ ပန်းတိုင်က ___ ပါ။"),
+   chips:["{日本語|にほんご}で{話|はな}すこと","{漢字|かんじ}を100{書|か}くこと","{日本語能力試験|にほんごのうりょくしけん}","{毎日|まいにち}{学校|がっこう}に{来|く}ること"]},
+  {id:"n3", ja:"{日本|にほん}に{来|き}て、＿＿ができるようになりました。", m:X("","Since coming to Japan, I have become able to do ___.","来到日本后，我学会了___。","Từ khi đến Nhật, tôi đã có thể ___.","जापान आएपछि म ___ गर्न सक्ने भएँ।","ဂျပန်ကို ရောက်ပြီးနောက် ___ ကို လုပ်နိုင်လာပါပြီ။"),
+   chips:["ひらがなが{読|よ}めること","{電車|でんしゃ}に{乗|の}ること","{買|か}い{物|もの}","{日本|にほん}の{料理|りょうり}"]},
+  {id:"n4", ja:"{今|いま}、{夜間中学|やかんちゅうがく}で＿＿を{勉強|べんきょう}しています。", m:X("","I am now studying ___ at night junior high school.","我现在在夜间中学学习___。","Hiện tôi đang học ___ ở trường trung học buổi tối.","म अहिले राति चल्ने माध्यमिक विद्यालयमा ___ पढ्दैछु।","အခု ညကျောင်း (အလယ်တန်း) မှာ ___ ကို လေ့လာနေပါတယ်။"),
+   chips:["{日本語|にほんご}","{数学|すうがく}","{英語|えいご}","{社会|しゃかい}"]}
+];
+const CLOSING = [
+  {id:"c1", ja:"{今年|ことし}もよろしくお{願|ねが}いいたします。", up:true, m:X("","I hope for your continued kindness this year too.","今年也请多多关照。","Năm nay cũng mong tiếp tục được giúp đỡ.","यो वर्ष पनि सहयोग गर्नुहोला।","ဒီနှစ်လည်း ဆက်လက် ကူညီပေးပါ။")},
+  {id:"c2", ja:"ご{健康|けんこう}とご{活躍|かつやく}をお{祈|いの}り{申|もう}し{上|あ}げます。", up:true, m:X("","I wish you good health and success.","祝您身体健康，工作顺利。","Kính chúc sức khỏe và thành công.","तपाईंको सुस्वास्थ्य र सफलताको कामना गर्दछु।","ကျန်းမာပြီး အောင်မြင်ပါစေလို့ ဆုတောင်းပါတယ်။")},
+  {id:"c3", ja:"よい{年|とし}でありますように。", m:X("","May it be a good year.","祝新的一年一切顺利。","Chúc một năm tốt đẹp.","राम्रो वर्ष होस्।","ကောင်းမွန်သော နှစ်ဖြစ်ပါစေ။")},
+  {id:"c4", ja:"お{体|からだ}に{気|き}をつけてください。", m:X("","Please take care of yourself.","请保重身体。","Hãy giữ gìn sức khỏe nhé.","स्वास्थ्यको ख्याल गर्नुहोला।","ကျန်းမာရေး ဂရုစိုက်ပါ။")},
+  {id:"c5", ja:"{今年|ことし}もよろしくね。", peer:true, m:X("","Let's keep being good friends this year!","今年也多关照哦！","Năm nay cũng nhờ bạn nhé!","यो वर्ष पनि साथ दिनू है!","ဒီနှစ်လည်း ခင်ခင်မင်မင်နေကြရအောင်နော်။")}
+];
+let DATES = [];
+const PARTNERS = [
+  {id:"teacher", up:true, l:X("{先生|せんせい}","Teacher","老师","Thầy cô","शिक्षक","ဆရာ/ဆရာမ")},
+  {id:"helper", up:true, l:X("お{世話|せわ}になった{人|ひと}","Someone who helped you","关照过你的人","Người đã giúp đỡ bạn","सहयोग गर्ने व्यक्ति","ကူညီခဲ့သူ")},
+  {id:"friend", up:false, l:X("{友|とも}だち","Friend","朋友","Bạn bè","साथी","သူငယ်ချင်း")},
+  {id:"family", up:false, l:X("{家族|かぞく}・しんせき","Family / relatives","家人、亲戚","Gia đình, họ hàng","परिवार / आफन्त","မိသားစု / ဆွေမျိုး")}
+];
+const PARTS = [
+  {k:1, h:X("{前文|ぜんぶん}（{賀詞|がし}）","Opening (greeting)","前文（贺词）","Mở đầu (lời chúc)","सुरुवात (शुभकामना शब्द)","အစပိုင်း (နှုတ်ခွန်းဆက်)"),
+   b:X("おいわいの ことば。すこし {大|おお}きく {書|か}きます。「。」は {書|か}きません。","The celebratory words. Write them a little larger. No \"。\".","祝贺的话，写得稍大一些，不加句号“。”。","Lời chúc mừng. Viết to hơn một chút. Không viết dấu “。”.","बधाईका शब्द। अलि ठूलो लेख्नुहोस्। “。” नलेख्नुहोस्।","ဂုဏ်ပြုစကား။ နည်းနည်း ကြီးကြီး ရေးပါ။ “。” မရေးပါ။")},
+  {k:2, h:X("{主文|しゅぶん}（{本文|ほんぶん}）","Main text","主文（正文）","Phần chính","मुख्य भाग","အဓိကပိုင်း"),
+   b:X("{昨年|さくねん}の お{礼|れい}や {今年|ことし}の {目標|もくひょう}を {書|か}きます。{明|あか}るい {話|はなし}が いいです。","Thanks for last year and your goals for this year. Keep it bright and positive.","写去年的感谢和今年的目标等，内容要积极明快。","Lời cảm ơn về năm qua và mục tiêu năm nay. Nên viết chuyện vui, tích cực.","गत वर्षको धन्यवाद र यो वर्षको लक्ष्य लेख्नुहोस्। खुसीका कुरा राम्रा हुन्छन्।","မနှစ်က ကျေးဇူးတင်စကားနှင့် ဒီနှစ်ပန်းတိုင်ကို ရေးပါ။ ပျော်ရွှင်ဖွယ် အကြောင်းအရာ ကောင်းသည်။")},
+  {k:3, h:X("{末文|まつぶん}（{結|むす}び）","Closing","末文（结语）","Phần kết","अन्त्य","အဆုံးပိုင်း"),
+   b:X("{相手|あいて}の {健康|けんこう}や しあわせを いのる ことばです。","Words wishing the other person good health and happiness.","祝愿对方健康、幸福的话。","Lời chúc người nhận sức khỏe và hạnh phúc.","अर्को व्यक्तिको स्वास्थ्य र खुसीको कामना गर्ने शब्द।","တစ်ဖက်လူ၏ ကျန်းမာရေးနှင့် ပျော်ရွှင်မှုကို ဆုတောင်းသောစကား။")},
+  {k:4, h:X("{後付|あとづ}け","Date and name","后附（日期、姓名）","Ngày tháng và tên","मिति र नाम","ရက်စွဲနှင့် အမည်"),
+   b:X("{日付|ひづけ}と {自分|じぶん}の {名前|なまえ}です。すこし {下|さ}げて {書|か}きます。1{月|がつ}1{日|ついたち}に とどくなら「{元旦|がんたん}」、それより あとなら「{正月|しょうがつ}」。","The date and your name, written a little lower. Write 元旦 if it arrives on Jan 1, 正月 if later.","日期和自己的名字，往下错开一点写。1月1日送达写“元旦”，之后送达写“正月”。","Ngày và tên của bạn, viết thấp xuống một chút. Đến ngày 1/1 thì ghi “元旦”, đến sau thì ghi “正月”.","मिति र आफ्नो नाम, अलि तल सारेर लेख्नुहोस्। जनवरी १ मा पुग्ने भए “元旦”, पछि पुग्ने भए “正月”।","ရက်စွဲနှင့် သင့်အမည်ကို နည်းနည်း အောက်ချ၍ ရေးပါ။ ဇန်နဝါရီ ၁ ရက် ရောက်လျှင် “元旦”၊ နောက်မှ ရောက်လျှင် “正月”။")}
+];
+const PARTS_SAMPLE = {gashi:"{明|あ}けましておめでとうございます",
+  body:["{昨年|さくねん}は{大変|たいへん}お{世話|せわ}になりました。","{日本|にほん}に{来|き}て、ひらがなが{読|よ}めるようになりました。","{今年|ことし}は{漢字|かんじ}をがんばります。"],
+  close:"{今年|ことし}もよろしくお{願|ねが}いいたします。", date:"", name:"マイ"};
+
+const QUIZ = [
+  {q:X("{年賀状|ねんがじょう}は いつ とどくように {出|だ}しますか？","When should a nengajō arrive?","年贺状要在什么时候送达？","Nengajō nên đến vào ngày nào?","नेन्गाजो कहिले पुग्ने गरी पठाउने?","နင်ဂါဂျောကို ဘယ်နေ့ ရောက်အောင် ပို့ရမလဲ။"),
+   o:["12{月|がつ}25{日|にち}","1{月|がつ}1{日|ついたち}","2{月|がつ}3{日|みっか}"], a:1,
+   e:X("1{月|がつ}1{日|ついたち}（{元日|がんじつ}）に とどくように {出|だ}します。","It should arrive on January 1.","要在1月1日（元日）送达。","Thiệp nên đến vào ngày 1/1.","जनवरी १ मा पुग्ने गरी पठाउने।","ဇန်နဝါရီ ၁ ရက်နေ့ ရောက်အောင် ပို့ရသည်။")},
+  {q:X("ただしい {賀詞|がし}は どれですか？","Which greeting is written correctly?","哪个贺词写得正确？","Lời chúc nào viết đúng?","कुन शुभकामना शब्द सही लेखिएको छ?","ဘယ်နှုတ်ခွန်းဆက်စကားကို မှန်ကန်စွာ ရေးထားသလဲ။"),
+   o:["{新年|しんねん}{明|あ}けましておめでとうございます","{明|あ}けましておめでとうございます。","{明|あ}けましておめでとうございます"], a:2,
+   e:X("「{新年|しんねん}」は いりません。「。」も {書|か}きません。","Don't add 新年 (it repeats the meaning), and don't write \"。\".","不加“新年”（意思重复），也不写句号“。”。","Không thêm “新年” (lặp nghĩa) và không viết dấu “。”.","“新年” नथप्नुहोस् (अर्थ दोहोरिन्छ), र “。” पनि नलेख्नुहोस्।","“新年” မထည့်ပါနှင့် (အဓိပ္ပာယ် ထပ်နေသည်)၊ “。” လည်း မရေးပါ။")},
+  {q:X("{先生|せんせい}に {書|か}くとき、どれが いいですか？","Which is best when writing to a teacher?","写给老师时，用哪个好？","Khi viết cho thầy cô, dùng từ nào thì tốt?","शिक्षकलाई लेख्दा कुन राम्रो हुन्छ?","ဆရာ/ဆရာမထံ ရေးသောအခါ ဘယ်ဟာ ကောင်းသလဲ။"),
+   o:["{賀正|がしょう}","{謹賀新年|きんがしんねん}","{寿|ことぶき}"], a:1,
+   e:X("{目上|めうえ}の {人|ひと}には 4{文字|もじ}{以上|いじょう}の {賀詞|がし}を {使|つか}います。","For people above you, use a greeting of 4 or more characters.","写给长辈或老师时，用四个字以上的贺词。","Với người trên, dùng lời chúc từ 4 chữ trở lên.","मान्यजनलाई ४ वा बढी अक्षरको शुभकामना शब्द प्रयोग गर्नुहोस्।","အကြီးအကဲများထံ စာလုံး ၄ လုံးနှင့်အထက် နှုတ်ခွန်းဆက်စကားကို သုံးပါ။")},
+  {q:X("「{去年|きょねん}」の かわりに {使|つか}う ことばは？","Which word do you use instead of 去年 (last year)?","用什么词代替“去年”？","Dùng từ nào thay cho “去年” (năm ngoái)?","“去年” (गत वर्ष) को सट्टा कुन शब्द प्रयोग गर्ने?","“去年” (မနှစ်က) အစား ဘယ်စကားလုံးကို သုံးမလဲ။"),
+   o:["{昨年|さくねん}","{来年|らいねん}","{今年|ことし}"], a:0,
+   e:X("「{去|さ}る」は {年賀状|ねんがじょう}で さける ことばです。「{昨年|さくねん}」「{旧年|きゅうねん}」を {使|つか}います。","去る (\"to leave\") is avoided on nengajō. Use 昨年 or 旧年.","“去る”（离去）在年贺状中要避免使用，应使用“昨年”或“旧年”。","Chữ “去る” (rời đi) nên tránh trong nengajō. Hãy dùng “昨年” hoặc “旧年”.","“去る” (छोडेर जानु) शब्द नेन्गाजोमा टारिन्छ। “昨年” वा “旧年” प्रयोग गर्नुहोस्।","“去る” (ထွက်ခွာသည်) ကို နင်ဂါဂျောတွင် ရှောင်ပါ။ “昨年” သို့မဟုတ် “旧年” ကို သုံးပါ။")},
+  {q:X("ふつうの はがきを {年賀状|ねんがじょう}に するには？","How do you send an ordinary postcard as a nengajō?","怎样把普通明信片作为年贺状寄出？","Làm sao để gửi bưu thiếp thường như một nengajō?","साधारण पोस्टकार्डलाई नेन्गाजोको रूपमा कसरी पठाउने?","သာမန်ပို့စကတ်ကို နင်ဂါဂျောအဖြစ် ဘယ်လိုပို့မလဲ။"),
+   o:["{切手|きって}の{下|した}に{赤|あか}で「{年賀|ねんが}」と{書|か}く","{青|あお}で「{新年|しんねん}」と{書|か}く","なにも{書|か}かない"], a:0,
+   e:X("{切手|きって}の {下|した}に {赤|あか}い {字|じ}で「{年賀|ねんが}」と {書|か}きます。","Write 年賀 in red under the stamp.","在邮票下方用红字写“年贺”。","Viết chữ “年賀” màu đỏ dưới con tem.","टिकटको तल रातो अक्षरले “年賀” लेख्ने।","တံဆိပ်ခေါင်းအောက်တွင် အနီရောင်ဖြင့် “年賀” ဟု ရေးပါ။")},
+  null,
+  {q:X("「{喪中|もちゅう}はがき」を もらいました。どう しますか？","You received a mourning notice. What do you do?","收到了“丧中明信片”，怎么办？","Bạn nhận được thiệp báo tang. Bạn làm gì?","तपाईंले शोक सूचना कार्ड पाउनुभयो। के गर्ने?","ဝမ်းနည်းကြောင်း အသိပေးကတ် ရခဲ့သည်။ ဘာလုပ်မလဲ။"),
+   o:["{年賀状|ねんがじょう}を{出|だ}す","{寒中見舞|かんちゅうみま}いを{出|だ}す"], a:1,
+   e:X("{年賀状|ねんがじょう}は {出|だ}さないで、1{月|がつ}8{日|ようか}ごろから 2{月|がつ}3{日|みっか}ごろまでに「{寒中見舞|かんちゅうみま}い」を {出|だ}します。","Don't send a nengajō. Send a kanchū mimai to arrive between about Jan 8 and about Feb 3.","不寄年贺状，在1月8日前后至2月3日左右之间寄“寒中问候”。","Không gửi nengajō; gửi “kanchū mimai” sao cho đến trong khoảng 8/1 – khoảng 3/2.","नेन्गाजो नपठाई, जनवरी ८ तिरदेखि फेब्रुअरी ३ तिरसम्म पुग्ने गरी “कान्चू मिमाई” पठाउने।","နင်ဂါဂျော မပို့ဘဲ ဇန်နဝါရီ ၈ ရက်ခန့်မှ ဖေဖော်ဝါရီ ၃ ရက်ခန့်အတွင်း “ကန်ချူး မိမိုင်း” ကို ပို့ပါ။")},
+  {q:X("1{月|がつ}3{日|みっか}に とどく {年賀状|ねんがじょう}。{日付|ひづけ}は どう {書|か}きますか？","A nengajō will arrive on Jan 3. How do you write the date?","1月3日送达的年贺状，日期怎么写？","Thiệp sẽ đến vào ngày 3/1. Ghi ngày thế nào?","जनवरी ३ मा पुग्ने नेन्गाजोमा मिति कसरी लेख्ने?","ဇန်နဝါရီ ၃ ရက်နေ့ ရောက်မည့် နင်ဂါဂျောတွင် ရက်စွဲကို ဘယ်လိုရေးမလဲ။"),
+   o:["{元旦|がんたん}","{正月|しょうがつ}"], a:1,
+   e:X("1{月|がつ}1{日|ついたち}に とどくときは「{元旦|がんたん}」、それより あとは「{正月|しょうがつ}」と {書|か}きます。","Write 元旦 if it arrives on Jan 1; if later, write 正月.","1月1日送达写“元旦”，之后送达写“正月”。","Đến ngày 1/1 thì ghi “元旦”, đến sau thì ghi “正月”.","जनवरी १ मा पुग्ने भए “元旦”, त्यसपछि पुग्ने भए “正月” लेख्ने।","ဇန်နဝါရီ ၁ ရက် ရောက်လျှင် “元旦”၊ ထို့နောက် ရောက်လျှင် “正月” ဟု ရေးပါ။")},
+  {q:X("1{月|がつ}10{日|とおか}に、{年賀状|ねんがじょう}の へんじを {出|だ}します。なにを {出|だ}しますか？","On Jan 10 you reply to a nengajō. What do you send?","1月10日回复年贺状，要寄什么？","Ngày 10/1 bạn trả lời thiệp năm mới. Bạn gửi gì?","जनवरी १० मा नेन्गाजोको जवाफ पठाउँदै हुनुहुन्छ। के पठाउने?","ဇန်နဝါရီ ၁၀ ရက်နေ့တွင် နင်ဂါဂျောကို ပြန်စာပို့မည်။ ဘာပို့မလဲ။"),
+   o:["{年賀状|ねんがじょう}","{寒中見舞|かんちゅうみま}い"], a:1,
+   e:X("1{月|がつ}8{日|ようか}からは {年賀状|ねんがじょう}では なく「{寒中見舞|かんちゅうみま}い」に なります。","From Jan 8, send a kanchū mimai instead of a nengajō.","从1月8日起，不再寄年贺状，而是寄“寒中问候”。","Từ ngày 8/1, không gửi nengajō mà gửi “kanchū mimai”.","जनवरी ८ देखि नेन्गाजोको सट्टा “कान्चू मिमाई” पठाइन्छ।","ဇန်နဝါရီ ၈ ရက်မှစ၍ နင်ဂါဂျောအစား “ကန်ချူး မိမိုင်း” ကို ပို့သည်။")}
+];
+
+const W = {
+  s1:X("だれに {書|か}きますか？","Who will you write to?","写给谁？","Bạn viết cho ai?","कसलाई लेख्नुहुन्छ?","ဘယ်သူ့ထံ ရေးမလဲ။"),
+  s2:X("{賀詞|がし}を えらぶ","Choose the greeting","选择贺词","Chọn lời chúc","शुभकामना शब्द छान्नुहोस्","နှုတ်ခွန်းဆက်စကား ရွေးပါ"),
+  warn:X("{目上|めうえ}の {人|ひと}には 4{文字|もじ}{以上|いじょう}の {賀詞|がし}が いいです。","For people above you, a greeting of 4+ characters is better.","写给长辈或老师，最好用四个字以上的贺词。","Với người trên, nên dùng lời chúc từ 4 chữ trở lên.","मान्यजनलाई ४ वा बढी अक्षरको शुभकामना शब्द राम्रो हुन्छ।","အကြီးအကဲများအတွက် စာလုံး ၄ လုံးနှင့်အထက် ပိုကောင်းသည်။"),
+  warnClose:X("{友|とも}だちの ことばです。{目上|めうえ}の {人|ひと}には ていねいな ことばを {使|つか}いましょう。","This is casual (for friends). Use polite words for people above you.","这是对朋友用的说法。写给长辈或老师请用礼貌的说法。","Đây là cách nói với bạn bè. Với người trên, hãy dùng lời lịch sự.","यो साथीहरूका लागि हो। मान्यजनलाई विनम्र शब्द प्रयोग गर्नुहोस्।","ဒါက သူငယ်ချင်းတွေအတွက် စကားဖြစ်သည်။ အကြီးအကဲများထံ ယဉ်ကျေးသောစကား သုံးပါ။"),
+  s3:X("{主文|しゅぶん}：お{礼|れい}と {今年|ことし}の こと","Main text: thanks and this year","主文：感谢与今年的事","Phần chính: cảm ơn và năm nay","मुख्य भाग: धन्यवाद र यो वर्ष","အဓိကပိုင်း: ကျေးဇူးတင်စကားနှင့် ဒီနှစ်"),
+  s3a:X("お{礼|れい}","Thanks","感谢","Cảm ơn","धन्यवाद","ကျေးဇူးတင်စကား"),
+  s3b:X("{今年|ことし}の こと（2つまで）","About this year (up to 2)","今年的事（最多2个）","Về năm nay (tối đa 2 câu)","यो वर्षबारे (२ वटासम्म)","ဒီနှစ်အကြောင်း (၂ ခုအထိ)"),
+  fillHint:X("＿＿に ことばを {入|い}れよう","Fill in the blank","在空格里填词","Điền vào chỗ trống","खाली ठाउँमा शब्द भर्नुहोस्","ကွက်လပ်ကို ဖြည့်ပါ"),
+  s3c:X("じぶんで {書|か}く（{日本語|にほんご}）","Write by yourself (in Japanese)","自己写（用日语）","Tự viết (bằng tiếng Nhật)","आफैं लेख्नुहोस् (जापानीमा)","ကိုယ်တိုင် ရေးပါ (ဂျပန်ဘာသာဖြင့်)"),
+  memo:X("つたえたい ことの メモ（{母語|ぼご}で いいです。いんさつ しません）","Notes on what you want to say (your own language is OK; not printed)","想表达的内容备忘（可以用母语，不会打印）","Ghi chú điều muốn nói (viết bằng tiếng mẹ đẻ cũng được; không in ra)","भन्न चाहेका कुराको टिपोट (मातृभाषामा पनि हुन्छ; छापिँदैन)","ပြောချင်တာကို မှတ်စု (မိခင်ဘာသာဖြင့် ရေးလည်းရ၊ ပုံနှိပ်မထုတ်ပါ)"),
+  s4:X("{末文|まつぶん}を えらぶ","Choose the closing","选择结语","Chọn lời kết","अन्त्यको वाक्य छान्नुहोस्","အဆုံးစကား ရွေးပါ"),
+  s5:X("{日付|ひづけ}と なまえ","Date and your name","日期和名字","Ngày tháng và tên","मिति र नाम","ရက်စွဲနှင့် အမည်"),
+  name:X("あなたの なまえ","Your name","你的名字","Tên của bạn","तपाईंको नाम","သင့်အမည်"),
+  nameHint:X("カタカナや {漢字|かんじ}で {書|か}きましょう","Write it in katakana or kanji","用片假名或汉字写","Viết bằng katakana hoặc kanji","काताकाना वा कान्जीमा लेख्नुहोस्","ခါတခါနာ သို့မဟုတ် ခန်းဂျိဖြင့် ရေးပါ"),
+  s6:X("え と {書|か}きかた","Picture and writing direction","图画和书写方向","Hình vẽ và hướng viết","चित्र र लेख्ने दिशा","ပုံနှင့် ရေးသည့်ဦးတည်ချက်"),
+  none:X("なし","None","无","Không","छैन","မရှိ"),
+  tate:X("たてがき","Vertical","竖写","Viết dọc","ठाडो लेखाइ","ဒေါင်လိုက်ရေး"),
+  yoko:X("よこがき","Horizontal","横写","Viết ngang","तेर्सो लेखाइ","အလျားလိုက်ရေး"),
+  draw:X("じぶんで かく","Draw it yourself","自己画","Tự vẽ","आफैं कोर्नुहोस्","ကိုယ်တိုင်ဆွဲ"),
+  clear:X("けす","Clear","清除","Xóa","मेटाउनुहोस्","ဖျက်ရန်"),
+  read:X("よみあげる","Read aloud","朗读","Đọc to","ठूलो स्वरमा पढ्नुहोस्","အသံထွက်ဖတ်ရန်"),
+  pFinal:X("いんさつ：かんせい","Print: finished card","打印：完成版","In: bản hoàn chỉnh","छाप्नुहोस्: तयार कार्ड","ပုံနှိပ်: ပြီးဆုံးကတ်"),
+  pTrace:X("いんさつ：なぞりがき","Print: tracing sheet","打印：描写练习","In: bản tô chữ","छाप्नुहोस्: अक्षर ट्रेस अभ्यास","ပုံနှိပ်: စာလုံးလိုက်ရေးလေ့ကျင့်ရန်"),
+  pFuri:X("いんさつ：ふりがなつき","Print: with furigana","打印：带注音","In: có furigana","छाप्नुहोस्: फुरिगानासहित","ပုံနှိပ်: ဖုရိဂါနာပါ"),
+  printNote:X("はがきサイズ（100×148mm）で いんさつ します。","Prints at postcard size (100 × 148 mm).","按明信片尺寸（100×148毫米）打印。","In theo khổ bưu thiếp (100 × 148 mm).","पोस्टकार्ड साइज (१०० × १४८ मिमि) मा छापिन्छ।","ပို့စကတ်အရွယ် (၁၀၀ × ၁၄၈ မီလီမီတာ) ဖြင့် ပုံနှိပ်သည်။"),
+  example:X("れい（サンプル）です。じぶんの ことばに かえよう","This is an example. Change it to your own words","这是示例。请换成你自己的话","Đây là ví dụ. Hãy đổi thành lời của bạn","यो उदाहरण हो। आफ्नै शब्दमा बदल्नुहोस्","ဒါက နမူနာပါ။ ကိုယ့်စကားနဲ့ ပြောင်းပါ"),
+  reset:X("さいしょから","Start over","重新开始","Làm lại từ đầu","सुरुदेखि","အစမှ ပြန်စရန်"),
+  resetQ:X("ぜんぶ けして いいですか？","Erase everything?","全部清除吗？","Xóa tất cả?","सबै मेटाउने?","အားလုံး ဖျက်မလား။"),
+  yes:X("はい","Yes","是","Có","हो","ဟုတ်ကဲ့"),
+  no:X("いいえ","No","否","Không","होइन","မဟုတ်ပါ")
+};
+const A = {
+  to:X("あいて（もらう {人|ひと}）","Recipient","收件人","Người nhận","प्रापक","လက်ခံသူ"),
+  from:X("じぶん（{出|だ}す {人|ひと}）","Sender (you)","寄件人（自己）","Người gửi (bạn)","पठाउने (तपाईं)","ပို့သူ (သင်)"),
+  zip:X("{郵便番号|ゆうびんばんごう}（7けた）","Postal code (7 digits)","邮政编码（7位）","Mã bưu chính (7 chữ số)","हुलाक कोड (७ अङ्क)","စာတိုက်နံပါတ် (ဂဏန်း ၇ လုံး)"),
+  addr1:X("{住所|じゅうしょ}","Address","地址","Địa chỉ","ठेगाना","လိပ်စာ"),
+  addr2:X("{住所|じゅうしょ}の つづき（{建物|たてもの}・{学校名|がっこうめい}など）","Address line 2 (building, school name, etc.)","地址续（建筑物、学校名等）","Địa chỉ dòng 2 (tòa nhà, tên trường…)","ठेगाना लाइन २ (भवन, विद्यालयको नाम आदि)","လိပ်စာ ဒုတိယလိုင်း (အဆောက်အအုံ၊ ကျောင်းအမည် စသည်)"),
+  name:X("なまえ","Name","姓名","Họ tên","नाम","အမည်"),
+  name2:X("2{人目|ふたりめ}の なまえ（{同|おな}じ {家|いえ}の {人|ひと}・{下|した}の なまえだけ）","Second person's name (same home; given name only)","第二个人的名字（同住一家，只写名）","Tên người thứ hai (cùng nhà; chỉ tên riêng)","दोस्रो व्यक्तिको नाम (एउटै घर; पहिलो नाम मात्र)","ဒုတိယလူ၏ အမည် (အိမ်တူ၊ နာမည်သာ)"),
+  keisho:X("{敬称|けいしょう}（なまえの あと）","Title after the name","敬称（姓名后面）","Kính ngữ (sau tên)","नामपछिको आदरसूचक","အမည်နောက် ဂုဏ်ထူးစကား"),
+  kanji:X("すうじを {漢字|かんじ}に する（たてがき）","Change numbers to kanji (vertical writing)","把数字改成汉字（竖写）","Đổi số thành chữ Hán (viết dọc)","अङ्कलाई कान्जीमा बदल्नुहोस् (ठाडो लेखाइ)","ဂဏန်းကို ခန်းဂျိ ပြောင်းရန် (ဒေါင်လိုက်)"),
+  nenga:X("ふつうの はがき：{切手|きって}の {下|した}に「{年賀|ねんが}」と {赤|あか}で {書|か}く","Ordinary postcard: write 年賀 in red under the stamp","普通明信片：在邮票下方用红字写“年贺”","Bưu thiếp thường: viết “年賀” màu đỏ dưới tem","साधारण पोस्टकार्ड: टिकटको तल रातोमा “年賀” लेख्ने","သာမန်ပို့စကတ်: တံဆိပ်ခေါင်းအောက်တွင် “年賀” ကို အနီဖြင့် ရေး"),
+  real:X("ほんものの はがきに いんさつ（{郵便番号|ゆうびんばんごう}は {手|て}で {書|か}く）","Print on a real postcard (write the postal code by hand)","打印在真正的明信片上（邮编手写）","In lên bưu thiếp thật (mã bưu chính viết tay)","वास्तविक पोस्टकार्डमा छाप्ने (हुलाक कोड हातले लेख्ने)","တကယ့်ပို့စကတ်ပေါ် ပုံနှိပ် (စာတိုက်နံပါတ်ကို လက်ဖြင့်ရေး)"),
+  print:X("いんさつ：おもて（あてな）","Print: front (address side)","打印：正面（地址）","In: mặt trước (địa chỉ)","छाप्नुहोस्: अगाडि (ठेगाना)","ပုံနှိပ်: ရှေ့ဘက် (လိပ်စာ)"),
+  unknown:X("じぶんの {住所|じゅうしょ}が わからない ときは、{先生|せんせい}に きいて ください。","If you don't know your own address, ask your teacher.","不知道自己的地址时，请问老师。","Nếu không biết địa chỉ của mình, hãy hỏi thầy cô.","आफ्नो ठेगाना थाहा छैन भने शिक्षकलाई सोध्नुहोस्।","ကိုယ့်လိပ်စာ မသိလျှင် ဆရာ/ဆရာမကို မေးပါ။"),
+  tips:[
+    X("{手|て}で {書|か}くときは、あいての なまえを さいしょに まんなかに {書|か}くと、バランスよく {書|か}けます。","When writing by hand, write the recipient's name in the center first; the rest is then easier to balance.","手写时，先在正中间写收件人姓名，整体会比较协调。","Khi viết tay, hãy viết tên người nhận ở giữa trước, như vậy dễ cân đối hơn.","हातले लेख्दा पहिले बीचमा प्रापकको नाम लेख्नुभयो भने सन्तुलित लेख्न सजिलो हुन्छ।","လက်ဖြင့် ရေးသောအခါ လက်ခံသူ၏ အမည်ကို အလယ်တွင် အရင်ရေးလျှင် ညီညာစွာ ရေးရလွယ်သည်။"),
+    X("おなじ {家|いえ}の 2{人|ふたり}に {送|おく}るときは、なまえを ならべて、それぞれに「{様|さま}」を つけます。","To send to two people in the same home, write the names side by side, each with 様.","寄给同住一家的两个人时，把名字并排写，每个名字后面都加“様”。","Khi gửi cho hai người cùng nhà, viết hai tên cạnh nhau, mỗi tên đều thêm “様”.","एउटै घरका दुई जनालाई पठाउँदा नामहरू छेउछेउमा लेखेर प्रत्येकपछि “様” लेख्नुहोस्।","အိမ်တစ်အိမ်တည်းမှ လူနှစ်ဦးထံ ပို့လျှင် အမည်များကို ဘေးချင်းယှဉ်ရေးပြီး တစ်ဦးချင်းစီ၏ နောက်တွင် “様” ထည့်ပါ။"),
+    X("{郵便番号|ゆうびんばんごう}は {正|ただ}しく ていねいに {書|か}きます。","Write the postal code correctly and neatly.","邮政编码要写得正确、工整。","Viết mã bưu chính chính xác và cẩn thận.","हुलाक कोड सही र सफासँग लेख्नुहोस्।","စာတိုက်နံပါတ်ကို မှန်ကန်သေသပ်စွာ ရေးပါ။"),
+    X("あいての なまえは まんなかに {大|おお}きく {書|か}きます。","Write the recipient's name large, in the center.","收件人姓名写在正中间，字要大。","Viết tên người nhận to, ở chính giữa.","प्रापकको नाम बीचमा ठूलो लेख्नुहोस्।","လက်ခံသူ၏ အမည်ကို အလယ်တွင် ကြီးကြီး ရေးပါ။"),
+    X("あいての {住所|じゅうしょ}は {右|みぎ}に、なまえより {小|ちい}さく {書|か}きます。","Write the recipient's address on the right, smaller than the name.","收件人地址写在右边，字比姓名小。","Viết địa chỉ người nhận ở bên phải, nhỏ hơn tên.","प्रापकको ठेगाना दायाँतिर, नामभन्दा सानो लेख्नुहोस्।","လက်ခံသူ၏ လိပ်စာကို ညာဘက်တွင် အမည်ထက် သေးသေး ရေးပါ။"),
+    X("じぶんの {住所|じゅうしょ}と なまえは {左下|ひだりした}に {小|ちい}さく {書|か}きます。","Write your own address and name small, at the bottom left.","自己的地址和姓名用小字写在左下方。","Viết địa chỉ và tên của bạn nhỏ ở góc dưới bên trái.","आफ्नो ठेगाना र नाम तल बायाँतिर सानो लेख्नुहोस्।","ကိုယ့်လိပ်စာနှင့် အမည်ကို ဘယ်ဘက်အောက်တွင် သေးသေး ရေးပါ။"),
+    X("「{様|さま}」は {人|ひと}に、「{御中|おんちゅう}」は {会社|かいしゃ}や {学校|がっこう}に つけます。「{先生様|せんせいさま}」は まちがいです。","様 is for people; 御中 is for companies or schools. 先生様 is wrong (double honorific).","“様”用于个人，“御中”用于公司、学校等。“先生様”是错误的（敬称重复）。","“様” dùng cho người, “御中” cho công ty hoặc trường học. “先生様” là sai (kính ngữ bị lặp).","“様” व्यक्तिका लागि, “御中” कम्पनी वा विद्यालयका लागि। “先生様” गलत हो (आदर दोहोरिन्छ)।","“様” ကို လူပုဂ္ဂိုလ်အတွက်၊ “御中” ကို ကုမ္ပဏီ သို့မဟုတ် ကျောင်းအတွက် သုံးသည်။ “先生様” မှားသည် (ဂုဏ်ထူးစကား ထပ်နေ)။")
+  ]
+};
+const KEISHO = [["様","さま"],["先生","せんせい"],["御中","おんちゅう"],["ちゃん","ちゃん"]];
+
+/* ---------- original illustrations (SVG) ---------- */
+const PICS = {
+  sun: X("{日|ひ}の{出|で}","Sunrise","日出","Bình minh","सूर्योदय","နေထွက်"),
+  plum: X("うめ","Plum blossoms","梅花","Hoa mơ","आरुबखडाका फूल","ဇီးဖြူပန်း"),
+  fuji: X("ふじさん","Mt. Fuji","富士山","Núi Phú Sĩ","फुजी हिमाल","ဖူဂျီတောင်")
+};
+function sealSVG(e){ return `<svg viewBox="0 0 220 130" role="img" aria-label="${e.a}"><circle cx="110" cy="64" r="54" fill="#D0261C"/><circle cx="110" cy="64" r="46" fill="none" stroke="#fff" stroke-width="2.5"/><text x="110" y="66" text-anchor="middle" dominant-baseline="central" font-size="60" fill="#fff" font-family="'Yuji Syuku','Klee One','Yu Mincho','Hiragino Mincho ProN',serif">${e.k}</text><g fill="#C9A447"><circle cx="186" cy="26" r="6"/><circle cx="200" cy="44" r="3.5"/><circle cx="30" cy="104" r="5"/><circle cx="18" cy="88" r="3"/></g></svg>`; }
+function picSVG(id){
+  if(id==="eto"){ const e = etoOf(cardYear()); return e.k==="未" ? sheepSVG() : sealSVG(e); }
+  if(id==="sheep") return sheepSVG();
+  return picSVG2(id);
+}
+function sheepSVG(){ return `<svg viewBox="0 0 220 130" role="img" aria-label="ひつじ"><g stroke="#3A3330" stroke-width="5" fill="#3A3330">${[[95,62,26],[120,52,26],[146,60,24],[158,82,20],[132,86,24],[104,86,22],[84,78,18]].map(c=>`<circle cx="${c[0]}" cy="${c[1]}" r="${c[2]}"/>`).join("")}</g><g fill="#FFFFFF">${[[95,62,26],[120,52,26],[146,60,24],[158,82,20],[132,86,24],[104,86,22],[84,78,18]].map(c=>`<circle cx="${c[0]}" cy="${c[1]}" r="${c[2]-2.5}"/>`).join("")}</g><g fill="#3A3330"><rect x="96" y="100" width="9" height="22" rx="4"/><rect x="114" y="104" width="9" height="20" rx="4"/><rect x="138" y="102" width="9" height="20" rx="4"/><rect x="152" y="96" width="9" height="22" rx="4"/></g><ellipse cx="62" cy="66" rx="20" ry="23" fill="#3A3330"/><ellipse cx="44" cy="56" rx="11" ry="6" fill="#3A3330" transform="rotate(-25 44 56)"/><ellipse cx="80" cy="54" rx="10" ry="6" fill="#3A3330" transform="rotate(25 80 54)"/><circle cx="55" cy="63" r="3.6" fill="#fff"/><circle cx="69" cy="63" r="3.6" fill="#fff"/><path d="M57 77q5 4 10 0" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M78 84q12 8 24 2" stroke="#C3352A" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="103" cy="88" r="5" fill="#C3352A"/><g fill="#C9A447"><circle cx="186" cy="30" r="5"/><circle cx="200" cy="44" r="3"/><circle cx="24" cy="104" r="4"/></g></svg>`; }
+function picSVG2(id){
+  if(id==="sun") return `<svg viewBox="0 0 220 130" role="img" aria-label="日の出"><defs><clipPath id="sky"><rect x="0" y="0" width="220" height="88"/></clipPath></defs><g clip-path="url(#sky)"><circle cx="110" cy="92" r="42" fill="#D0261C"/></g><g stroke="#C9A447" stroke-width="4" stroke-linecap="round">${[-70,-45,-20,0,20,45,70].map(a=>{const r=Math.PI*(a-90)/180;return `<line x1="${110+54*Math.cos(r)}" y1="${92+54*Math.sin(r)}" x2="${110+70*Math.cos(r)}" y2="${92+70*Math.sin(r)}"/>`}).join("")}</g><path d="M10 92h200" stroke="#2C4F7A" stroke-width="4"/><path d="M20 106q15-10 30 0t30 0 30 0 30 0 30 0 30 0" stroke="#2C4F7A" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M40 120q15-10 30 0t30 0 30 0 30 0" stroke="#2C4F7A" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M18 40q10-12 24-4q8-10 20-2q10 0 10 8h-58z" fill="#fff" stroke="#9AA39E" stroke-width="2"/><path d="M150 30q10-12 24-4q8-10 20-2q10 0 10 8h-58z" fill="#fff" stroke="#9AA39E" stroke-width="2"/></svg>`;
+  if(id==="plum") {
+    const fl=(x,y,c,s)=>`<g transform="translate(${x} ${y}) scale(${s})">${[0,72,144,216,288].map(a=>{const r=Math.PI*a/180;return `<circle cx="${9*Math.sin(r)}" cy="${-9*Math.cos(r)}" r="8" fill="${c}"/>`}).join("")}<circle r="5" fill="#F6E3A1"/><g fill="#9C7A2C">${[0,60,120,180,240,300].map(a=>{const r=Math.PI*a/180;return `<circle cx="${6.5*Math.sin(r)}" cy="${-6.5*Math.cos(r)}" r="1.4"/>`}).join("")}</g></g>`;
+    return `<svg viewBox="0 0 220 130" role="img" aria-label="うめ"><path d="M8 118C50 104 70 80 96 70s58-6 80-28 30-30 36-34" stroke="#4A3428" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M96 70c4 18 0 32-10 44M150 46c10 4 22 16 26 30" stroke="#4A3428" stroke-width="5" fill="none" stroke-linecap="round"/>${fl(60,92,"#D0261C",1.1)}${fl(110,62,"#E98AA0",1)}${fl(160,40,"#D0261C",1.15)}${fl(178,78,"#E98AA0",.85)}${fl(86,112,"#E98AA0",.8)}<circle cx="196" cy="16" r="6" fill="#D0261C"/><circle cx="132" cy="54" r="5" fill="#D0261C"/></svg>`;
+  }
+  if(id==="fuji") return `<svg viewBox="0 0 220 130" role="img" aria-label="ふじさん"><circle cx="160" cy="40" r="22" fill="#D0261C"/><path d="M10 120L88 32h44l78 88z" fill="#2C4F7A"/><path d="M88 32h44l18 20-12-4-10 8-10-8-10 8-10-8-12 4z" fill="#fff" stroke="#2C4F7A" stroke-width="2" stroke-linejoin="round"/><path d="M0 120h220v10H0z" fill="#2C6651"/><path d="M14 104q20-12 40 0M166 106q20-12 40 0" stroke="#9AA39E" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`;
+  return "";
+}
+
+/* ---------- tabs ---------- */
+function renderTabs(){
+  $("#tabs").innerHTML = UI.tabs.map(([id,o]) => `<button role="tab" id="t-${id}" aria-controls="p-${id}" aria-selected="${state.tab===id}" data-tab="${id}"><span class="ja">${rb(o.ja)}${id==="teacher" && !CONFIG.posts[cardYear()] ? `<span class="alert-dot" title="${cardYear()}年用の日程が未登録です"></span>` : ""}</span>${TR(o)}</button>`).join("");
+}
+$("#tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if(!b) return; showTab(b.dataset.tab); });
+function showTab(id){
+  state.tab = id; save();
+  document.querySelectorAll(".panel").forEach(p => p.hidden = (p.id !== "p-"+id));
+  document.querySelectorAll("#tabs [data-tab]").forEach(b => b.setAttribute("aria-selected", b.dataset.tab===id));
+  if(id==="write") updateCard();
+  if(id==="address") updateAddr();
+  if(id==="parts") fitAll();
+}
+
+/* ---------- learn ---------- */
+function renderLearn(){
+  $("#p-learn").innerHTML = `<div class="lead"><div class="yearchip">${(()=>{const Y=cardYear(),e=etoOf(Y);return rb(`${Y}{年|ねん}（${eraRuby(Y)}）・{${e.k}|${e.r}}（${e.a}）`);})()}</div><h2>${L(X("{日本|にほん}の お{正月|しょうがつ}と {年賀状|ねんがじょう}","Japanese New Year and nengajō","日本的新年与年贺状","Tết Nhật Bản và nengajō","जापानी नयाँ वर्ष र नेन्गाजो","ဂျပန်နှစ်သစ်နှင့် နင်ဂါဂျော"))}</h2></div>
+  <div class="grid cols">${LEARN.map((c,i)=>`<article class="card${c.eto?" wide":""}"><h3><span class="num">${"一二三四五六"[i]}</span><span>${L(c.t)}</span></h3><p>${L(c.b,{tag:"span",say:true})}</p>${sayBtn(kana(c.b.ja),"きく")}${c.fact?`<div class="fact">${c.fact}</div>`:""}${c.eto?etoWidget():""}</article>`).join("")}
+  <article class="card wide"><h3><span class="num">七</span><span>${L(DELIVERY.t)}</span></h3><p>${L(DELIVERY.b,{tag:"span",say:true})}</p>
+   <ol class="flow">${DELIVERY.steps.map((st,i)=>`<li><b>${i+1}</b><span>${L(st,{say:true})}</span></li>`).join("")}</ol></article></div>
+  <p class="src">出典：日本郵便「手紙の書き方体験授業」2026年度 中学生用テキストP3・P14、同指導書P10–11、小学校高学年用指導書（寒中見舞いの時期）／日本郵便 年賀はがきに関する報道資料（各年。登録済みの年のみ具体的な日付を表示）／国立天文台 暦要項（立春）／日本郵便『楽しい年賀状を作ろう！』令和9年版（小学校低・中・高学年用、令和8年9月発行）：年賀はがきの「ひみつ」3つ・コンビニでも買える・抽選日、十二支の由来と「自分が生まれた年の十二支は何かな？」、「1月8日からは年賀状ではなく『寒中見まい』」、「年賀状がとどくまで」の7段階</p>`;
+  $("#p-learn").querySelectorAll(".say").forEach(b=>{b.style.marginTop="10px"});
+}
+
+/* ---------- words ---------- */
+function renderWords(){
+  const tagUp = `<span class="tag up">${rb("{目上|めうえ}の{人|ひと}にも OK")}</span>`;
+  const tagPeer = `<span class="tag peer">${rb("{友|とも}だち・{家族|かぞく}")}</span>`;
+  const phrRow = p => `<div class="phr-row"><div class="txt">${L(Object.assign({}, p.m, {ja:p.ja}),{say:true})}<div style="margin-top:4px">${p.up?tagUp:p.peer?tagPeer:""}</div></div>${sayBtn(kana(p.ja).replace(BLANK,"なになに"),"")}</div>`;
+  $("#p-words").innerHTML = `<div class="lead"><h2>${L(X("{賀詞|がし}（おいわいの ことば）","Gashi: New Year greeting words","贺词（祝贺的话）","Gashi: lời chúc mừng năm mới","गाशी: नयाँ वर्षका शुभकामना शब्द","ဂါရှိ: နှစ်သစ်နှုတ်ခွန်းဆက်စကား"))}</h2></div>
+  <div class="gashi-grid">${GASHI.map(g=>`<div class="gashi"><div class="big">${rb(g.ja)}</div>${TR(g.m,true)}<div>${g.up?tagUp:tagPeer}</div>${sayBtn(kana(g.ja))}</div>`).join("")}</div>
+  <h3 class="sec">${L(X("{気|き}を つけよう","Be careful","注意","Lưu ý","ध्यान दिनुहोस्","သတိပြုရန်"))}</h3>
+  <div class="ng">${NG.map(n=>`<div class="card"><span class="mark">${esc(n.mark)}</span>${L(Object.assign({},n.tr,{ja:n.ja}),{say:true})}</div>`).join("")}</div>
+  <h3 class="sec">${L(W.s3a)}</h3><div class="phr">${THANKS.map(phrRow).join("")}</div>
+  <h3 class="sec">${L(X("{今年|ことし}の こと","About this year","今年的事","Về năm nay","यो वर्षबारे","ဒီနှစ်အကြောင်း"))}</h3><div class="phr">${NEWS.map(phrRow).join("")}</div>
+  <h3 class="sec">${L(X("{結|むす}びの ことば","Closing words","结语","Lời kết","अन्त्यका शब्द","အဆုံးသတ်စကား"))}</h3><div class="phr">${CLOSING.map(phrRow).join("")}</div>
+  <p class="src">出典：中学生用テキストP14（前文の例「明けましておめでとうございます／謹賀新年／迎春／賀正／寿」、「新年明けまして」は重複表現、句点不要、末文の例「ご健康とご活躍をお祈り申し上げます」「よい年でありますように」）・P15ヒント（目上には4字以上、「去る」を避け「昨年」「旧年」）</p>`;
+}
+
+/* ---------- card builder (shared by parts/write/print) ---------- */
+function gashiFont(g, hasPic, yoko){
+  const n = [...plain(g)].length || 1;
+  const k = n <= 4 ? 2.1 : 1.55;
+  const avail = yoko ? 82 : (hasPic ? 60 : 84);
+  const unit = yoko ? "cqw" : "cqh";
+  return `font-size:min(calc(var(--fs) * ${k}cqw), calc(${avail}${unit} / ${n + 0.6}))`;
+}
+function cardHTML(c, mode){
+  // c: {gashi, body:[html strings], close, date, name, pic, drawing, dir}; strings already rendered (ruby or plain)
+  const yoko = c.dir === "yoko";
+  const hasPic = !!c.pic && c.pic !== "none" && !(c.pic==="draw" && !c.drawing);
+  const cls = ["hagaki", yoko?"yoko":"", hasPic?"has-pic":"", mode==="trace"?"mode-trace":"", mode==="parts"?"parts-on":""].join(" ");
+  const pic = !hasPic ? "" : c.pic==="draw" ? `<img src="${c.drawing}" alt="">` : picSVG(c.pic);
+  return `<div class="${cls}"><div class="card-text" style="--fs:5">
+    ${c.gashi?`<p class="c-gashi seg s1" style="${gashiFont(c.gashiRaw||c.gashi, hasPic, yoko)}">${c.gashi}</p>`:""}
+    ${c.body.length?`<div class="c-body seg s2">${c.body.map(b=>`<p>${b}</p>`).join("")}</div>`:""}
+    ${c.close?`<p class="c-close seg s3">${c.close}</p>`:""}
+    <div class="c-sign seg s4"><span class="c-date">${c.date||""}</span><span class="c-name">${c.name||""}</span></div>
+  </div>${pic?`<div class="c-pic">${pic}</div>`:""}</div>`;
+}
+function fit(h){
+  const t = h.querySelector(".card-text"); if(!t || !t.clientWidth) return;
+  let fs = 7.2;
+  t.style.setProperty("--fs", fs);
+  let guard = 0;
+  while((t.scrollWidth > t.clientWidth + 1 || t.scrollHeight > t.clientHeight + 1) && fs > 2.2 && guard++ < 80){
+    fs -= .12; t.style.setProperty("--fs", fs.toFixed(2));
+  }
+  // ぶら下がり（行末の1〜2字だけが次の行に出る）を避けるため、少しだけ文字を小さくして試す
+  const base = fs;
+  if(orphans(t, h) > 0){
+    let best = null;
+    for(let f = base - .1; f >= base * .82; f -= .1){ t.style.setProperty("--fs", f.toFixed(2)); if(orphans(t, h) === 0){ best = f; break; } }
+    t.style.setProperty("--fs", (best || base).toFixed(2));
+  }
+}
+function orphans(t, h){
+  const yoko = h.classList.contains("yoko"); let n = 0;
+  t.querySelectorAll(".c-body p, .c-close").forEach(el => {
+    const r = document.createRange(); r.selectNodeContents(el);
+    const rs = [...r.getClientRects()].filter(x => x.width > 1 && x.height > 1);
+    if(rs.length > 1){ const last = rs[rs.length-1], first = rs[0]; if((yoko ? last.width / first.width : last.height / first.height) < .3) n++; }
+  });
+  return n;
+}
+// なぞりがき：各行の中心に点線（日本郵便『楽しい年賀状を作ろう！』中・高学年用の練習欄にならう）
+function addGuides(h){
+  const t = h.querySelector(".card-text"); if(!t) return;
+  const old = h.querySelector(".guides"); if(old) old.remove();
+  const hr = h.getBoundingClientRect(), tr = t.getBoundingClientRect(), yoko = h.classList.contains("yoko");
+  const cs = [];
+  t.querySelectorAll("p, .c-date, .c-name").forEach(el => {
+    const r = document.createRange(); r.selectNodeContents(el);
+    [...r.getClientRects()].forEach(rc => { if(rc.width < 1 || rc.height < 1) return; cs.push(yoko ? (rc.top + rc.bottom)/2 - hr.top : (rc.left + rc.right)/2 - hr.left); });
+  });
+  cs.sort((a,b)=>a-b);
+  const uniq = cs.filter((c,i)=> i===0 || c - cs[i-1] > 2);
+  const g = document.createElement("div"); g.className = "guides " + (yoko ? "h" : "v");
+  g.innerHTML = uniq.map(c => yoko
+    ? `<i style="top:${(c/hr.height*100).toFixed(3)}%;left:${((tr.left-hr.left)/hr.width*100).toFixed(3)}%;width:${(tr.width/hr.width*100).toFixed(3)}%"></i>`
+    : `<i style="left:${(c/hr.width*100).toFixed(3)}%;top:${((tr.top-hr.top)/hr.height*100).toFixed(3)}%;height:${(tr.height/hr.height*100).toFixed(3)}%"></i>`).join("");
+  h.insertBefore(g, t);
+}
+function fitAll(){ requestAnimationFrame(()=>document.querySelectorAll("#main .hagaki:not(.addr)").forEach(fit)); }
+
+function find(list, id){ return list.find(x=>x.id===id); }
+function cardModel(mode){
+  const c = state.card, R = mode==="furi" ? rb : plain;
+  const fillIn = (tpl, val) => {
+    const v = (val||"").trim();
+    const parts = R(tpl).split(BLANK);
+    const filled = v ? esc(v) : (mode==="final"||mode==="trace" ? "〇〇" : `<span class="blank">〇〇</span>`);
+    return parts.join(mode==="preview" && !v ? `<span class="blank">〇〇</span>` : filled);
+  };
+  if(c.mode === "easy"){
+    const ez = easyState();
+    const body = ez.mid.map(n => { const p = find(EASY.mid, n.id); return p ? fillIn(p.ja, n.fill) : ""; }).filter(Boolean);
+    const en = find(EASY.end, ez.end);
+    return {gashi: EASY.start, gashiRaw: EASY.start, body, close: en ? R(en.ja) : "", date: R(EASY.date), name: esc(c.name||""), pic:c.pic, drawing:c.drawing, dir:c.dir};
+  }
+  const g = find(GASHI, c.gashi);
+  const body = [];
+  const th = find(THANKS, c.thanks); if(th) body.push(R(th.ja));
+  (c.news||[]).forEach(n => { const p = find(NEWS, n.id); if(p) body.push(fillIn(p.ja, n.fill)); });
+  if(c.free && c.free.trim()) c.free.trim().split(/\n+/).forEach(line=>body.push(esc(line)));
+  const cl = find(CLOSING, c.closing);
+  const d = find(DATES, c.date);
+  return {gashi: g?R(g.ja):"", gashiRaw: g?g.ja:"", body, close: cl?R(cl.ja):"", date: d?R(d.ja):"", name: esc(c.name||""), pic:c.pic, drawing:c.drawing, dir:c.dir};
+}
+function easyState(){
+  const c = state.card;
+  if(!c.easy) c.easy = {mid:[{id:"e1", fill:"かんじ"}], end: partnerUp() ? "x1" : "x2"};
+  return c.easy;
+}
+function cardSpeech(){
+  const c = state.card, out = [];
+  if(c.mode === "easy"){
+    const ez = easyState();
+    out.push(EASY.start);
+    ez.mid.forEach(n => { const p = find(EASY.mid, n.id); if(p) out.push(p.ja.replace(BLANK, n.fill || "なになに")); });
+    const en = find(EASY.end, ez.end); if(en) out.push(en.ja);
+    out.push(kana(EASY.date)); if(c.name) out.push(c.name);
+    return out.join("。");
+  }
+  const g = find(GASHI, c.gashi); if(g) out.push(kana(g.ja));
+  const th = find(THANKS, c.thanks); if(th) out.push(kana(th.ja));
+  (c.news||[]).forEach(n=>{const p=find(NEWS,n.id); if(p) out.push(kana(p.ja).replace(BLANK, n.fill||"なになに"));});
+  if(c.free) out.push(c.free);
+  const cl = find(CLOSING, c.closing); if(cl) out.push(kana(cl.ja));
+  const d = find(DATES, c.date); if(d) out.push(c.date==="d2" ? `${cardYear()}年 がんたん` : kana(d.ja));
+  if(c.name) out.push(c.name);
+  return out.join("。");
+}
+
+/* ---------- parts ---------- */
+let partFocus = 0;
+function renderParts(){
+  const s = PARTS_SAMPLE;
+  const model = {gashi:plain(s.gashi), gashiRaw:s.gashi, body:s.body.map(plain), close:plain(s.close), date:plain(s.date), name:s.name, pic:"none", dir:"tate"};
+  $("#p-parts").innerHTML = `<div class="lead"><h2>${L(X("{年賀状|ねんがじょう}は 4つの ぶぶんで できています","A nengajō has four parts","年贺状由四个部分组成","Nengajō gồm 4 phần","नेन्गाजोका चार भाग हुन्छन्","နင်ဂါဂျောတွင် အပိုင်း ၄ ပိုင်း ပါသည်"))}</h2></div>
+  <div class="parts-wrap"><div id="partsCard">${cardHTML(model,"parts")}</div>
+  <div class="part-list">${PARTS.map(p=>`<div class="part k${p.k}" data-part="${p.k}" tabindex="0" role="button"><h4><span class="dot">${p.k}</span><span>${L(p.h)}</span></h4><div>${L(p.b,{say:true})}</div></div>`).join("")}
+  <div class="card" style="font-size:.9rem">${L(X("{右|みぎ}から {左|ひだり}へ、{上|うえ}から {下|した}へ {読|よ}みます（たてがき）。","Vertical writing: read from top to bottom, right to left.","竖写：从上到下、从右到左阅读。","Viết dọc: đọc từ trên xuống, từ phải sang trái.","ठाडो लेखाइ: माथिबाट तल, दायाँबाट बायाँ पढिन्छ।","ဒေါင်လိုက်ရေး: အပေါ်မှအောက်၊ ညာမှဘယ်သို့ ဖတ်သည်။"))}</div>
+  ${sayBtn(kana([s.gashi,...s.body,s.close,s.date].join("。"))+"。マイ")}
+  <p class="src">出典：中学生用テキストP14（前文・主文・末文・後付けの4部構成、色分け）・同指導書P10。手本の文はこのアプリ用に作成した例文です。</p></div></div>`;
+  fitAll();
+}
+$("#p-parts").addEventListener("click", e => { if(e.target.closest("[data-say]")) return; const p = e.target.closest("[data-part]"); if(!p) return; setPart(+p.dataset.part); });
+$("#p-parts").addEventListener("keydown", e => { const p = e.target.closest("[data-part]"); if(p && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); setPart(+p.dataset.part);} });
+function setPart(k){
+  partFocus = partFocus===k ? 0 : k;
+  const h = $("#partsCard .hagaki"); h.classList.remove("focus-1","focus-2","focus-3","focus-4"); if(partFocus) h.classList.add("focus-"+partFocus);
+  document.querySelectorAll("[data-part]").forEach(p=>p.classList.toggle("on", +p.dataset.part===partFocus));
+}
+
+/* ---------- write ---------- */
+function radio(name, value, checked, labelHTML){
+  const id = `${name}-${value}`;
+  return `<div class="choice"><input type="radio" name="${name}" id="${id}" value="${value}" ${checked?"checked":""}><label for="${id}">${labelHTML}</label></div>`;
+}
+function check(name, value, checked, labelHTML){
+  const id = `${name}-${value}`;
+  return `<div class="choice"><input type="checkbox" name="${name}" id="${id}" value="${value}" ${checked?"checked":""}><label for="${id}">${labelHTML}</label></div>`;
+}
+function partnerUp(){ const p = find(PARTNERS, state.card.partner); return p ? p.up : true; }
+function phraseLabel(p){ return `<span>${L(Object.assign({},p.m,{ja:p.ja}))}</span><span class="tagcol">${p.up?`<span class="tag up">${rb("{目上|めうえ}")}</span>`:p.peer?`<span class="tag peer">${rb("{友|とも}だち")}</span>`:""}</span>`; }
+function renderWrite(){
+  const c = state.card, up = partnerUp();
+  const order = list => up ? list : [...list].sort((a,b)=>(b.peer?1:0)-(a.peer?1:0));
+  const newsSel = (c.news||[]).map(n=>n.id);
+  const easy = c.mode === "easy";
+  const modeStep = `<div class="step"><h3>${L(EASY.ui.mode)}</h3><div class="choices mode-switch">${radio("wmode","easy",easy,L(EASY.ui.easy))}${radio("wmode","full",!easy,L(EASY.ui.full))}</div>${easy?`<p class="hint" style="margin:8px 0 0;font-size:.85rem;color:var(--muted)">${L(EASY.ui.easyHint)}</p>`:""}</div>`;
+  const partnerStep = `<div class="step"><h3><span class="n">一</span>${L(W.s1)}</h3><div class="choices">${PARTNERS.map(p=>radio("partner",p.id,c.partner===p.id,L(p.l))).join("")}</div></div>`;
+  let middle;
+  if(easy){
+    const ez = easyState(), sel = ez.mid.map(n=>n.id);
+    middle = `<div class="step"><h3><span class="n">二</span>${L(EASY.ui.s)}</h3><div class="easy-fixed">${EASY.start}</div><p class="hint" style="margin:6px 0 0;font-size:.85rem;color:var(--muted)">${L(EASY.ui.sHint)}</p></div>
+    <div class="step"><h3><span class="n">三</span>${L(EASY.ui.m)}</h3><div class="choices list">${EASY.mid.map(p=>{const on=sel.includes(p.id); const n=ez.mid.find(x=>x.id===p.id)||{}; return `<div>${check("emid",p.id,on,phraseLabel(p))}${on&&p.chips.length?`<div class="fill"><input type="text" id="efill-${p.id}" data-efill="${p.id}" value="${esc(n.fill||"")}" placeholder="＿＿" aria-label="＿＿">${p.chips.map(ch=>`<button type="button" class="chip" data-echip="${p.id}" data-val="${esc(ch)}">${esc(ch)}</button>`).join("")}</div>`:""}</div>`}).join("")}</div>
+      <label class="field" for="memoText"><span>${L(W.memo)}</span><textarea id="memoText" rows="2" style="font-family:var(--f-ui)">${esc(c.memo||"")}</textarea></label></div>
+    <div class="step"><h3><span class="n">四</span>${L(EASY.ui.e)}</h3><div class="choices list">${(up?EASY.end:[...EASY.end].reverse()).map(p=>radio("eend",p.id,ez.end===p.id,phraseLabel(p))).join("")}</div><div id="closeWarn"></div></div>
+    <div class="step"><h3><span class="n">五</span>${L(EASY.ui.d)}</h3><div class="easy-fixed">${rb(EASY.date)}</div>
+      <label class="field" for="nameInput"><span>${L(W.name)}</span><input type="text" id="nameInput" value="${esc(c.name||"")}" autocomplete="off"><span class="hint">${L(W.nameHint)}</span></label></div>`;
+  }
+  $("#p-write").innerHTML = `<div class="lead"><h2>${L(X("{年賀状|ねんがじょう}を {書|か}こう","Let's write a nengajō","来写年贺状吧","Cùng viết nengajō","नेन्गाजो लेखौं","နင်ဂါဂျော ရေးကြစို့"))}</h2></div>
+  <div class="studio">
+   <div class="steps">
+    ${modeStep}
+    ${partnerStep}
+    ${easy ? middle : `<div class="step"><h3><span class="n">二</span>${L(W.s2)}</h3><div class="choices">${GASHI.map(g=>radio("gashi",g.id,c.gashi===g.id,`<span style="font-family:var(--f-card);font-size:1.05rem">${rb(g.ja)}</span>${TR(g.m)}`)).join("")}</div><div id="gashiWarn"></div></div>
+    <div class="step"><h3><span class="n">三</span>${L(W.s3)}</h3>
+      <div style="font-weight:700;font-size:.9rem;margin:2px 0 6px">${L(W.s3a)}</div>
+      <div class="choices list">${order(THANKS).map(p=>radio("thanks",p.id,c.thanks===p.id,phraseLabel(p))).join("")}${radio("thanks","none",!c.thanks||c.thanks==="none",`<span>${L(W.none)}</span>`)}</div>
+      <div style="font-weight:700;font-size:.9rem;margin:14px 0 6px">${L(W.s3b)}</div>
+      <div class="choices list" id="newsList">${NEWS.map(p=>{const sel=newsSel.includes(p.id); const n=(c.news||[]).find(x=>x.id===p.id)||{}; return `<div>${check("news",p.id,sel,phraseLabel(p))}${sel?`<div class="fill"><input type="text" id="fill-${p.id}" data-fill="${p.id}" value="${esc(n.fill||"")}" placeholder="＿＿" aria-label="＿＿">${p.chips.map(ch=>`<button type="button" class="chip" data-chip="${p.id}" data-val="${esc(plain(ch))}">${rb(ch)}</button>`).join("")}</div>`:""}</div>`}).join("")}</div>
+      <label class="field" for="freeText"><span>${L(W.s3c)}</span><textarea id="freeText" rows="2">${esc(c.free||"")}</textarea></label>
+      <label class="field" for="memoText"><span>${L(W.memo)}</span><textarea id="memoText" rows="2" style="font-family:var(--f-ui)">${esc(c.memo||"")}</textarea></label>
+    </div>
+    <div class="step"><h3><span class="n">四</span>${L(W.s4)}</h3><div class="choices list">${order(CLOSING).map(p=>radio("closing",p.id,c.closing===p.id,phraseLabel(p))).join("")}${radio("closing","none",!c.closing||c.closing==="none",`<span>${L(W.none)}</span>`)}</div><div id="closeWarn"></div></div>
+    <div class="step"><h3><span class="n">五</span>${L(W.s5)}</h3><div class="choices list">${DATES.map(d=>radio("date",d.id,c.date===d.id,`<span>${L(Object.assign({},d.m,{ja:d.ja}))}</span>`)).join("")}</div>
+      <label class="field" for="nameInput"><span>${L(W.name)}</span><input type="text" id="nameInput" value="${esc(c.name||"")}" autocomplete="off"><span class="hint">${L(W.nameHint)}</span></label></div>`}
+    <div class="step"><h3><span class="n">六</span>${L(W.s6)}</h3>
+      <div class="choices pic-choices">${["eto","sun","plum","fuji"].map(id=>radio("pic",id,c.pic===id,`${picSVG(id)}<span style="font-size:.85rem">${rb(PICS[id].ja)}</span>${TR(PICS[id])}`)).join("")}${radio("pic","draw",c.pic==="draw",`<svg viewBox="0 0 64 40"><path d="M10 30c8-14 16 6 24-8s12 4 20-6" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg><span style="font-size:.85rem">${L(W.draw)}</span>`)}${radio("pic","none",c.pic==="none",`<svg viewBox="0 0 64 40"><path d="M22 10l20 20M42 10L22 30" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg><span style="font-size:.85rem">${L(W.none)}</span>`)}</div>
+      <div class="draw-wrap" id="drawWrap" ${c.pic==="draw"?"":"hidden"}>
+        <canvas id="drawPad" width="500" height="300" aria-label="${esc(plain(W.draw.ja))}"></canvas>
+        <div class="pens">${[["#1A1A1A","くろ"],["#D0261C","あか"],["#C9A447","きん"],["#2C6651","みどり"],["#2C4F7A","あお"],["#E98AA0","ピンク"]].map((p,i)=>`<button type="button" class="pen" data-pen="${p[0]}" style="background:${p[0]}" aria-label="${p[1]}" aria-pressed="${i===0}"></button>`).join("")}
+        <button type="button" class="chip" id="penSize" data-size="6">ふとさ：中</button>
+        <button type="button" class="chip" id="drawClear">${rb(W.clear.ja)}</button></div>
+      </div>
+      <div class="choices" style="margin-top:12px">${radio("dir","tate",c.dir!=="yoko",L(W.tate))}${radio("dir","yoko",c.dir==="yoko",L(W.yoko))}</div>
+    </div>
+    <div id="resetBox"><button type="button" class="btn" id="resetBtn">${L(W.reset)}</button></div>
+   </div>
+   <div class="preview-col">
+     <div class="example-flag" id="exampleFlag" ${c.sample?"":"hidden"}><span class="tag ex">${rb("れい")}</span><span>${L(W.example)}</span></div>
+     <div id="cardPreview"></div>
+     <div class="btnrow">
+       <button type="button" class="btn" id="readCard">${ICON_SAY}<span>${L(W.read)}</span></button>
+       <button type="button" class="btn primary" data-print="final">${ICON_PRINT}<span>${L(W.pFinal)}</span></button>
+       <button type="button" class="btn" data-print="trace">${ICON_PRINT}<span>${L(W.pTrace)}</span></button>
+       <button type="button" class="btn" data-print="furi">${ICON_PRINT}<span>${L(W.pFuri)}</span></button>
+     </div>
+     <p class="note">${L(W.printNote)}</p>
+   </div>
+  </div>`;
+  setupDraw();
+  updateCard();
+}
+function updateWarnings(){
+  const c = state.card, up = partnerUp();
+  if(c.mode === "easy"){ const en = find(EASY.end, easyState().end); const w = $("#closeWarn"); if(w) w.innerHTML = (up && en && en.peer) ? `<div class="warn">${L(W.warnClose)}</div>` : ""; return; }
+  const g = find(GASHI, c.gashi);
+  $("#gashiWarn").innerHTML = (up && g && !g.up) ? `<div class="warn">${L(W.warn)}</div>` : "";
+  const cl = find(CLOSING, c.closing), th = find(THANKS, c.thanks);
+  $("#closeWarn").innerHTML = (up && ((cl && cl.peer) || (th && th.peer))) ? `<div class="warn">${L(W.warnClose)}</div>` : "";
+}
+function updateCard(){
+  if(!$("#cardPreview")) return;
+  $("#cardPreview").innerHTML = cardHTML(cardModel("preview"), "preview");
+  updateWarnings();
+  const f = $("#exampleFlag"); if(f) f.hidden = !state.card.sample;
+  requestAnimationFrame(()=>fit($("#cardPreview .hagaki")));
+}
+function touched(){ if(state.card.sample){ state.card.sample = false; } save(); }
+$("#p-write").addEventListener("change", e => {
+  const t = e.target, c = state.card;
+  if(t.name==="partner"){ c.partner = t.value; touched(); renderWrite(); return; }
+  if(t.name==="wmode"){ c.mode = t.value; touched(); renderWrite(); return; }
+  if(t.name==="eend"){ easyState().end = t.value; touched(); updateCard(); return; }
+  if(t.name==="emid"){
+    const ez = easyState();
+    if(t.checked){ ez.mid.push({id:t.value, fill:""}); if(ez.mid.length>2) ez.mid.shift(); }
+    else ez.mid = ez.mid.filter(n=>n.id!==t.value);
+    touched(); renderWrite(); const inp = $(`#efill-${t.value}`); if(inp) inp.focus(); return;
+  }
+  if(t.name==="gashi"){ c.gashi = t.value; }
+  else if(t.name==="thanks"){ c.thanks = t.value; }
+  else if(t.name==="closing"){ c.closing = t.value; }
+  else if(t.name==="date"){ c.date = t.value; }
+  else if(t.name==="dir"){ c.dir = t.value; }
+  else if(t.name==="pic"){ c.pic = t.value; $("#drawWrap").hidden = t.value!=="draw"; }
+  else if(t.name==="news"){
+    let list = c.news || [];
+    if(t.checked){ list.push({id:t.value, fill:""}); if(list.length>2) list.shift(); }
+    else list = list.filter(n=>n.id!==t.value);
+    c.news = list; touched(); renderWrite(); const inp = $(`#fill-${t.value}`); if(inp) inp.focus(); return;
+  } else return;
+  touched(); updateCard();
+});
+$("#p-write").addEventListener("input", e => {
+  const t = e.target, c = state.card;
+  if(t.dataset.fill){ const n = (c.news||[]).find(x=>x.id===t.dataset.fill); if(n) n.fill = t.value; }
+  else if(t.dataset.efill){ const n = easyState().mid.find(x=>x.id===t.dataset.efill); if(n) n.fill = t.value; }
+  else if(t.id==="freeText") c.free = t.value;
+  else if(t.id==="memoText"){ c.memo = t.value; save(); return; }
+  else if(t.id==="nameInput") c.name = t.value;
+  else return;
+  touched(); updateCard();
+});
+$("#p-write").addEventListener("click", e => {
+  const echip = e.target.closest("[data-echip]");
+  if(echip){ const n = easyState().mid.find(x=>x.id===echip.dataset.echip); if(n){ n.fill = echip.dataset.val; const inp = $(`#efill-${n.id}`); if(inp) inp.value = n.fill; touched(); updateCard(); } return; }
+  const chip = e.target.closest("[data-chip]");
+  if(chip){ const n = (state.card.news||[]).find(x=>x.id===chip.dataset.chip); if(n){ n.fill = chip.dataset.val; const inp = $(`#fill-${n.id}`); if(inp) inp.value = n.fill; touched(); updateCard(); } return; }
+  if(e.target.closest("#readCard")){ speak(cardSpeech()); return; }
+  const pb = e.target.closest("[data-print]"); if(pb){ doPrint("card", pb.dataset.print); return; }
+  if(e.target.closest("#resetBtn")){
+    $("#resetBox").innerHTML = `<div class="confirm"><span>${L(W.resetQ)}</span><button type="button" class="btn primary" id="resetYes">${rb(W.yes.ja)}</button><button type="button" class="btn" id="resetNo">${rb(W.no.ja)}</button></div>`; return;
+  }
+  if(e.target.closest("#resetYes")){ state.card = Object.assign(clone(SAMPLE_CARD), {mode: state.card.mode, gashi:"", thanks:"none", news:[], closing:"none", name:"", pic:"none", sample:false, easy:{mid:[], end:"x1"}}); save(); renderWrite(); return; }
+  if(e.target.closest("#resetNo")){ $("#resetBox").innerHTML = `<button type="button" class="btn" id="resetBtn">${L(W.reset)}</button>`; return; }
+});
+
+/* drawing pad */
+function setupDraw(){
+  const cv = $("#drawPad"); if(!cv) return;
+  const ctx = cv.getContext("2d");
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  let color = "#1A1A1A", size = 6, drawing = false, last = null;
+  const restore = () => { ctx.fillStyle="#fff"; ctx.fillRect(0,0,cv.width,cv.height); if(state.card.drawing){ const im = new Image(); im.onload = () => ctx.drawImage(im,0,0,cv.width,cv.height); im.src = state.card.drawing; } };
+  restore();
+  const pos = e => { const r = cv.getBoundingClientRect(); return [(e.clientX-r.left)*cv.width/r.width, (e.clientY-r.top)*cv.height/r.height]; };
+  cv.addEventListener("pointerdown", e => { drawing = true; last = pos(e); cv.setPointerCapture(e.pointerId); ctx.beginPath(); ctx.arc(last[0], last[1], size/2, 0, Math.PI*2); ctx.fillStyle = color; ctx.fill(); });
+  cv.addEventListener("pointermove", e => { if(!drawing) return; const p = pos(e); ctx.strokeStyle = color; ctx.lineWidth = size; ctx.beginPath(); ctx.moveTo(last[0], last[1]); ctx.lineTo(p[0], p[1]); ctx.stroke(); last = p; });
+  const end = () => { if(!drawing) return; drawing = false; state.card.drawing = cv.toDataURL("image/png"); touched(); updateCard(); };
+  cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end); cv.addEventListener("pointerleave", end);
+  document.querySelectorAll(".pen").forEach(b => b.addEventListener("click", () => { color = b.dataset.pen; document.querySelectorAll(".pen").forEach(x=>x.setAttribute("aria-pressed", x===b)); }));
+  $("#penSize").addEventListener("click", e => { const s = {"3":["6","中"],"6":["12","太"],"12":["3","細"]}[String(size)]; size = +s[0]; e.target.textContent = "ふとさ："+s[1]; });
+  $("#drawClear").addEventListener("click", () => { state.card.drawing = null; restore(); touched(); updateCard(); });
+}
+
+/* ---------- address ---------- */
+const KNUM = "〇一二三四五六七八九";
+function numToKanji(s){
+  return s.replace(/[0-9０-９]+/g, m => {
+    const d = m.replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0)-0xFEE0));
+    const n = parseInt(d,10);
+    if(d.length<=2 && n<100){
+      if(n<10) return KNUM[n];
+      const t = Math.floor(n/10), o = n%10;
+      return (t>1?KNUM[t]:"") + "十" + (o?KNUM[o]:"");
+    }
+    return [...d].map(c=>KNUM[+c]).join("");
+  }).replace(/[-‐－−―ｰ]/g, "ー");
+}
+function zipBoxes(zip, small){
+  const d = (zip||"").replace(/[^0-9０-９]/g,"").replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0)-0xFEE0)).slice(0,7).padEnd(7," ");
+  const xs = small ? [56,61,66,72.5,77.5,82.5,87.5] : [44,51,58,65.8,72.6,79.4,86.2];
+  const w = small ? 4 : 5.7;
+  return [...d].map((ch,i)=>`<i style="left:${xs[i]}cqw">${ch.trim()?esc(ch):""}</i>`).join("") + `<b style="left:${xs[2]+w}cqw;width:${xs[3]-xs[2]-w}cqw"></b>`;
+}
+function addrHTML(mode){
+  const a = state.addr, K = a.kanji ? numToKanji : (s=>s);
+  const name = (a.toName||"").trim(), name2 = (a.toName2||"").trim(), ke = a.keisho||"";
+  // 連名：2人目は下の名前だけを入れ、1人目の名字の分だけ下げて名前の頭をそろえる
+  const parts = name.split(/\s+/), sur = parts.length > 1 ? parts[0] : "";
+  const cols = [esc(name).replace(/\s+/g,"　")];
+  if(name2) cols.push((sur ? "　".repeat([...sur].length + 1) : "") + esc(name2));
+  const longest = Math.max(...cols.map(c => [...c.replace(/&[a-z#0-9]+;/g,"x")].length));
+  const n = longest + [...ke].length + 1;
+  const nameFs = Math.min(name2 ? 8.2 : 9.5, 64*1.48/(n*1.25)); // cqw; height 64cqh ≈ 94.7cqw
+  const fromName = esc(a.fromName||"");
+  return `<div class="hagaki addr ${a.real&&mode==="print"?"real-mode":""}">
+    <div class="a-stamp">${rb("{切手|きって}")}</div>
+    ${a.nenga?`<div class="a-nenga">年賀</div>`:""}
+    <div class="zipbox zip-to">${zipBoxes(a.toZip,false)}</div>
+    <div class="a-to-addr"><div>${esc(K(a.toAddr1||""))}</div>${a.toAddr2?`<div class="l2">${esc(K(a.toAddr2))}</div>`:""}</div>
+    <div class="a-to-name" style="font-size:${nameFs.toFixed(2)}cqw">${cols.map(c=>`<div class="nc"><span style="letter-spacing:.25em">${c}</span><span>${esc(ke)}</span></div>`).join("")}</div>
+    <div class="a-from"><div class="fa">${esc(K(a.fromAddr1||""))}</div>${a.fromAddr2?`<div class="fa2">${esc(K(a.fromAddr2))}</div>`:""}<div class="fn">${fromName}</div></div>
+    <div class="zipbox zip-from">${zipBoxes(a.fromZip,true).replace(/left:(\d+(\.\d+)?)cqw/g,(m,v)=>`left:${(+v-50).toFixed(1)}cqw`)}</div>
+  </div>`;
+}
+function renderAddress(){
+  const a = state.addr;
+  const inp = (id, label, val, extra="") => `<label class="field" for="${id}"><span>${L(label)}</span><input type="text" id="${id}" data-a="${id}" value="${esc(val||"")}" autocomplete="off" ${extra}></label>`;
+  $("#p-address").innerHTML = `<div class="lead"><h2>${L(X("あてなを {書|か}こう（はがきの おもて）","Write the address (front of the postcard)","写地址（明信片正面）","Viết địa chỉ (mặt trước bưu thiếp)","ठेगाना लेखौं (पोस्टकार्डको अगाडि)","လိပ်စာ ရေးကြစို့ (ပို့စကတ် ရှေ့ဘက်)"))}</h2></div>
+  <div class="addr-wrap"><div class="addr-form">
+    <div class="step"><h3>${L(A.to)}</h3><div class="two">${inp("toZip",A.zip,a.toZip,'inputmode="numeric" maxlength="8"')}${inp("toName",A.name,a.toName)}</div>${inp("toName2",A.name2,a.toName2)}${inp("toAddr1",A.addr1,a.toAddr1)}${inp("toAddr2",A.addr2,a.toAddr2)}
+      <div class="field"><span>${L(A.keisho)}</span><div class="choices">${KEISHO.map(k=>radio("keisho",k[0],a.keisho===k[0],`<span style="font-family:var(--f-card);font-size:1.05rem">${k[0]==="ちゃん"?"ちゃん":`<ruby>${k[0]}<rt>${k[1]}</rt></ruby>`}</span>`)).join("")}</div></div></div>
+    <div class="step"><h3>${L(A.from)}</h3><div class="two">${inp("fromZip",A.zip,a.fromZip,'inputmode="numeric" maxlength="8"')}${inp("fromName",A.name,a.fromName)}</div>${inp("fromAddr1",A.addr1,a.fromAddr1)}${inp("fromAddr2",A.addr2,a.fromAddr2)}
+      <p class="hint" style="font-size:.85rem;margin:8px 0 0">${L(A.unknown,{say:true})}</p></div>
+    <div class="step">
+      <label class="check" for="optKanji"><input type="checkbox" id="optKanji" data-opt="kanji" ${a.kanji?"checked":""}><span>${L(A.kanji)}</span></label>
+      <label class="check" for="optNenga"><input type="checkbox" id="optNenga" data-opt="nenga" ${a.nenga?"checked":""}><span>${L(A.nenga)}</span></label>
+      <label class="check" for="optReal"><input type="checkbox" id="optReal" data-opt="real" ${a.real?"checked":""}><span>${L(A.real)}</span></label>
+    </div>
+    <div class="step"><h3>${L(X("ポイント","Key points","要点","Điểm chính","मुख्य कुरा","အဓိကအချက်"))}</h3><ol class="tips">${A.tips.map((t,i)=>`<li><b>${i+1}</b><span>${L(t,{say:true})}</span></li>`).join("")}</ol>
+      <p class="src">出典：中学生用テキストP4「様々なあて名の書き方」・P5（縦書きのポイント①〜⑥、「様」「先生」「御中」の使い方）／日本郵便『楽しい年賀状を作ろう！』令和9年版 中・高学年用④（連名「村上 和夫様／美知子様」の手本、「相手の名前を先に書くとバランスよく書けるよ」）</p></div>
+  </div>
+  <div class="preview-col"><div class="example-flag" id="addrExample" ${a.sample?"":"hidden"}><span class="tag ex">${rb("れい")}</span><span>${L(W.example)}</span></div><div id="addrPreview"></div>
+    <div class="btnrow"><button type="button" class="btn primary" data-aprint="1">${ICON_PRINT}<span>${L(A.print)}</span></button></div><p class="note">${L(W.printNote)}</p></div>
+  </div>`;
+  updateAddr();
+}
+function updateAddr(){ const p = $("#addrPreview"); if(p) p.innerHTML = addrHTML("preview"); const f = $("#addrExample"); if(f) f.hidden = !state.addr.sample; }
+$("#p-address").addEventListener("input", e => { const t = e.target; if(t.dataset.a){ state.addr[t.dataset.a] = t.value; state.addr.sample = false; save(); updateAddr(); } });
+$("#p-address").addEventListener("change", e => { const t = e.target; if(t.dataset.opt){ state.addr[t.dataset.opt] = t.checked; save(); updateAddr(); } else if(t.name==="keisho"){ state.addr.keisho = t.value; state.addr.sample=false; save(); updateAddr(); } });
+$("#p-address").addEventListener("click", e => { if(e.target.closest("[data-aprint]")) doPrint("addr"); });
+
+/* ---------- quiz ---------- */
+function renderQuiz(){
+  const ans = state.quiz || {};
+  const done = Object.keys(ans).length, right = QUIZ.filter((q,i)=>ans[i]===q.a).length;
+  $("#p-quiz").innerHTML = `<div class="lead"><h2>${L(X("{年賀状|ねんがじょう}クイズ","Nengajō quiz","年贺状测验","Câu đố nengajō","नेन्गाजो प्रश्नोत्तरी","နင်ဂါဂျော ပဟေဠိ"))}</h2></div>
+  <div class="score"><span>${rb("せいかい")}</span><strong>${right} / ${QUIZ.length}</strong><button type="button" class="chip" id="quizReset">${rb("もう{一度|いちど}")}</button></div>
+  <div class="quiz">${QUIZ.map((q,i)=>{const a=ans[i]; const answered = a!==undefined; return `<div class="card q"><h3><span class="num">${i+1}</span><span>${L(q.q,{say:true})}</span></h3>
+   <div class="opts">${q.o.map((o,j)=>`<button type="button" class="opt ${answered&&j===q.a?"right":""} ${answered&&j===a&&a!==q.a?"wrong":""}" data-q="${i}" data-o="${j}" ${answered?"disabled":""}>${rb(o)}</button>`).join("")}</div>
+   ${answered?`<div class="exp">${a===q.a?`<span class="ok">${rb("せいかい！")}</span> `:`<span class="ng2">${rb("ざんねん")}</span> `}${L(q.e,{say:true})}</div>`:""}</div>`}).join("")}</div>`;
+}
+$("#p-quiz").addEventListener("click", e => {
+  const b = e.target.closest("[data-q]");
+  if(b){ state.quiz[b.dataset.q] = +b.dataset.o; save(); renderQuiz(); return; }
+  if(e.target.closest("#quizReset")){ state.quiz = {}; save(); renderQuiz(); }
+});
+
+/* ---------- teacher ---------- */
+function renderTeacher(){
+  $("#p-teacher").innerHTML = `<div class="lead"><h2>先生へ：授業での使い方</h2></div>${missingBanner()}
+  <div class="tdoc">
+   <div class="card"><h3>ねらい</h3>
+    <p>日本の正月文化と年賀状の習慣を知り、相手を決めて、4つの部分（前文・主文・末文・後付け）からなる年賀状を実際に書く。宛名の書き方も知り、実物のはがきに清書して投函する。</p>
+    <blockquote>「年賀状の書き方を知り、実際にはがきに書くことができる。」（日本郵便『手紙の書き方体験授業』2026年度 中学生用指導書「6．年賀状の書き方」学習のねらい）</blockquote></div>
+   <div class="card"><h3>授業の流れ（例：2コマ）</h3>
+    <div class="tbl"><table><tr><th>時</th><th>タブ</th><th>活動</th><th>提示・個別</th></tr>
+    <tr><td>1</td><td>知る</td><td>年賀状とは／出す時期（${cardYear()}年用の日程は下の「年の設定」）／はがき／喪中・寒中見舞い。最後のカードで各国の新年を発表し合う。</td><td>電子黒板で「おおきい もじ」</td></tr>
+    <tr><td>1</td><td>ことば・かたち</td><td>賀詞を音声で聞く→「気をつけよう」4点→手本で4部構成を色で確認。</td><td>提示</td></tr>
+    <tr><td>1</td><td>クイズ</td><td>8問で確認。</td><td>個別でも一斉でも可</td></tr>
+    <tr><td>2</td><td>書く</td><td>相手→賀詞→主文→末文→日付・名前→絵。母語メモ欄で伝えたいことを先に書かせる。</td><td>個別（タブレット）</td></tr>
+    <tr><td>2</td><td>書く（印刷）</td><td>「なぞりがき」を印刷して練習→実物のはがきに手書きで清書。またはアプリで完成させて印刷。</td><td>個別</td></tr>
+    <tr><td>2</td><td>あてな</td><td>宛名を入力して確認→はがきの表に手書き。</td><td>個別</td></tr></table></div>
+    <p style="margin-top:8px;font-size:.9rem">指導書の流れ（「年賀状」とは→全文を読む→4部構成→あて先を決める→伝えたいことを箇条書き→ヒント→前文だけ書いて発表→主文以降）を、このアプリの「書く」タブの順序に合わせています。</p></div>
+   <div class="card"><h3>配慮が必要な点</h3><ul>
+    <li><b>喪中の生徒</b>：「喪中に該当する生徒がいる場合、その生徒へ配慮をして授業を行う」（中学生用指導書P11）。来日の経緯によっては、家族との死別や離別を経験している生徒もいます。「知る」⑤は扱い方を事前に判断してください。</li>
+    <li><b>住所</b>：「自分の住所すら知らない生徒もいた」（同指導書の実施校コメント）。夜間中学ではなおさら想定されます。サンプルは架空の住所です。実住所を入力したくない生徒は学校・担任宛てにする方法もあります。入力内容はその端末のブラウザ内にだけ保存され、外部には送信されません。共用端末では「書く」の「さいしょから」で消去してください。</li>
+    <li><b>相手</b>：「あて先がなかなか決まらない場合は、例示し、アドバイスする」（同指導書）。先生・支援者・同級生・母国の家族など。母国宛ては国際郵便料金になる点に注意（年賀はがきの料金は国内料金）。</li>
+    <li><b>発表</b>：「書いた内容についての発表は、無理強いすることがないよう配慮する」（同指導書）。</li>
+    <li><b>年齢層</b>：成人の生徒には「目上」向けの文例、若い生徒には友だち向けの文例を選びやすいよう、相手を選ぶと文例の並び順と注意表示が変わります。</li></ul></div>
+   <div class="card"><h3>印刷について</h3><ul>
+    <li>「かんせい」＝そのまま投函できる版、「なぞりがき」＝薄い灰色の文字を鉛筆やペンでなぞる練習用、「ふりがなつき」＝読み方の確認用。いずれも100×148mm（はがきサイズ）。プリンターの用紙設定を「はがき」にしてください。</li>
+    <li>あて名面の「ほんものの はがきに いんさつ」では、郵便番号枠と切手枠を印刷しません（実物のはがきに印刷済みのため）。郵便番号は手書きにしてください。プレビューの郵便番号枠の位置はおおよそです。</li>
+    <li>Googleサイトに埋め込んだ状態や、プレビュー表示の中では印刷ダイアログが開かない場合があります。そのときはHTMLファイルをブラウザ（Chrome・Edge）で直接開いて印刷してください。</li>
+    <li>音声（よみあげる・きく）はブラウザの日本語音声合成を使います。端末に日本語音声がないと読み上げません。</li></ul></div>
+   <div class="card"><h3>音声（多言語の読み上げ）</h3>
+    <p>日本語は「きく」ボタン、各言語の訳は行末の小さなスピーカーボタンで読み上げます。ブラウザの音声合成（Web Speech API）を使うため、<b>読める言語は端末とブラウザに入っている音声で決まります</b>。下の表は、いま開いているこの端末での状況です。</p>
+    <div class="tbl" style="margin-top:8px"><table class="vtable" id="voiceTable"></table></div>
+    <ul>
+     <li>音声がない言語のボタンを押すと「この端末には〇〇の音声がありません」と表示し、読み上げません（ほかの言語の声で誤って読むのを防ぐため）。</li>
+     <li>ベトナム語・ネパール語・ミャンマー語は、端末に音声が入っていないことが多いです。OS の設定で音声（読み上げ）データを追加するか、別のブラウザで開くと使える場合があります。Microsoft Edge は多言語のオンライン音声を備えていますが、各言語での動作はこちらでは確認できていません。授業前に生徒の端末でこの表を確認してください。</li>
+     <li>ネパール語・ミャンマー語の訳は試訳です。読み上げで不自然な箇所があれば、母語話者の確認の手がかりにもなります。</li>
+    </ul>
+    <button type="button" class="btn" id="voiceRefresh" style="margin-top:8px">表を更新</button></div>
+${teacherYearHTML()}
+   <div class="card"><h3>出典</h3><ul>
+    <li>日本郵便株式会社『楽しい年賀状を作ろう！』令和9年版（小学校低学年・中学年・高学年用、令和8年9月発行、監修：郵便教育推進委員会）：かんたんモードの3部構成、なぞりがきの中心線、年賀はがきの「ひみつ」、十二支、届くまでの7段階、連名、寒中見舞い</li>
+    <li>日本郵便株式会社『手紙の書き方体験授業』2026年度教材：中学生用テキスト P3（季節のお便り）、P4–5（様々なあて名の書き方）、P14–15（年賀状の書き方）／中学生用指導書 P10–11・P14／小学校高学年用指導書（年賀状・寒中見舞いを出す期間）</li>
+    <li>（2027年用の登録データの出典）<a href="https://files.japanpost.jp/assets/34d9d11432734cfaa759e78fe395b688/159168aef19d465baf3350d358e46fa9/20260831_02_06.pdf" target="_blank" rel="noopener">日本郵便 報道資料「2027（令和9）年用年賀はがき等の発行・販売」</a></li>
+    <li><a href="https://kumanichi.com/articles/2030915" target="_blank" rel="noopener">熊本日日新聞「年賀はがき、16年連続発行数減 27年、利用促進策も」</a>（85円・差出し目安12/27）</li>
+    <li><a href="https://eco.mtk.nao.ac.jp/koyomi/yoko/2027/rekiyou272.html" target="_blank" rel="noopener">国立天文台 令和9年（2027）暦要項</a>（立春 2月4日）</li></ul>
+    <p style="margin-top:8px;font-size:.88rem">英語・中国語以外（ベトナム語・ネパール語・ミャンマー語）の訳は作成者の確認前の試訳です。授業で使う前に母語話者のチェックを受けてください。</p></div>
+  </div>`;
+}
+
+function renderVoiceStatus(){
+  const t = document.getElementById("voiceTable"); if(!t) return;
+  const ok = "speechSynthesis" in window;
+  t.innerHTML = `<tr><th>言語</th><th>この端末</th><th>使われる音声</th><th>試す</th></tr>` + ["ja","en","zh","vi","ne","my"].map(l=>{
+    const v = ok ? findVoice(l) : null;
+    const sample = {ja:"あけましておめでとうございます",en:"Happy New Year",zh:"新年快乐",vi:"Chúc mừng năm mới",ne:"नयाँ वर्षको शुभकामना",my:"နှစ်သစ်မှာ မင်္ဂလာပါ"}[l];
+    return `<tr><td>${LNAME[l]}</td><td class="${v?"ok":"no"}">${v?"○ あり":(voices.length?"× なし":"？ 未取得")}</td><td>${v?esc(v.name):"—"}</td><td><button type="button" class="say-mini" data-say="${esc(sample)}" data-sl="${l}" aria-label="${LNAME[l]}">${ICON_SAY}</button></td></tr>`;
+  }).join("");
+}
+document.addEventListener("click", e => { if(e.target.closest("#voiceRefresh")) loadVoices(); });
+
+/* ---------- print ---------- */
+function doPrint(kind, mode){
+  const area = $("#printArea");
+  let st = $("#pageStyle"); if(!st){ st = document.createElement("style"); st.id = "pageStyle"; document.head.appendChild(st); }
+  st.textContent = "@page{size:100mm 148mm;margin:0}";
+  if(kind==="card"){
+    area.innerHTML = cardHTML(cardModel(mode), mode);
+    fit(area.querySelector(".hagaki"));
+    if(mode === "trace") addGuides(area.querySelector(".hagaki"));
+  } else {
+    area.innerHTML = addrHTML("print");
+  }
+  setTimeout(()=>{ try{ window.print(); }catch(e){} }, 60);
+}
+
+/* ---------- global controls ---------- */
+function renderAll(){
+  document.body.classList.toggle("multi", state.langs.length > 1);
+  document.documentElement.lang = "ja";
+  renderTabs(); renderLearn(); renderWords(); renderParts(); renderWrite(); renderAddress(); renderQuiz(); renderTeacher(); renderVoiceStatus();
+  showTab(state.tab);
+}
+function renderLangBtns(){
+  $("#langBtns").innerHTML = LANGS.map(([v,l]) => v==="ja"
+    ? `<button type="button" class="toggle only" data-lang="ja" aria-pressed="${state.langs.length===0}"><span>${l}</span><span class="nat" lang="en">Japanese only</span></button>`
+    : `<button type="button" class="toggle" data-lang="${v}" aria-label="${l}（${LNAME[v]}）" aria-pressed="${state.langs.includes(v)}"><span>${l}</span><span class="nat" lang="${v}">${LNAME[v]}</span></button>`).join("")
+    + `<button type="button" class="toggle only" data-lang="all" aria-pressed="${state.langs.length===LANG_ORDER.length}"><span>全て選択</span><span class="nat" lang="en">All</span></button>`;
+  const sum = state.langs.length===0 ? "日本語だけ" : state.langs.length===LANG_ORDER.length ? "全言語" : state.langs.map(x=>({en:"英",zh:"中",vi:"越",ne:"ネ",my:"ミャ"})[x]).join("・");
+  $("#ctlSum").textContent = sum;
+}
+$("#langBtns").addEventListener("click", e => {
+  const b = e.target.closest("[data-lang]"); if(!b) return;
+  const v = b.dataset.lang;
+  if(v==="ja") state.langs = [];
+  else if(v==="all") state.langs = LANG_ORDER.slice();
+  else state.langs = state.langs.includes(v) ? state.langs.filter(x=>x!==v) : LANG_ORDER.filter(x=>x===v || state.langs.includes(x));
+  save(); renderLangBtns(); renderAll();
+});
+renderLangBtns();
+const topEl = document.querySelector(".top"), ctlT = $("#ctlToggle");
+function setCtl(open){ topEl.classList.toggle("open", open); ctlT.setAttribute("aria-expanded", open); }
+setCtl(!!state.ctlOpen);
+const hideB = $("#hideHead"), showB = $("#showHead");
+function setHead(hidden, focus){
+  document.body.classList.toggle("head-hidden", hidden); showB.hidden = !hidden;
+  if(focus) (hidden ? showB : hideB).focus();
+  fitAll(); const pv = $("#cardPreview .hagaki"); if(pv) fit(pv);
+}
+setHead(!!state.headHidden, false);
+hideB.addEventListener("click", () => { state.headHidden = true; save(); setHead(true, true); });
+showB.addEventListener("click", () => { state.headHidden = false; save(); setHead(false, true); });
+ctlT.addEventListener("click", () => { state.ctlOpen = !topEl.classList.contains("open"); save(); setCtl(state.ctlOpen); });
+const furiBtn = $("#furiBtn"), bigBtn = $("#bigBtn");
+function applyToggles(){
+  document.body.classList.toggle("no-furi", !state.furi); furiBtn.setAttribute("aria-pressed", state.furi);
+  document.body.classList.toggle("big", state.big); bigBtn.setAttribute("aria-pressed", state.big);
+}
+furiBtn.addEventListener("click", () => { state.furi = !state.furi; save(); applyToggles(); });
+bigBtn.addEventListener("click", () => { state.big = !state.big; save(); applyToggles(); fitAll(); });
+window.addEventListener("resize", () => { clearTimeout(window.__rz); window.__rz = setTimeout(()=>{ fitAll(); const p=$("#cardPreview .hagaki"); if(p) fit(p); }, 150); });
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{ fitAll(); const p=$("#cardPreview .hagaki"); if(p) fit(p); });
+
+applyToggles();
+buildYear();
+renderAll();
+})();
+</script>
+
+</body>
+</html>
