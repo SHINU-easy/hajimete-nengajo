@@ -365,6 +365,11 @@ footer{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-
 /* print */
 #printArea{position:fixed;left:-20000px;top:0;visibility:hidden;width:100mm}
 #printArea .hagaki{width:100mm;height:148mm;aspect-ratio:auto;box-shadow:none;border-radius:0}
+#printArea.framed{width:210mm}
+#printArea.framed .hagaki{margin:30mm auto 0;outline:.3mm dashed #666;outline-offset:0}
+#printArea .cut-note{margin:4mm 0 0;text-align:center;font:3.2mm/1.4 "BIZ UDPGothic","Yu Gothic",sans-serif;color:#666}
+.frame-opt{justify-content:center;font-size:.85rem;margin-top:4px}
+.frame-note{margin:0}
 @media print{
   body{background:#fff}
   body::before{display:none}
@@ -882,6 +887,8 @@ const W = {
   pFinal:X("いんさつ：かんせい","Print: finished card","打印：完成版","In: bản hoàn chỉnh","छाप्नुहोस्: तयार कार्ड","ပုံနှိပ်: ပြီးဆုံးကတ်"),
   pTrace:X("いんさつ：なぞりがき","Print: tracing sheet","打印：描写练习","In: bản tô chữ","छाप्नुहोस्: अक्षर ट्रेस अभ्यास","ပုံနှိပ်: စာလုံးလိုက်ရေးလေ့ကျင့်ရန်"),
   pFuri:X("いんさつ：ふりがなつき","Print: with furigana","打印：带注音","In: có furigana","छाप्नुहोस्: फुरिगानासहित","ပုံနှိပ်: ဖုရိဂါနာပါ"),
+  frame:X("はがきの {大|おお}きさの {枠|わく}を つける（ふつうの {紙|かみ}に いんさつ するとき）","Add a postcard-size frame (when printing on ordinary paper)","加上明信片大小的边框（用普通纸打印时）","Thêm khung cỡ bưu thiếp (khi in trên giấy thường)","पोस्टकार्ड साइजको फ्रेम राख्नुहोस् (साधारण कागजमा छाप्दा)","ပို့စကတ်အရွယ် ဘောင်ထည့်ရန် (သာမန်စက္ကူပေါ် ပုံနှိပ်သောအခါ)"),
+  frameOn:X("A4の {紙|かみ}の まんなかに いんさつ します。{枠|わく}に そって {切|き}ると、はがきの {大|おお}きさに なります。","Prints in the middle of A4 paper. Cut along the frame to get a postcard-size card.","打印在A4纸的中间。沿着边框剪下，就是明信片大小。","In ở giữa tờ giấy A4. Cắt theo khung sẽ được tấm thiệp cỡ bưu thiếp.","A4 कागजको बीचमा छापिन्छ। फ्रेमअनुसार काटे पोस्टकार्ड साइज हुन्छ।","A4 စက္ကူ၏ အလယ်တွင် ပုံနှိပ်သည်။ ဘောင်အတိုင်း ညှပ်လျှင် ပို့စကတ်အရွယ် ဖြစ်မည်။"),
   printNote:X("はがきサイズ（100×148mm）で いんさつ します。","Prints at postcard size (100 × 148 mm).","按明信片尺寸（100×148毫米）打印。","In theo khổ bưu thiếp (100 × 148 mm).","पोस्टकार्ड साइज (१०० × १४८ मिमि) मा छापिन्छ।","ပို့စကတ်အရွယ် (၁၀၀ × ၁၄၈ မီလီမီတာ) ဖြင့် ပုံနှိပ်သည်။"),
   example:X("れい（サンプル）です。じぶんの ことばに かえよう","This is an example. Change it to your own words","这是示例。请换成你自己的话","Đây là ví dụ. Hãy đổi thành lời của bạn","यो उदाहरण हो। आफ्नै शब्दमा बदल्नुहोस्","ဒါက နမူနာပါ။ ကိုယ့်စကားနဲ့ ပြောင်းပါ"),
   reset:X("さいしょから","Start over","重新开始","Làm lại từ đầu","सुरुदेखि","အစမှ ပြန်စရန်"),
@@ -1179,7 +1186,7 @@ function renderWrite(){
        <button type="button" class="btn" data-print="trace">${ICON_PRINT}<span>${L(W.pTrace)}</span></button>
        <button type="button" class="btn" data-print="furi">${ICON_PRINT}<span>${L(W.pFuri)}</span></button>
      </div>
-     <p class="note">${L(W.printNote)}</p>
+     ${frameOpt()}
    </div>
   </div>`;
   setupDraw();
@@ -1327,7 +1334,7 @@ function renderAddress(){
       <p class="src">出典：中学生用テキストP4「様々なあて名の書き方」・P5（縦書きのポイント①〜⑥、「様」「先生」「御中」の使い方）／日本郵便『楽しい年賀状を作ろう！』令和9年版 中・高学年用④（連名「村上 和夫様／美知子様」の手本、「相手の名前を先に書くとバランスよく書けるよ」）</p></div>
   </div>
   <div class="preview-col"><div class="example-flag" id="addrExample" ${a.sample?"":"hidden"}><span class="tag ex">${rb("れい")}</span><span>${L(W.example)}</span></div><div id="addrPreview"></div>
-    <div class="btnrow"><button type="button" class="btn primary" data-aprint="1">${ICON_PRINT}<span>${L(A.print)}</span></button></div><p class="note">${L(W.printNote)}</p></div>
+    <div class="btnrow"><button type="button" class="btn primary" data-aprint="1">${ICON_PRINT}<span>${L(A.print)}</span></button></div>${frameOpt()}</div>
   </div>`;
   updateAddr();
 }
@@ -1411,10 +1418,22 @@ function renderVoiceStatus(){
 document.addEventListener("click", e => { if(e.target.closest("#voiceRefresh")) loadVoices(); });
 
 /* ---------- print ---------- */
+function frameOpt(){
+  const on = state.printFrame !== false;
+  return `<label class="check frame-opt"><input type="checkbox" data-frameopt="1" ${on?"checked":""}><span>${L(W.frame)}</span></label><p class="note frame-note">${L(on ? W.frameOn : W.printNote)}</p>`;
+}
+document.addEventListener("change", e => {
+  if(!e.target.dataset || !e.target.dataset.frameopt) return;
+  state.printFrame = e.target.checked; save();
+  document.querySelectorAll("[data-frameopt]").forEach(x => { x.checked = e.target.checked; });
+  document.querySelectorAll(".frame-note").forEach(n => { n.innerHTML = L(e.target.checked ? W.frameOn : W.printNote); });
+});
 function doPrint(kind, mode){
   const area = $("#printArea");
   let st = $("#pageStyle"); if(!st){ st = document.createElement("style"); st.id = "pageStyle"; document.head.appendChild(st); }
-  st.textContent = "@page{size:100mm 148mm;margin:0}";
+  const framed = state.printFrame !== false;
+  st.textContent = framed ? "@page{size:A4 portrait;margin:0}" : "@page{size:100mm 148mm;margin:0}";
+  area.classList.toggle("framed", framed);
   if(kind==="card"){
     area.innerHTML = cardHTML(cardModel(mode), mode);
     fit(area.querySelector(".hagaki"));
@@ -1422,6 +1441,7 @@ function doPrint(kind, mode){
   } else {
     area.innerHTML = addrHTML("print");
   }
+  if(framed) area.insertAdjacentHTML("beforeend", `<p class="cut-note">はがきの大きさ（100×148mm）　点線にそって切ってください</p>`);
   setTimeout(()=>{ try{ window.print(); }catch(e){} }, 60);
 }
 
