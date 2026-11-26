@@ -507,8 +507,42 @@ function speak(text, l="ja"){
     toast(`${rb(`この {端末|たんまつ}には「${LNAME[l]}」の {音声|おんせい}が ありません。`)}<span class="tr">No ${esc(LNAME[l])} voice on this device. (See 先生へ → 音声)</span>`);
     return;
   }
-  try{ speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = VOICE_BCP[l]; if(v) u.voice = v; u.rate = RATE[l]||.9; speechSynthesis.speak(u); }catch(e){}
+  try{
+    speechSynthesis.cancel();
+    for(const [sl, t] of speechParts(text, l)){
+      const u = new SpeechSynthesisUtterance(t); u.lang = VOICE_BCP[sl];
+      const sv = sl === l ? v : findVoice(sl); if(sv) u.voice = sv;
+      u.rate = RATE[sl]||.9; speechSynthesis.speak(u);
+    }
+  }catch(e){}
 }
+// 読み上げ用の整形：①空欄（＿＿・___）は読まずに間をあける　②訳文の中の日本語は日本語の音声で読む
+// 中国語の訳では、かなを含む語と、引用された日本語の語（JA_IN_ZH）だけを日本語として扱う（漢字だけの中国語は中国語のまま）
+const JA_IN_ZH = new Set(["去年","昨年","旧年","元旦","元日","正月","新年","御中","様","先生様"]);
+function speechParts(text, l){
+  const pause = (l === "ja" || l === "zh") ? "、" : ", ";
+  text = String(text).replace(/\s*[_＿]+\s*/g, pause).replace(/[✕×]/g, " ").replace(/(、\s*){2,}/g, "、");
+  if(l === "ja") return [["ja", text]];
+  const mark = new Array(text.length).fill(false);
+  const run = /[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff々〆ー]+/g;
+  let m;
+  while((m = run.exec(text))){
+    if(l !== "zh" || /[\u3040-\u30ff々〆]|[謹様]/.test(m[0])) for(let i=m.index;i<m.index+m[0].length;i++) mark[i] = true;
+  }
+  if(l === "zh"){
+    const q = /[“「（(]([\u3400-\u9fff]+)[”」）)]/g;
+    while((m = q.exec(text))) if(JA_IN_ZH.has(m[1])){ const st = m.index + 1; for(let i=st;i<st+m[1].length;i++) mark[i] = true; }
+  }
+  const out = [];
+  for(let i=0;i<text.length;){
+    let j = i; while(j < text.length && mark[j] === mark[i]) j++;
+    const seg = text.slice(i, j);
+    if(/[\p{L}\p{N}]/u.test(seg)) out.push([mark[i] ? "ja" : l, seg]);
+    i = j;
+  }
+  return out.length ? out : [[l, text]];
+}
+window.__speechParts = speechParts; // テスト用
 document.addEventListener("click", e => { const b = e.target.closest("[data-say]"); if(b){ e.stopPropagation(); speak(b.dataset.say, b.dataset.sl || "ja"); } }, true);
 
 /* ---------- content ---------- */
@@ -752,7 +786,7 @@ function etoTr(e){
   };
   return state.langs.map(l => `<small class="eto-tr" lang="${l}">${esc(t[l])}</small>`).join("");
 }
-// 国によってちがう干支（出典：Wikipedia "Vietnamese zodiac" "Cat (zodiac)" "Tamu Lhosar" "Sonam Lhosar" "Burmese zodiac" "Western astrology"、AFPBB/東方新報 2021-02-03、Nepalnews、eKantipur 2026-01-19ほか。vi/ne/myは試訳）
+// 国によってちがう干支（フィリピン：PNA・Manila Bulletin・Inquirer USA ほか／出典：Wikipedia "Vietnamese zodiac" "Cat (zodiac)" "Tamu Lhosar" "Sonam Lhosar" "Burmese zodiac" "Western astrology"、AFPBB/東方新報 2021-02-03、Nepalnews、eKantipur 2026-01-19ほか。vi/ne/myは試訳）
 const ETO_WORLD = {
   t: X("くにによって ちがう {干支|えと}","How the zodiac differs by country","各国生肖的不同","Con giáp khác nhau ở mỗi nước","देशअनुसार फरक राशि जनावर","နိုင်ငံအလိုက် ကွာခြားသော တိရစ္ဆာန်နှစ်"),
   rows: [
@@ -774,6 +808,12 @@ const ETO_WORLD = {
       `Việt Nam: Sửu là con trâu, Mão là con mèo, Mùi là con dê. Người ta cho rằng vì chữ 卯 đọc là “Mão”, gần giống âm “mèo”. Năm con giáp đổi vào Tết Nguyên Đán (Tết âm lịch).`,
       `भियतनाम: 丑 भैंसी, 卯 बिरालो र 未 बाख्रा हो। भियतनामी भाषामा 卯 लाई “माओ (Mão)” भनिन्छ, जुन बिरालो जनाउने “मेओ (mèo)” सँग मिल्दोजुल्दो सुनिन्छ भनिन्छ। वर्ष तेत (चन्द्र पात्रोको नयाँ वर्ष) बाट फेरिन्छ।`,
       `ဗီယက်နမ်- 丑 သည် ကျွဲ၊ 卯 သည် ကြောင်၊ 未 သည် ဆိတ် ဖြစ်သည်။ 卯 ကို ဗီယက်နမ်လို “Mão” ဟု ဖတ်ပြီး ကြောင်ကို ဆိုလိုသော “mèo” နှင့် အသံဆင်သောကြောင့်ဟု ဆိုကြသည်။ နှစ်သည် တက် (လပြက္ခဒိန် နှစ်သစ်ကူး) တွင် ပြောင်းသည်။`),
+    X(`フィリピン：{中国系|ちゅうごくけい}の {人|ひと}たち（チノイ）の {文化|ぶんか}が {広|ひろ}まり、{春節|しゅんせつ}は {特別|とくべつ}な {休|やす}みの {日|ひ}に なっています。その {年|とし}の {干支|えと}の {占|うらな}い（{風水|ふうすい}）を {楽|たの}しむ {人|ひと}も {多|おお}いです。1{月|がつ}1{日|にち}の お{正月|しょうがつ}には、まるい くだものを 12こ ならべたり、{水玉|みずたま}もようの {服|ふく}を {着|き}たりします（まるい {形|かたち}は お{金|かね}を あらわします）。`,
+      `Philippines: the culture of Chinese Filipinos (Tsinoys) has spread, and the Chinese New Year is a special non-working holiday. Many people enjoy reading the zodiac fortunes for the year (feng shui). At New Year on January 1, people set out 12 round fruits and wear polka dots (round shapes stand for money).`,
+      `菲律宾：菲律宾华人（Tsinoy）的文化广为流传，春节已成为特别假日。很多人喜欢看当年的生肖运势（风水）。1月1日新年时，人们会摆上12种圆形水果，穿圆点花纹的衣服（圆形象征钱财）。`,
+      `Philippines: văn hóa của người Philippines gốc Hoa (Tsinoy) được lan rộng, Tết Nguyên Đán là ngày nghỉ đặc biệt. Nhiều người thích xem vận hạn theo con giáp của năm (phong thủy). Vào năm mới ngày 1 tháng 1, người ta bày 12 loại quả tròn và mặc áo chấm bi (hình tròn tượng trưng cho tiền bạc).`,
+      `फिलिपिन्स: चिनियाँ मूलका फिलिपिनो (चिनोय) हरूको संस्कृति फैलिएको छ, र चिनियाँ नयाँ वर्ष विशेष बिदा हो। धेरै मानिस त्यस वर्षको राशि जनावरको भाग्यफल (फेङ सुई) हेर्न रुचाउँछन्। जनवरी १ को नयाँ वर्षमा १२ वटा गोलो फलफूल राख्ने र थोप्ले बुट्टाको लुगा लगाउने चलन छ (गोलो आकारले पैसा जनाउँछ)।`,
+      `ဖိလစ်ပိုင်- တရုတ်နွယ်ဖွား ဖိလစ်ပိုင်လူမျိုး (ချီနွိုင်) တို့၏ ယဉ်ကျေးမှု ပျံ့နှံ့လာပြီး တရုတ်နှစ်သစ်ကူးသည် အထူး ရုံးပိတ်ရက် ဖြစ်သည်။ ထိုနှစ်၏ တိရစ္ဆာန်နှစ် ဟောစာတမ်း (ဖုန်ရွှေ) ကို စိတ်ဝင်စားသူ များသည်။ ဇန်နဝါရီ ၁ ရက် နှစ်သစ်ကူးတွင် အလုံးဝိုင်း သစ်သီး ၁၂ မျိုးကို တင်ထားပြီး အစက်ပြောက်ပုံ အဝတ်ကို ဝတ်ကြသည် (အဝိုင်းပုံသည် ငွေကို ကိုယ်စားပြုသည်)။`),
     X(`ネパール：{民族|みんぞく}によって ちがいます。グルンの {人|ひと}たちの お{正月|しょうがつ}「タム・ロサル」では、わし・へび・うま・ひつじ・さる・とり・いぬ・しか・ねずみ・うし・とら・ねこ の 12です。タマンの {人|ひと}たちの「ソナム・ロサル」では、{中国|ちゅうごく}と ほぼ おなじ 12の {動物|どうぶつ}（ねずみ〜ぶた）を {使|つか}います。`,
       `Nepal: it differs by community. In Tamu Lhosar, the Gurung New Year, the 12 animals are eagle, snake, horse, sheep, monkey, bird, dog, deer, mouse, cow, tiger and cat. In Sonam Lhosar, the Tamang New Year, people use 12 animals almost the same as China's (rat to pig).`,
       `尼泊尔：不同民族各不相同。古隆族的新年“塔姆洛萨”使用鹰、蛇、马、羊、猴、鸟、狗、鹿、鼠、牛、虎、猫十二种动物。塔芒族的新年“索南洛萨”使用和中国几乎相同的十二种动物（从鼠到猪）。`,
@@ -1045,7 +1085,7 @@ function renderLearn(){
   <div class="grid cols">${LEARN.map((c,i)=>`<article class="card${c.eto?" wide":""}"><h3><span class="num">${"一二三四五六"[i]}</span><span>${L(c.t)}</span></h3><p>${L(c.b,{tag:"span",say:true})}</p>${sayBtn(kana(c.b.ja),"きく")}${c.fact?`<div class="fact">${c.fact}</div>`:""}${c.eto?etoWidget():""}</article>`).join("")}
   <article class="card wide"><h3><span class="num">七</span><span>${L(DELIVERY.t)}</span></h3><p>${L(DELIVERY.b,{tag:"span",say:true})}</p>
    <ol class="flow">${DELIVERY.steps.map((st,i)=>`<li><b>${i+1}</b><span>${L(st,{say:true})}</span></li>`).join("")}</ol></article></div>
-  <p class="src">出典：日本郵便「手紙の書き方体験授業」2026年度 中学生用テキストP3・P14、同指導書P10–11、小学校高学年用指導書（寒中見舞いの時期）／日本郵便 年賀はがきに関する報道資料（各年。登録済みの年のみ具体的な日付を表示）／国立天文台 暦要項（立春）／日本郵便『楽しい年賀状を作ろう！』令和9年版（小学校低・中・高学年用、令和8年9月発行）：年賀はがきの「ひみつ」3つ・コンビニでも買える・抽選日、十二支の由来と「自分が生まれた年の十二支は何かな？」、「1月8日からは年賀状ではなく『寒中見まい』」、「年賀状がとどくまで」の7段階／国による干支の違い：Wikipedia英語版 "Vietnamese zodiac" "Cat (zodiac)" "Tamu Lhosar" "Sonam Lhosar" "Burmese zodiac" "Western astrology"、AFPBB（東方新報）「子どもの出産時期にまで影響する中国の干支」2021年2月3日、Nepalnews・eKantipur（ソナム・ロサル）、bbt.org.sg（ミャンマーの8曜日）</p>`;
+  <p class="src">出典：日本郵便「手紙の書き方体験授業」2026年度 中学生用テキストP3・P14、同指導書P10–11、小学校高学年用指導書（寒中見舞いの時期）／日本郵便 年賀はがきに関する報道資料（各年。登録済みの年のみ具体的な日付を表示）／国立天文台 暦要項（立春）／日本郵便『楽しい年賀状を作ろう！』令和9年版（小学校低・中・高学年用、令和8年9月発行）：年賀はがきの「ひみつ」3つ・コンビニでも買える・抽選日、十二支の由来と「自分が生まれた年の十二支は何かな？」、「1月8日からは年賀状ではなく『寒中見まい』」、「年賀状がとどくまで」の7段階／国による干支の違い：Wikipedia英語版 "Vietnamese zodiac" "Cat (zodiac)" "Tamu Lhosar" "Sonam Lhosar" "Burmese zodiac" "Western astrology"、AFPBB（東方新報）「子どもの出産時期にまで影響する中国の干支」2021年2月3日、Nepalnews・eKantipur（ソナム・ロサル）、bbt.org.sg（ミャンマーの8曜日）、フィリピン通信社（PNA）・Manila Bulletin・Inquirer USA（フィリピンの春節と新年の習慣）</p>`;
   $("#p-learn").querySelectorAll(".say").forEach(b=>{b.style.marginTop="10px"});
 }
 
@@ -1482,6 +1522,7 @@ ${teacherYearHTML()}
     <li>（2027年用の登録データの出典）<a href="https://files.japanpost.jp/assets/34d9d11432734cfaa759e78fe395b688/159168aef19d465baf3350d358e46fa9/20260831_02_06.pdf" target="_blank" rel="noopener">日本郵便 報道資料「2027（令和9）年用年賀はがき等の発行・販売」</a></li>
     <li><a href="https://kumanichi.com/articles/2030915" target="_blank" rel="noopener">熊本日日新聞「年賀はがき、16年連続発行数減 27年、利用促進策も」</a>（85円・差出し目安12/27）</li>
     <li>国による干支の違い：<a href="https://en.wikipedia.org/wiki/Vietnamese_zodiac" target="_blank" rel="noopener">Vietnamese zodiac</a>・<a href="https://en.wikipedia.org/wiki/Cat_(zodiac)" target="_blank" rel="noopener">Cat (zodiac)</a>（卯＝Mão と mèo の音の類似。ただし公式な説明はないとされる）／<a href="https://www.afpbb.com/articles/-/3329721" target="_blank" rel="noopener">AFPBB「子どもの出産時期にまで影響する中国の干支」</a>（中国は旧暦・春節で区切る、亥は豚）／<a href="https://en.wikipedia.org/wiki/Tamu_Lhosar" target="_blank" rel="noopener">Tamu Lhosar</a>（グルンの12動物）／<a href="https://english.nepalnews.com/?p=192883" target="_blank" rel="noopener">Nepalnews</a>・<a href="https://ekantipur.com/news/2026/01/19/en/today-is-magh-shukla-pratipada-sonam-lhosar-being-celebrated-with-joy-49-17.html" target="_blank" rel="noopener">eKantipur 2026-01-19</a>（タマンのソナム・ロサル）／<a href="https://en.wikipedia.org/wiki/Burmese_zodiac" target="_blank" rel="noopener">Burmese zodiac</a>・<a href="https://www.bbt.org.sg/?p=2878" target="_blank" rel="noopener">bbt.org.sg</a>（ミャンマーの曜日の8つの動物）／<a href="https://en.wikipedia.org/wiki/Western_astrology" target="_blank" rel="noopener">Western astrology</a>（誕生日による星座）</li>
+    <li>フィリピン：<a href="https://alpha.pna.gov.ph/articles/1061008" target="_blank" rel="noopener">PNA「Chinese New Year in PH, more than attracting luck」</a>（春節は特別休日、風水・中国の占いを読む）／<a href="https://mb.com.ph/2025/1/22/celebrating-chinese-new-year-as-a-filipino" target="_blank" rel="noopener">Manila Bulletin「Celebrating Chinese New Year as a Filipino」</a>（中国系でない人も風水に関心）／<a href="https://usa.inquirer.net/162935/10-filipino-traditions-to-bring-luck-and-prosperity-for-the-new-year" target="_blank" rel="noopener">Inquirer USA「10 Filipino traditions…」</a>（12の丸い果物・水玉もよう）</li>
     <li><a href="https://eco.mtk.nao.ac.jp/koyomi/yoko/2027/rekiyou272.html" target="_blank" rel="noopener">国立天文台 令和9年（2027）暦要項</a>（立春 2月4日）</li></ul>
     <p style="margin-top:8px;font-size:.88rem">英語・中国語以外（ベトナム語・ネパール語・ミャンマー語）の訳は作成者の確認前の試訳です。授業で使う前に母語話者のチェックを受けてください。</p></div>
   </div>`;
