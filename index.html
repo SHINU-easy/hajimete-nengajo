@@ -346,6 +346,23 @@ blockquote{margin:6px 0;padding:6px 12px;border-left:3px solid var(--line);color
 @media (max-width:400px){ .top .brand h1{font-size:1.06rem} .top .brand{gap:8px} .top .top-inner{column-gap:10px} }
 footer{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px 30px;color:var(--muted);font-size:.78rem}
 
+/* 中くらいの横長画面（電子黒板・タブレット横向き）：言語ボタンの列を1行に収める（2026-11-26） */
+@media (min-width:721px) and (max-width:1099px){
+  .controls{gap:5px;margin-right:0;margin-left:0} /* この幅ではロゴの下の行に来るので「かくす」と重ならない */
+  .ctl{gap:4px;font-size:.76rem}
+  .toggle{padding:4px 9px;font-size:.78rem}
+  .langbtns{gap:3px}
+  .langbtns .toggle{padding:3px 7px}
+  .langbtns .nat{font-size:.6rem}
+  .langbtns .nat[lang="my"]{font-size:.58rem}
+}
+@media (min-width:721px) and (max-width:899px){
+  .controls{gap:4px}
+  .ctl{font-size:.7rem}
+  .toggle{padding:3px 6px;font-size:.74rem}
+  .langbtns{gap:2px}
+  .langbtns .toggle{padding:3px 5px}
+}
 @media (max-width:860px){
   .studio,.addr-wrap,.parts-wrap{grid-template-columns:1fr}
   .preview-col{position:static}
