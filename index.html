@@ -352,6 +352,7 @@ footer{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-
 .credit-hide{float:right;margin:0 0 6px 12px;display:inline-flex;flex-direction:column;align-items:center;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:999px;padding:3px 10px;cursor:pointer;font-size:.74rem;line-height:1.2}
 .credit-hide small{font-size:.62rem;color:var(--muted)}
 body.credit-hidden #credit{display:none}
+body.credit-hidden main .src:not(#p-teacher .src){display:none} /* 出典もクレジットと一緒にかくす（「先生へ」タブは残す） */
 
 /* 中くらいの横長画面（電子黒板・タブレット横向き）：言語ボタンの列を1行に収める（2026-11-26） */
 @media (min-width:721px) and (max-width:1099px){
@@ -448,7 +449,7 @@ body.credit-hidden #credit{display:none}
 </main>
 
 <footer id="credit">
-  <button type="button" class="credit-hide" id="creditHide" title="「先生へ」タブで もう一度 表示できます / You can show it again in the For teachers tab">クレジットを かくす<small>Hide credits</small></button>
+  <button type="button" class="credit-hide" id="creditHide" title="「先生へ」タブで もう一度 表示できます / You can show it again in the For teachers tab">クレジットと 出典を かくす<small>Hide credits &amp; sources</small></button>
   © 上野振宇　学校教育・個人の学習での利用は自由です。商用利用の際は作者へご一報ください。　参考：日本郵便「手紙の書き方体験授業」2026年度教材（中学生用 P3・P4–5・P14–15、同指導書）、日本郵便 年賀はがきに関する報道資料（各年）、国立天文台 暦要項（各年）。
 </footer>
 
@@ -474,6 +475,8 @@ const LANGS = [["ja","日本語だけ"],["en","英語"],["zh","中国語"],["vi"
 /* ---------- state ---------- */
 const KEY = "hajimete-nengajo-v1";
 const SAMPLE_NAME = "上野振宇"; // 見本の差出人名（2026-11-26 「マイ」から変更）
+const SAMPLE_NAME_RUBY = "{上野|うえの}{振宇|しんう}", SAMPLE_NAME_KANA = "うえのしんう"; // 読み：うえの しんう（本人確認済み）
+const nameOut = (n, R) => n === SAMPLE_NAME ? R(SAMPLE_NAME_RUBY) : esc(n||"");
 const SAMPLE_CARD = {partner:"teacher", gashi:"g1", thanks:"b1",
   news:[{id:"n3", fill:"ひらがなが読めること"},{id:"n1", fill:"漢字"}],
   free:"", memo:"", closing:"c1", date:"d1", name:SAMPLE_NAME, pic:"eto", dir:"tate", drawing:null, sample:true};
@@ -1321,7 +1324,7 @@ function cardModel(mode){
     const ez = easyState();
     const body = ez.mid.map(n => { const p = find(EASY.mid, n.id); return p ? fillIn(p.ja, n.fill) : ""; }).filter(Boolean);
     const en = find(EASY.end, ez.end);
-    return {gashi: EASY.start, gashiRaw: EASY.start, body, close: en ? R(en.ja) : "", date: R(EASY.date), name: esc(c.name||""), pic:c.pic, drawing:c.drawing, dir:c.dir};
+    return {gashi: EASY.start, gashiRaw: EASY.start, body, close: en ? R(en.ja) : "", date: R(EASY.date), name: nameOut(c.name, R), pic:c.pic, drawing:c.drawing, dir:c.dir};
   }
   const g = find(GASHI, c.gashi);
   const body = [];
@@ -1330,7 +1333,7 @@ function cardModel(mode){
   if(c.free && c.free.trim()) c.free.trim().split(/\n+/).forEach(line=>body.push(esc(line)));
   const cl = find(CLOSING, c.closing);
   const d = find(DATES, c.date);
-  return {gashi: g?R(g.ja):"", gashiRaw: g?g.ja:"", body, close: cl?R(cl.ja):"", date: d?R(d.ja):"", name: esc(c.name||""), pic:c.pic, drawing:c.drawing, dir:c.dir};
+  return {gashi: g?R(g.ja):"", gashiRaw: g?g.ja:"", body, close: cl?R(cl.ja):"", date: d?R(d.ja):"", name: nameOut(c.name, R), pic:c.pic, drawing:c.drawing, dir:c.dir};
 }
 function easyState(){
   const c = state.card;
@@ -1344,7 +1347,7 @@ function cardSpeech(){
     out.push(EASY.start);
     ez.mid.forEach(n => { const p = find(EASY.mid, n.id); if(p) out.push(p.ja.replace(BLANK, n.fill || "なになに")); });
     const en = find(EASY.end, ez.end); if(en) out.push(en.ja);
-    out.push(kana(EASY.date)); if(c.name) out.push(c.name);
+    out.push(kana(EASY.date)); if(c.name) out.push(c.name === SAMPLE_NAME ? SAMPLE_NAME_KANA : c.name);
     return out.join("。");
   }
   const g = find(GASHI, c.gashi); if(g) out.push(kana(g.ja));
@@ -1353,7 +1356,7 @@ function cardSpeech(){
   if(c.free) out.push(c.free);
   const cl = find(CLOSING, c.closing); if(cl) out.push(kana(cl.ja));
   const d = find(DATES, c.date); if(d) out.push(c.date==="d2" ? `${cardYear()}年 がんたん` : kana(d.ja));
-  if(c.name) out.push(c.name);
+  if(c.name) out.push(c.name === SAMPLE_NAME ? SAMPLE_NAME_KANA : c.name);
   return out.join("。");
 }
 
@@ -1366,7 +1369,7 @@ function renderParts(){
   <div class="parts-wrap"><div id="partsCard">${cardHTML(model,"parts")}</div>
   <div class="part-list">${PARTS.map(p=>`<div class="part k${p.k}" data-part="${p.k}" tabindex="0" role="button"><h4><span class="dot">${p.k}</span><span>${L(p.h)}</span></h4><div>${L(p.b,{say:true})}</div></div>`).join("")}
   <div class="card" style="font-size:.9rem">${L(X("{右|みぎ}から {左|ひだり}へ、{上|うえ}から {下|した}へ {読|よ}みます（たてがき）。","Vertical writing: read from top to bottom, right to left.","竖写：从上到下、从右到左阅读。","Viết dọc: đọc từ trên xuống, từ phải sang trái.","ठाडो लेखाइ: माथिबाट तल, दायाँबाट बायाँ पढिन्छ।","ဒေါင်လိုက်ရေး: အပေါ်မှအောက်၊ ညာမှဘယ်သို့ ဖတ်သည်။"))}</div>
-  ${sayBtn(kana([s.gashi,...s.body,s.close,s.date].join("。"))+"。"+SAMPLE_NAME)}
+  ${sayBtn(kana([s.gashi,...s.body,s.close,s.date].join("。"))+"。"+SAMPLE_NAME_KANA)}
   <p class="src">出典：中学生用テキストP14（前文・主文・末文・後付けの4部構成、色分け）・同指導書P10。手本の文はこのアプリ用に作成した例文です。</p></div></div>`;
   fitAll();
 }
@@ -1653,7 +1656,7 @@ function renderTeacher(){
      <li>ネパール語・ミャンマー語の訳は試訳です。読み上げで不自然な箇所があれば、母語話者の確認の手がかりにもなります。</li>
     </ul>
     <button type="button" class="btn" id="voiceRefresh" style="margin-top:8px">表を更新</button></div>
-   <div class="card"><h3>表示の設定</h3><label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" id="creditShow"${state.creditHidden?"":" checked"}> ページの下に クレジット（作者・利用条件・参考資料）を 表示する</label><p style="margin:6px 0 0;font-size:.85rem;color:var(--muted)">生徒の画面や電子黒板で じゃまな ときは、ページの下の「クレジットを かくす」か、ここで 消せます。この設定は この端末の ブラウザに 保存されます。</p></div>
+   <div class="card"><h3>表示の設定</h3><label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" id="creditShow"${state.creditHidden?"":" checked"}> ページの下の クレジット（作者・利用条件・参考資料）と、各ページの「出典：…」を 表示する</label><p style="margin:6px 0 0;font-size:.85rem;color:var(--muted)">生徒の画面や電子黒板で じゃまな ときは、ページの下の「クレジットと 出典を かくす」か、ここで 消せます。「先生へ」タブの 出典は いつも 表示されます。この設定は この端末の ブラウザに 保存されます。</p></div>
 ${teacherYearHTML()}
    <div class="card"><h3>出典</h3><ul>
     <li>日本郵便株式会社『楽しい年賀状を作ろう！』令和9年版（小学校低学年・中学年・高学年用、令和8年9月発行、監修：郵便教育推進委員会）：かんたんモードの3部構成、なぞりがきの中心線、年賀はがきの「ひみつ」、十二支、届くまでの7段階、連名、寒中見舞い</li>
