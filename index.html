@@ -161,6 +161,10 @@ main{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-le
 .eto-world li{padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
 .eto-world li p{margin:0 0 6px}
 .eto-world .eto-ask{margin:10px 0 0;font-weight:700}
+.ny-list{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+.ny-list li{padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.ny-list li p{margin:0 0 6px}
+.card .eto-ask{margin:10px 0 0;font-weight:700}
 .mode-switch{display:flex;flex-wrap:wrap;gap:8px}
 .easy-fixed{font-family:var(--f-card);font-size:1.2rem;padding:8px 12px;background:var(--surface-2);border-radius:8px}
 .guides{position:absolute;inset:0;pointer-events:none}
@@ -678,6 +682,7 @@ function buildYear(){
       `Năm ${Y} là năm ${e.vi}. Ở Nhật, con vật của năm ${e.vi} là con ${e.vJ}${viNote}. “Thập nhị chi” ngày xưa dùng để chỉ năm, giờ và phương hướng; người ta cho rằng các con vật quen thuộc được gán vào để dễ nhớ. Trên nengajō, người ta thường vẽ con vật của năm. Ở nước bạn, năm mới là khi nào? Mọi người chúc nhau thế nào? Hãy kể cho cả lớp nghe.`,
       `जापानमा सन् ${dev(Y)} “${e.ne}” को वर्ष हो। बाह्र राशि जनावर (जुनिसी) पहिले वर्ष, समय र दिशा जनाउन प्रयोग गरिन्थ्यो; सम्झन सजिलो होस् भनेर चिनजानका जनावरहरू जोडिएको भनिन्छ। नेन्गाजोमा प्रायः त्यस वर्षको जनावरको चित्र कोरिन्छ। तपाईंको देशमा नयाँ वर्ष कहिले हो? कस्तो शुभकामना भनिन्छ? कक्षामा सबैलाई सुनाउनुहोस्।`,
       `ဂျပန်တွင် ${mmr(Y)} ခုနှစ်သည် “${e.my}” နှစ် ဖြစ်သည်။ ၁၂ ရာသီတိရစ္ဆာန် (ဂျူးနိရှိ) ကို ရှေးက နှစ်၊ အချိန်နှင့် အရပ်မျက်နှာ ပြရန် သုံးခဲ့ပြီး မှတ်ရလွယ်အောင် ရင်းနှီးသော တိရစ္ဆာန်များကို တွဲထားသည်ဟု ဆိုကြသည်။ နင်ဂါဂျောတွင် ထိုနှစ်၏ တိရစ္ဆာန်ပုံကို မကြာခဏ ဆွဲကြသည်။ သင့်နိုင်ငံ၏ နှစ်သစ်ကူးသည် ဘယ်အချိန်လဲ။ ဘယ်လို နှုတ်ခွန်းဆက်ကြသလဲ။ အတန်းထဲက လူတွေကို ပြောပြပေးပါ။`)};
+  LEARN[6] = NEWYEAR;
   // 日付（後付け）
   const r = eraNum(Y);
   DATES.length = 0;
@@ -750,6 +755,67 @@ const UI = {
   ]
 };
 
+// ⑦ 西暦のお正月と各国の旧暦のお正月（出典：国立国会図書館「日本の暦」第一章／国立天文台 暦Wiki／Wikipedia "Vikram Samvat" "Thingyan"／The Himalayan Times 2026-04-14／UNESCO 無形文化遺産「Atā Thingyan」／AFPBB 2021-02-03／PNA ほか。vi/ne/myは試訳）
+const NEWYEAR = {
+  ny:true,
+  t:X("{西暦|せいれき}の お{正月|しょうがつ}と {旧暦|きゅうれき}の お{正月|しょうがつ}","New Year in the Western calendar and in traditional calendars","公历新年与旧历新年","Năm mới theo dương lịch và theo lịch cổ truyền","ईस्वी नयाँ वर्ष र परम्परागत पात्रोको नयाँ वर्ष","ခရစ်နှစ် နှစ်သစ်နှင့် ရိုးရာပြက္ခဒိန် နှစ်သစ်"),
+  b:X("{今|いま} せかいで よく {使|つか}う こよみは「{西暦|せいれき}」で、1{月|がつ}1{日|にち}が お{正月|しょうがつ}です。でも、{国|くに}によっては、むかしからの こよみ（{旧暦|きゅうれき}）の お{正月|しょうがつ}を いちばん {大切|たいせつ}に して います。1{年|ねん}に お{正月|しょうがつ}が 2{回|かい}ある {国|くに}も あります。",
+    "The calendar most used in the world today is the Western (Gregorian) calendar, and New Year is on January 1. But in some countries the New Year of the traditional calendar is the most important. Some countries have two New Years in one year.",
+    "现在世界上最常用的历法是“公历”，1月1日是新年。但在有些国家，最重要的是传统历法（旧历）的新年。也有一年过两次新年的国家。",
+    "Lịch được dùng nhiều nhất trên thế giới hiện nay là dương lịch, và năm mới là ngày 1 tháng 1. Nhưng ở một số nước, năm mới theo lịch cổ truyền (âm lịch) mới là quan trọng nhất. Cũng có nước đón năm mới hai lần trong một năm.",
+    "आज संसारमा धेरै प्रयोग हुने पात्रो ईस्वी (ग्रेगोरियन) पात्रो हो, र नयाँ वर्ष जनवरी १ मा पर्छ। तर कतिपय देशमा परम्परागत पात्रोको नयाँ वर्ष सबैभन्दा महत्त्वपूर्ण हुन्छ। एक वर्षमा दुई पटक नयाँ वर्ष मनाउने देश पनि छन्।",
+    "ယနေ့ ကမ္ဘာတွင် အများဆုံး သုံးသော ပြက္ခဒိန်မှာ ခရစ်နှစ် (ဂရီဂိုရီယန်) ပြက္ခဒိန် ဖြစ်ပြီး နှစ်သစ်ကူးမှာ ဇန်နဝါရီ ၁ ရက် ဖြစ်သည်။ သို့သော် အချို့နိုင်ငံများတွင် ရိုးရာပြက္ခဒိန်၏ နှစ်သစ်ကို အရေးအကြီးဆုံး ထားသည်။ တစ်နှစ်တွင် နှစ်သစ်ကူး နှစ်ကြိမ် ရှိသော နိုင်ငံများလည်း ရှိသည်။"),
+  rows: [
+    X(`{日本|にほん}：むかしは {月|つき}の みちかけを もとにした こよみ（{旧暦|きゅうれき}）を {使|つか}っていましたが、{明治|めいじ}6{年|ねん}（1873{年|ねん}）から {西暦|せいれき}に かわりました。{明治|めいじ}5{年|ねん}12{月|がつ}3{日|か}が、{明治|めいじ}6{年|ねん}1{月|がつ}1{日|にち}に なったのです。{今|いま}の お{正月|しょうがつ}は 1{月|がつ}1{日|にち}で、{年賀状|ねんがじょう}も この {日|ひ}に とどけます。`,
+      `Japan: it used a traditional calendar based on the phases of the moon, but changed to the Western calendar in Meiji 6 (1873). The 3rd day of the 12th month of Meiji 5 became January 1, Meiji 6. Today New Year is January 1, and nengajō are delivered on that day.`,
+      `日本：过去使用以月亮盈亏为基础的历法（旧历），从明治6年（1873年）起改用公历。明治5年12月3日变成了明治6年1月1日。现在的新年是1月1日，年贺状也在这一天送到。`,
+      `Nhật Bản: ngày xưa dùng lịch dựa trên tuần trăng (âm lịch), nhưng từ năm Minh Trị thứ 6 (1873) đã chuyển sang dương lịch. Ngày 3 tháng 12 năm Minh Trị thứ 5 trở thành ngày 1 tháng 1 năm Minh Trị thứ 6. Ngày nay năm mới là ngày 1 tháng 1, và nengajō cũng được phát vào ngày này.`,
+      `जापान: पहिले चन्द्रमाको घटबढमा आधारित परम्परागत पात्रो प्रयोग हुन्थ्यो, तर मेइजी ६ (सन् १८७३) देखि ईस्वी पात्रो अपनाइयो। मेइजी ५ को १२ महिनाको ३ गते मेइजी ६ को जनवरी १ बन्यो। अहिले नयाँ वर्ष जनवरी १ हो, र नेन्गाजो पनि त्यही दिन पुग्छ।`,
+      `ဂျပန်- ရှေးက လ၏ ဆုတ်ခြင်း တိုးခြင်းကို အခြေခံသော ရိုးရာပြက္ခဒိန်ကို သုံးခဲ့သော်လည်း မေဂျိ ၆ (၁၈၇၃) ခုနှစ်မှစ၍ ခရစ်နှစ် ပြက္ခဒိန်သို့ ပြောင်းခဲ့သည်။ မေဂျိ ၅ ခုနှစ် ၁၂ လပိုင်း ၃ ရက်နေ့သည် မေဂျိ ၆ ခုနှစ် ဇန်နဝါရီ ၁ ရက် ဖြစ်သွားသည်။ ယခု နှစ်သစ်ကူးမှာ ဇန်နဝါရီ ၁ ရက် ဖြစ်ပြီး နင်ဂါဂျောကိုလည်း ထိုနေ့တွင် ပို့ဆောင်သည်။`),
+    X(`{中国|ちゅうごく}：1{月|がつ}1{日|にち}も {休|やす}みですが、いちばん {大切|たいせつ}なのは {旧暦|きゅうれき}の お{正月|しょうがつ}「{春節|しゅんせつ}」です。{春節|しゅんせつ}は {毎年|まいとし} {日|ひ}が かわり、1{月|がつ}の おわりから 2{月|がつ}の あいだです。`,
+      `China: January 1 (Yuandan) is also a holiday, but the most important is the lunar New Year, the Spring Festival. Its date changes every year, between late January and February.`,
+      `中国：1月1日元旦也放假，但最重要的是农历新年“春节”。春节每年日期不同，在1月下旬到2月之间。`,
+      `Trung Quốc: ngày 1 tháng 1 (Nguyên Đán) cũng được nghỉ, nhưng quan trọng nhất là Tết âm lịch, gọi là “Xuân Tiết”. Ngày này mỗi năm một khác, rơi vào khoảng cuối tháng 1 đến tháng 2.`,
+      `चीन: जनवरी १ (युवानदान) मा पनि बिदा हुन्छ, तर सबैभन्दा महत्त्वपूर्ण चन्द्र पात्रोको नयाँ वर्ष “वसन्त उत्सव” हो। यसको मिति हरेक वर्ष फरक हुन्छ, जनवरीको अन्त्यदेखि फेब्रुअरीसम्म पर्छ।`,
+      `တရုတ်- ဇန်နဝါရီ ၁ ရက် (ယွမ်တန်) တွင်လည်း ရုံးပိတ်သော်လည်း အရေးအကြီးဆုံးမှာ လပြက္ခဒိန် နှစ်သစ်ကူး “နွေဦးပွဲတော်” ဖြစ်သည်။ ထိုနေ့သည် နှစ်စဉ် ပြောင်းပြီး ဇန်နဝါရီလကုန်မှ ဖေဖော်ဝါရီလအတွင်း ကျသည်။`),
+    X(`ベトナム：{旧暦|きゅうれき}の お{正月|しょうがつ}「テト（Tết）」が {1年|いちねん}で いちばん {大|おお}きな {行事|ぎょうじ}です。{中国|ちゅうごく}の {春節|しゅんせつ}と ほぼ おなじ {日|ひ}です。`,
+      `Vietnam: Tết, the lunar New Year, is the biggest event of the year. It is on almost the same day as China's Spring Festival.`,
+      `越南：农历新年“Tết（节）”是一年中最大的节日，和中国的春节几乎是同一天。`,
+      `Việt Nam: Tết Nguyên Đán (Tết âm lịch) là dịp lễ lớn nhất trong năm. Tết gần như trùng ngày với Xuân Tiết của Trung Quốc.`,
+      `भियतनाम: चन्द्र पात्रोको नयाँ वर्ष “तेत (Tết)” वर्षकै सबैभन्दा ठूलो पर्व हो। यो चीनको वसन्त उत्सवसँग लगभग एकै दिन पर्छ।`,
+      `ဗီယက်နမ်- လပြက္ခဒိန် နှစ်သစ်ကူး “တက် (Tết)” သည် တစ်နှစ်တာ၏ အကြီးဆုံး ပွဲတော် ဖြစ်သည်။ တရုတ်၏ နွေဦးပွဲတော်နှင့် နေ့ချင်း အတော်နီးပါး တူသည်။`),
+    X(`フィリピン：{西暦|せいれき}の 1{月|がつ}1{日|にち}を {大|おお}きく {祝|いわ}います（まるい くだもの、{水玉|みずたま}もようの {服|ふく}）。{中国系|ちゅうごくけい}の {人|ひと}たちの {春節|しゅんせつ}も、{特別|とくべつ}な {休|やす}みの {日|ひ}です。`,
+      `Philippines: January 1 is celebrated in a big way (round fruits, polka-dot clothes). The Spring Festival of Chinese Filipinos is also a special holiday.`,
+      `菲律宾：隆重庆祝公历1月1日（摆圆形水果、穿圆点衣服）。华人的春节也是特别假日。`,
+      `Philippines: ngày 1 tháng 1 dương lịch được tổ chức lớn (quả tròn, áo chấm bi). Tết của người gốc Hoa cũng là ngày nghỉ đặc biệt.`,
+      `फिलिपिन्स: ईस्वी जनवरी १ धूमधामसँग मनाइन्छ (गोलो फलफूल, थोप्ले बुट्टाको लुगा)। चिनियाँ मूलका मानिसको वसन्त उत्सव पनि विशेष बिदा हो।`,
+      `ဖိလစ်ပိုင်- ခရစ်နှစ် ဇန်နဝါရီ ၁ ရက်ကို ကြီးကြီးကျယ်ကျယ် ကျင်းပသည် (အလုံးဝိုင်း သစ်သီး၊ အစက်ပြောက် အဝတ်)။ တရုတ်နွယ်ဖွားတို့၏ နွေဦးပွဲတော်သည်လည်း အထူး ရုံးပိတ်ရက် ဖြစ်သည်။`),
+    X(`ネパール：{国|くに}の こよみ「ビクラム・サンバット」の お{正月|しょうがつ}は、4{月|がつ}{中|なか}ごろの バイサーク{月|づき}1{日|にち}です。{西暦|せいれき}より {約|やく}57{年|ねん} {先|さき}に すすんでいて、{西暦|せいれき}2026{年|ねん}4{月|がつ}14{日|か}に 2083{年|ねん}が はじまりました。ほかに、{民族|みんぞく}ごとの お{正月|しょうがつ}（ロサル など）も あります。`,
+      `Nepal: New Year in the national calendar, Bikram Sambat, is on Baisakh 1 in mid-April. This calendar is about 57 years ahead of the Western calendar: the year 2083 began on April 14, 2026. There are also New Years of different communities (such as Lhosar).`,
+      `尼泊尔：国家历法“维克拉姆历（Bikram Sambat）”的新年是4月中旬的拜萨克月1日。这种历法比公历早约57年，公历2026年4月14日开始了2083年。此外还有各民族的新年（如洛萨等）。`,
+      `Nepal: năm mới theo lịch quốc gia Bikram Sambat là ngày 1 tháng Baisakh, vào giữa tháng 4. Lịch này đi trước dương lịch khoảng 57 năm: năm 2083 bắt đầu vào ngày 14/4/2026. Ngoài ra còn có năm mới của từng dân tộc (như Lhosar).`,
+      `नेपाल: राष्ट्रिय पात्रो विक्रम संवत्‌को नयाँ वर्ष अप्रिलको मध्यतिर पर्ने बैशाख १ गते हो। यो पात्रो ईस्वीभन्दा करिब ५७ वर्ष अगाडि छ: सन् २०२६ अप्रिल १४ मा वि.सं. २०८३ सुरु भयो। यसबाहेक जातिअनुसारका नयाँ वर्ष (ल्होसार आदि) पनि छन्।`,
+      `နီပေါ- နိုင်ငံ့ ပြက္ခဒိန် “ဗစ်ကရမ် ဆမ်ဘတ်” ၏ နှစ်သစ်ကူးမှာ ဧပြီလလယ်ရှိ ဗိုင်ဆာခ ၁ ရက် ဖြစ်သည်။ ဤပြက္ခဒိန်သည် ခရစ်နှစ်ထက် နှစ် ၅၇ ခန့် စောပြီး ၂၀၂၆ ခုနှစ် ဧပြီ ၁၄ ရက်တွင် ၂၀၈၃ ခုနှစ် စတင်ခဲ့သည်။ ထို့အပြင် လူမျိုးအလိုက် နှစ်သစ်ကူး (လိုဆာ စသည်) လည်း ရှိသည်။`),
+    X(`ミャンマー：ミャンマーの こよみ（{月|つき}と {太陽|たいよう}を {使|つか}う こよみ）の お{正月|しょうがつ}は 4{月|がつ}{中|なか}ごろです。その {前|まえ}に、{水|みず}を かけあって {古|ふる}い {年|とし}の わるい ことを {流|なが}す「ティンジャン（{水|みず}かけ{祭|まつ}り）」が あります（4{月|がつ}13{日|にち}ごろから）。`,
+      `Myanmar: New Year in the Myanmar calendar (a lunisolar calendar, using both the moon and the sun) is in mid-April. Before it comes Thingyan, the water festival, when people splash water to wash away the bad things of the old year (from around April 13).`,
+      `缅甸：缅甸历（阴阳历，同时依据月亮和太阳）的新年在4月中旬。新年前有“泼水节（Thingyan）”，人们互相泼水，冲走旧年的晦气（4月13日前后开始）。`,
+      `Myanmar: năm mới theo lịch Myanmar (lịch âm dương, dựa vào cả mặt trăng và mặt trời) vào giữa tháng 4. Trước đó là Thingyan – lễ hội té nước, mọi người té nước cho nhau để gột rửa điều xấu của năm cũ (từ khoảng ngày 13/4).`,
+      `म्यानमार: म्यानमार पात्रो (चन्द्रमा र सूर्य दुवैमा आधारित पात्रो) को नयाँ वर्ष अप्रिलको मध्यतिर पर्छ। त्यसअघि पुरानो वर्षका नराम्रा कुरा पखाल्न एकअर्कालाई पानी छ्याप्ने “थिङ्ग्यान (पानी उत्सव)” हुन्छ (अप्रिल १३ तिरदेखि)।`,
+      `မြန်မာ- မြန်မာ ပြက္ခဒိန် (လနှင့် နေ နှစ်ခုလုံးကို သုံးသော ပြက္ခဒိန်) ၏ နှစ်သစ်ကူးမှာ ဧပြီလလယ် ဖြစ်သည်။ ယင်းမတိုင်မီ နှစ်ဟောင်း၏ မကောင်းမှုများကို ဆေးကြောရန် ရေပက်ကြသော “သင်္ကြန်” ရှိသည် (ဧပြီ ၁၃ ရက်ခန့်မှ)။`),
+    X(`イギリス・アメリカなど {英語|えいご}の {国|くに}：{西暦|せいれき}の 1{月|がつ}1{日|にち}が お{正月|しょうがつ}です。12{月|がつ}31{日|にち}の {夜|よる}から {新年|しんねん}を {祝|いわ}います。`,
+      `English-speaking countries such as the UK and the USA: New Year is January 1 in the Western calendar. People celebrate from the night of December 31.`,
+      `英国、美国等英语国家：公历1月1日是新年，人们从12月31日晚上开始庆祝。`,
+      `Các nước nói tiếng Anh như Anh, Mỹ: năm mới là ngày 1 tháng 1 dương lịch. Mọi người đón mừng từ tối ngày 31 tháng 12.`,
+      `बेलायत, अमेरिका जस्ता अङ्ग्रेजी बोल्ने देश: ईस्वी जनवरी १ नयाँ वर्ष हो। डिसेम्बर ३१ को रातदेखि नै उत्सव मनाइन्छ।`,
+      `ယူကေ၊ အမေရိကန် စသော အင်္ဂလိပ်စကားပြော နိုင်ငံများ- ခရစ်နှစ် ဇန်နဝါရီ ၁ ရက်သည် နှစ်သစ်ကူး ဖြစ်သည်။ ဒီဇင်ဘာ ၃၁ ရက် ညမှစ၍ ကျင်းပကြသည်။`)
+  ],
+  ask: X(`あなたの {国|くに}の お{正月|しょうがつ}は いつですか？ どんな ことを しますか？`,
+    `When is New Year in your country? What do people do?`,
+    `你的国家什么时候过新年？大家做些什么？`,
+    `Năm mới ở nước bạn là khi nào? Mọi người làm gì?`,
+    `तपाईंको देशमा नयाँ वर्ष कहिले हो? मानिसहरू के गर्छन्?`,
+    `သင့်နိုင်ငံ၏ နှစ်သစ်ကူးက ဘယ်တော့လဲ။ ဘာတွေ လုပ်ကြသလဲ။`)
+};
 const LEARN = [
   {t:X("{年賀状|ねんがじょう}って なに？","What is a nengajō?","什么是年贺状？","Nengajō là gì?","नेन्गाजो भनेको के हो?","နင်ဂါဂျောဆိုတာ ဘာလဲ။"),
    b:X("{年賀状|ねんがじょう}は、{新|あたら}しい {年|とし}の はじめに おくる あいさつの はがきです。「ありがとう」と「{今年|ことし}も よろしく」の {気持|きも}ちを {書|か}きます。",
@@ -914,6 +980,10 @@ function etoWorld(){
    <p class="eto-ask">${L(ETO_WORLD.ask,{tag:"span"})}</p></details>`;
 }
 document.addEventListener("toggle", e => { if(e.target.id === "etoWorld") etoWorldOpen = e.target.open; }, true);
+function nyWidget(){
+  return `<ul class="ny-list">${NEWYEAR.rows.map(r=>`<li><p>${L(r,{tag:"span",say:true})}</p>${sayBtn(kana(r.ja),"きく")}</li>`).join("")}</ul>
+   <p class="eto-ask">${L(NEWYEAR.ask,{tag:"span"})}</p>`;
+}
 function etoWidget(){
   const Y = cardYear(), cur = etoOf(Y), now = new Date().getFullYear();
   return `<div class="eto-ring" aria-label="十二支">${ETO.map(e=>`<span class="eto ${e===cur?"on":""}"><b>${rb(`{${e.k}|${e.r}}`)}</b><small>${e.a}</small>${etoTr(e)}</span>`).join("")}</div>
@@ -1150,10 +1220,10 @@ function showTab(id){
 /* ---------- learn ---------- */
 function renderLearn(){
   $("#p-learn").innerHTML = `<div class="lead"><div class="yearchip">${(()=>{const Y=cardYear(),e=etoOf(Y);return rb(`${Y}{年|ねん}（${eraRuby(Y)}）・{${e.k}|${e.r}}（${e.a}）`);})()}</div><h2>${L(X("{日本|にほん}の お{正月|しょうがつ}と {年賀状|ねんがじょう}","Japanese New Year and nengajō","日本的新年与年贺状","Tết Nhật Bản và nengajō","जापानी नयाँ वर्ष र नेन्गाजो","ဂျပန်နှစ်သစ်နှင့် နင်ဂါဂျော"))}</h2></div>
-  <div class="grid cols">${LEARN.map((c,i)=>`<article class="card${c.eto?" wide":""}"><h3><span class="num">${"一二三四五六"[i]}</span><span>${L(c.t)}</span></h3><p>${L(c.b,{tag:"span",say:true})}</p>${sayBtn(kana(c.b.ja),"きく")}${c.fact?`<div class="fact">${c.fact}</div>`:""}${c.eto?etoWidget():""}</article>`).join("")}
-  <article class="card wide"><h3><span class="num">七</span><span>${L(DELIVERY.t)}</span></h3><p>${L(DELIVERY.b,{tag:"span",say:true})}</p>
+  <div class="grid cols">${LEARN.map((c,i)=>`<article class="card${c.eto||c.ny?" wide":""}"><h3><span class="num">${"一二三四五六七"[i]}</span><span>${L(c.t)}</span></h3><p>${L(c.b,{tag:"span",say:true})}</p>${sayBtn(kana(c.b.ja),"きく")}${c.fact?`<div class="fact">${c.fact}</div>`:""}${c.eto?etoWidget():""}${c.ny?nyWidget():""}</article>`).join("")}
+  <article class="card wide"><h3><span class="num">八</span><span>${L(DELIVERY.t)}</span></h3><p>${L(DELIVERY.b,{tag:"span",say:true})}</p>
    <ol class="flow">${DELIVERY.steps.map((st,i)=>`<li><b>${i+1}</b><span>${L(st,{say:true})}</span></li>`).join("")}</ol></article></div>
-  <p class="src">出典：日本郵便「手紙の書き方体験授業」2026年度 中学生用テキストP3・P14、同指導書P10–11、小学校高学年用指導書（寒中見舞いの時期）／日本郵便 年賀はがきに関する報道資料（各年。登録済みの年のみ具体的な日付を表示）／国立天文台 暦要項（立春）／日本郵便『楽しい年賀状を作ろう！』令和9年版（小学校低・中・高学年用、令和8年9月発行）：年賀はがきの「ひみつ」3つ・コンビニでも買える・抽選日、十二支の由来と「自分が生まれた年の十二支は何かな？」、「1月8日からは年賀状ではなく『寒中見まい』」、「年賀状がとどくまで」の7段階／干支の考え方と読み方の由来：国立国会図書館「日本の暦」干支①六十干支、国立天文台 暦Wiki「干支」、小学館HugKum（十二支の漢字にはもともと動物の意味はない）、中国非物質文化遺産網（秦の竹簡『日書』）／国による干支の違い：Wikipedia英語版 "Vietnamese zodiac" "Cat (zodiac)" "Tamu Lhosar" "Sonam Lhosar" "Burmese zodiac" "Western astrology"、AFPBB（東方新報）「子どもの出産時期にまで影響する中国の干支」2021年2月3日、Nepalnews・eKantipur（ソナム・ロサル）、bbt.org.sg（ミャンマーの8曜日）、フィリピン通信社（PNA）・Manila Bulletin・Inquirer USA（フィリピンの春節と新年の習慣）</p>`;
+  <p class="src">出典：日本郵便「手紙の書き方体験授業」2026年度 中学生用テキストP3・P14、同指導書P10–11、小学校高学年用指導書（寒中見舞いの時期）／日本郵便 年賀はがきに関する報道資料（各年。登録済みの年のみ具体的な日付を表示）／国立天文台 暦要項（立春）／日本郵便『楽しい年賀状を作ろう！』令和9年版（小学校低・中・高学年用、令和8年9月発行）：年賀はがきの「ひみつ」3つ・コンビニでも買える・抽選日、十二支の由来と「自分が生まれた年の十二支は何かな？」、「1月8日からは年賀状ではなく『寒中見まい』」、「年賀状がとどくまで」の7段階／西暦と旧暦のお正月：国立国会図書館「日本の暦」第一章（明治6年の改暦）、Wikipedia英語版 "Vikram Samvat" "Thingyan"、The Himalayan Times 2026年4月14日（ネパール暦2083年）、UNESCO無形文化遺産「Atā Thingyan」／干支の考え方と読み方の由来：国立国会図書館「日本の暦」干支①六十干支、国立天文台 暦Wiki「干支」、小学館HugKum（十二支の漢字にはもともと動物の意味はない）、中国非物質文化遺産網（秦の竹簡『日書』）／国による干支の違い：Wikipedia英語版 "Vietnamese zodiac" "Cat (zodiac)" "Tamu Lhosar" "Sonam Lhosar" "Burmese zodiac" "Western astrology"、AFPBB（東方新報）「子どもの出産時期にまで影響する中国の干支」2021年2月3日、Nepalnews・eKantipur（ソナム・ロサル）、bbt.org.sg（ミャンマーの8曜日）、フィリピン通信社（PNA）・Manila Bulletin・Inquirer USA（フィリピンの春節と新年の習慣）</p>`;
   $("#p-learn").querySelectorAll(".say").forEach(b=>{b.style.marginTop="10px"});
 }
 
@@ -1590,6 +1660,7 @@ ${teacherYearHTML()}
     <li>日本郵便株式会社『手紙の書き方体験授業』2026年度教材：中学生用テキスト P3（季節のお便り）、P4–5（様々なあて名の書き方）、P14–15（年賀状の書き方）／中学生用指導書 P10–11・P14／小学校高学年用指導書（年賀状・寒中見舞いを出す期間）</li>
     <li>（2027年用の登録データの出典）<a href="https://files.japanpost.jp/assets/34d9d11432734cfaa759e78fe395b688/159168aef19d465baf3350d358e46fa9/20260831_02_06.pdf" target="_blank" rel="noopener">日本郵便 報道資料「2027（令和9）年用年賀はがき等の発行・販売」</a></li>
     <li><a href="https://kumanichi.com/articles/2030915" target="_blank" rel="noopener">熊本日日新聞「年賀はがき、16年連続発行数減 27年、利用促進策も」</a>（85円・差出し目安12/27）</li>
+    <li>西暦と旧暦のお正月：<a href="https://www.ndl.go.jp/koyomi/chapter1/s2.html" target="_blank" rel="noopener">国立国会図書館「日本の暦」</a>（明治5年12月3日が明治6年1月1日に）／<a href="https://eco.mtk.nao.ac.jp/koyomi/wiki/B7EEA4CECBFEA4C1B7E7A4B12FB7EECEF0A4ACC0B8A4DEA4ECA4EBA4DEA4C7.html" target="_blank" rel="noopener">国立天文台 暦Wiki</a>（改暦の布告）／<a href="https://en.wikipedia.org/wiki/Vikram_Samvat" target="_blank" rel="noopener">Vikram Samvat</a>（ネパールの公式の暦、新年はバイサーク月1日）／<a href="https://thehimalayantimes.com/ampArticle/1037913" target="_blank" rel="noopener">The Himalayan Times「Nepal rings in New Year 2083BS」</a>／<a href="https://en.wikipedia.org/wiki/Thingyan" target="_blank" rel="noopener">Thingyan</a>・<a href="https://ich.unesco.org/en/RL/myanmar-traditional-new-year-ata-thingyan-festival-02085" target="_blank" rel="noopener">UNESCO「Atā Thingyan」</a>（ミャンマーの新年、4月中ごろ）。中国の元旦の休日、英語圏の12月31日の夜の祝いは一般的な事実として記載。</li>
     <li>干支の考え方：<a href="https://www.ndl.go.jp/koyomi/chapter3/s1.html" target="_blank" rel="noopener">国立国会図書館「日本の暦」干支①六十干支</a>（十干と十二支の組み合わせ、60通り、還暦）／<a href="https://eco.mtk.nao.ac.jp/koyomi/wiki/B4B3BBD9.html" target="_blank" rel="noopener">国立天文台 暦Wiki「干支」</a>／<a href="https://hugkum.sho.jp/670865" target="_blank" rel="noopener">小学館HugKum「巳には『ヘビ』の意味はない」</a>（十二支の字と動物の対応、ね・うし・とら…）／<a href="https://www.ihchina.cn/art/detail/id/30798.html" target="_blank" rel="noopener">中国非物質文化遺産網（秦漢の『日書』と十二生肖）</a>。12の動物がそろう最古の文献を後漢・王充『論衡』とする点、かけっこの話を後世の伝説とする点は一般的な説明に基づく（要確認の場合は原典で）。</li>
     <li>国による干支の違い：<a href="https://en.wikipedia.org/wiki/Vietnamese_zodiac" target="_blank" rel="noopener">Vietnamese zodiac</a>・<a href="https://en.wikipedia.org/wiki/Cat_(zodiac)" target="_blank" rel="noopener">Cat (zodiac)</a>（卯＝Mão と mèo の音の類似。ただし公式な説明はないとされる）／<a href="https://www.afpbb.com/articles/-/3329721" target="_blank" rel="noopener">AFPBB「子どもの出産時期にまで影響する中国の干支」</a>（中国は旧暦・春節で区切る、亥は豚）／<a href="https://en.wikipedia.org/wiki/Tamu_Lhosar" target="_blank" rel="noopener">Tamu Lhosar</a>（グルンの12動物）／<a href="https://english.nepalnews.com/?p=192883" target="_blank" rel="noopener">Nepalnews</a>・<a href="https://ekantipur.com/news/2026/01/19/en/today-is-magh-shukla-pratipada-sonam-lhosar-being-celebrated-with-joy-49-17.html" target="_blank" rel="noopener">eKantipur 2026-01-19</a>（タマンのソナム・ロサル）／<a href="https://en.wikipedia.org/wiki/Burmese_zodiac" target="_blank" rel="noopener">Burmese zodiac</a>・<a href="https://www.bbt.org.sg/?p=2878" target="_blank" rel="noopener">bbt.org.sg</a>（ミャンマーの曜日の8つの動物）／<a href="https://en.wikipedia.org/wiki/Western_astrology" target="_blank" rel="noopener">Western astrology</a>（誕生日による星座）</li>
     <li>フィリピン：<a href="https://alpha.pna.gov.ph/articles/1061008" target="_blank" rel="noopener">PNA「Chinese New Year in PH, more than attracting luck」</a>（春節は特別休日、風水・中国の占いを読む）／<a href="https://mb.com.ph/2025/1/22/celebrating-chinese-new-year-as-a-filipino" target="_blank" rel="noopener">Manila Bulletin「Celebrating Chinese New Year as a Filipino」</a>（中国系でない人も風水に関心）／<a href="https://usa.inquirer.net/162935/10-filipino-traditions-to-bring-luck-and-prosperity-for-the-new-year" target="_blank" rel="noopener">Inquirer USA「10 Filipino traditions…」</a>（12の丸い果物・水玉もよう）</li>
