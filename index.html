@@ -86,7 +86,7 @@ button,select,input,textarea{font:inherit;color:inherit}
 .langbtns .toggle[aria-pressed="true"]{color:#fff}
 .langbtns .toggle.only{border-style:dashed}
 .tr + .tr{margin-top:0}
-nav.tabs button .tr + .tr{margin-top:0}
+nav.tabs button .tr + .tr{display:none} /* タブ見出しの訳は、画面の幅にかかわらず最初の1言語だけ（2026-11-26） */
 body.multi .tr[data-l]::before{content:attr(data-l);display:inline-block;min-width:2.2em;margin-right:.45em;padding:0 .3em;border-radius:4px;background:var(--surface-2);border:1px solid var(--line);font-size:.72em;font-family:var(--f-ui);text-align:center;vertical-align:.1em;color:var(--muted)}
 body.multi nav.tabs .tr::before,body.multi .btn .tr::before,body.multi .choice label .tr::before{display:none}
 .hide-head,.show-head{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:999px;padding:4px 10px 4px 6px;cursor:pointer;font-size:.82rem;line-height:1.15}
@@ -840,6 +840,48 @@ const ETO_WORLD = {
     `तपाईंको देशमा कस्तो छ? परिवारलाई पनि सोधेर कक्षामा सबैलाई सुनाउनुहोस्।`,
     `သင့်နိုင်ငံမှာ ဘယ်လိုလဲ။ မိသားစုကိုလည်း မေးပြီး အတန်းထဲက လူတွေကို ပြောပြပေးပါ။`)
 };
+// 干支の考え方と「ね・うし・とら」の由来（出典：国立国会図書館「日本の暦」第三章 干支①六十干支／国立天文台 暦Wiki「干支」／小学館HugKum「巳には『ヘビ』の意味はない」2025／中国非物質文化遺産網（ihchina.cn）「日書」と十二生肖／『論衡』（後漢・王充）。vi/ne/myは試訳）
+const ETO_ABOUT = {
+  t: X("{干支|えと}って なに？「ね・うし・とら」の ゆらい","What is eto? Where do ne, ushi, tora… come from?","什么是“干支”？“ね・うし・とら”的由来","Eto là gì? Nguồn gốc của “ne, ushi, tora…”","एतो भनेको के हो? “ने, उसी, तोरा…” को उत्पत्ति","ဧတိုဆိုတာ ဘာလဲ။ “နဲ၊ ဥရှိ၊ တိုရ…” ၏ မူလ"),
+  rows: [
+    X(`{十二支|じゅうにし}（{子|ね}・{丑|うし}・{寅|とら}…）は、むかしの {中国|ちゅうごく}で、{年|とし}・{月|つき}・{時|じ}こく・{方角|ほうがく}を じゅんばんに あらわすための 12の {字|じ}でした。この {字|じ}には、もともと {動物|どうぶつ}の いみは ありません。`,
+      `The twelve branches (子, 丑, 寅…) were 12 characters used in ancient China to show years, months, times of day and directions in order. These characters did not originally mean animals.`,
+      `十二支（子、丑、寅……）是古代中国用来依次表示年、月、时辰和方位的12个字。这些字本来并没有动物的意思。`,
+      `Thập nhị chi (Tý, Sửu, Dần…) là 12 chữ mà người Trung Quốc xưa dùng để chỉ năm, tháng, giờ và phương hướng theo thứ tự. Những chữ này vốn không có nghĩa là con vật.`,
+      `बाह्र शाखा (子, 丑, 寅…) पुरानो चीनमा वर्ष, महिना, समय र दिशा क्रमैसँग जनाउन प्रयोग गरिने १२ अक्षर थिए। यी अक्षरको सुरुमा जनावरको अर्थ थिएन।`,
+      `ဆယ့်နှစ်ကိုင်း (子၊ 丑၊ 寅…) သည် ရှေးတရုတ်ပြည်တွင် နှစ်၊ လ၊ အချိန်နှင့် အရပ်မျက်နှာကို အစဉ်လိုက် ပြရန် သုံးသော စာလုံး ၁၂ လုံး ဖြစ်သည်။ ဤစာလုံးများတွင် မူလက တိရစ္ဆာန် အဓိပ္ပာယ် မပါပါ။`),
+    X(`あとから、12の {動物|どうぶつ}が あてはめられました。おぼえやすく するためだと いわれています。2200{年|ねん}ほど まえの {竹|たけ}の ふだにも {動物|どうぶつ}との {組|く}み{合|あ}わせが {書|か}かれていて、{今|いま}と ほぼ おなじ 12の {動物|どうぶつ}は、1{世紀|せいき}の {中国|ちゅうごく}の {本|ほん}『{論衡|ろんこう}』に {出|で}てきます。`,
+      `Later, 12 animals were matched to them, said to make them easier to remember. Bamboo slips from about 2,200 years ago already pair them with animals, and a list of 12 animals almost the same as today's appears in the Chinese book Lunheng (1st century).`,
+      `后来才配上了12种动物，据说是为了便于记忆。约2200年前的竹简上已经写有地支与动物的搭配，和今天几乎相同的十二种动物见于1世纪的中国典籍《论衡》。`,
+      `Về sau, người ta gán 12 con vật vào, được cho là để dễ nhớ. Trên thẻ tre khoảng 2.200 năm trước đã có ghi sự kết hợp với con vật, và 12 con vật gần giống ngày nay xuất hiện trong sách Luận Hành của Trung Quốc (thế kỷ 1).`,
+      `पछि सम्झन सजिलो होस् भनेर १२ जनावर जोडिएको भनिन्छ। करिब २,२०० वर्षअघिका बाँसका पातामा पनि जनावरसँगको जोडी लेखिएको छ, र आजकै जस्ता १२ जनावर पहिलो शताब्दीको चिनियाँ ग्रन्थ “लुनहेङ” मा देखिन्छन्।`,
+      `နောက်ပိုင်းမှ မှတ်ရလွယ်အောင် တိရစ္ဆာန် ၁၂ ကောင်ကို တွဲခဲ့သည်ဟု ဆိုကြသည်။ လွန်ခဲ့သော နှစ် ၂၂၀၀ ခန့်က ဝါးပြားများတွင်လည်း တိရစ္ဆာန်နှင့် တွဲထားသည်ကို ရေးထားပြီး ယနေ့နှင့် အတော်တူသော တိရစ္ဆာန် ၁၂ ကောင်ကို ပထမရာစု တရုတ်စာအုပ် “လွန်ဟင်း” တွင် တွေ့ရသည်။`),
+    X(`{日本|にほん}の「ね・うし・とら・う・たつ・み・うま・ひつじ・さる・とり・いぬ・い」は、あてはめた {動物|どうぶつ}の {日本語|にほんご}の {名前|なまえ}を もとにした {読|よ}み{方|かた}です。ね（ねずみ）・う（うさぎ）・み（へび）・い（いのしし）のように、{動物|どうぶつ}の {名前|なまえ}と すこし ちがう ものも あります。`,
+      `In Japan, ne, ushi, tora, u, tatsu, mi, uma, hitsuji, saru, tori, inu, i are readings based on the Japanese names of the matched animals. Some differ a little from the animal's name: ne (nezumi, rat), u (usagi, rabbit), mi (hebi, snake), i (inoshishi, wild boar).`,
+      `日本的“ね、うし、とら、う、たつ、み、うま、ひつじ、さる、とり、いぬ、い”，是根据所配动物的日语名称来读的。其中也有和动物名称稍有不同的，如ね（ねずみ，鼠）、う（うさぎ，兔）、み（へび，蛇）、い（いのしし，野猪）。`,
+      `Ở Nhật, “ne, ushi, tora, u, tatsu, mi, uma, hitsuji, saru, tori, inu, i” là cách đọc dựa trên tên tiếng Nhật của các con vật được gán. Có cách đọc hơi khác tên con vật, như ne (nezumi: chuột), u (usagi: thỏ), mi (hebi: rắn), i (inoshishi: lợn rừng).`,
+      `जापानको “ने, उसी, तोरा, उ, तात्सु, मी, उमा, हित्सुजी, सारु, तोरी, इनु, इ” जोडिएका जनावरहरूको जापानी नाममा आधारित पढाइ हो। केही जनावरको नामभन्दा अलि फरक छन्: ने (नेजुमी, मुसा), उ (उसागी, खरायो), मी (हेबी, सर्प), इ (इनोसिसी, बँदेल)।`,
+      `ဂျပန်၏ “နဲ၊ ဥရှိ၊ တိုရ၊ ဥ၊ တဆု၊ မိ၊ ဥမ၊ ဟိဆုဂျိ၊ ဆရု၊ တိုရိ၊ အိနု၊ အိ” သည် တွဲထားသော တိရစ္ဆာန်တို့၏ ဂျပန်အမည်ကို အခြေခံသော အဖတ် ဖြစ်သည်။ နဲ (နဲဇုမိ၊ ကြွက်)၊ ဥ (ဥဆဂိ၊ ယုန်)၊ မိ (ဟဲဘိ၊ မြွေ)၊ အိ (အိနိုရှိရှိ၊ တောဝက်) ကဲ့သို့ တိရစ္ဆာန်အမည်နှင့် အနည်းငယ် ကွာသည်များလည်း ရှိသည်။`),
+    X(`「{干支|えと}」は、ほんとうは {十干|じっかん}（{甲|きのえ}・{乙|きのと}…）と {十二支|じゅうにし}を {組|く}み{合|あ}わせた もので、60で ひとまわりします。60さいの お{祝|いわ}い「{還暦|かんれき}」は ここから きています。「えと」と いう ことばは、{十干|じっかん}の「{兄|え}」と「{弟|と}」から きました。{今|いま}は {十二支|じゅうにし}だけを「{干支|えと}」と いうことが {多|おお}いです。`,
+      `Strictly, eto is the combination of the ten stems (甲, 乙…) and the twelve branches, which repeats every 60. This is why the 60th birthday is celebrated as kanreki. The word eto comes from e (elder brother) and to (younger brother) in the names of the ten stems. Today people often use eto to mean just the twelve animals.`,
+      `“干支”本来是十天干（甲、乙……）和十二地支的组合，60年一轮回。日本60岁的“还历”庆祝就是由此而来。“えと”这个词来自十干的“兄（え）”和“弟（と）”。现在日本人多用“干支（えと）”来指十二生肖。`,
+      `“Can chi” vốn là sự kết hợp giữa thập can (Giáp, Ất…) và thập nhị chi, cứ 60 năm lặp lại một vòng. Lễ mừng 60 tuổi “kanreki” ở Nhật bắt nguồn từ đây. Từ “eto” xuất phát từ “e (anh)” và “to (em)” trong cách đọc thập can. Ngày nay người Nhật thường gọi riêng 12 con giáp là “eto”.`,
+      `“एतो” वास्तवमा दस “स्टेम” (甲, 乙…) र बाह्र शाखाको संयोजन हो, जुन ६० मा एक फन्को पूरा गर्छ। ६० वर्षको उत्सव “कानरेकी” यहीँबाट आएको हो। “एतो” शब्द दस स्टेमका “ए (दाजु)” र “तो (भाइ)” बाट आएको हो। आजकल प्रायः १२ जनावरलाई मात्र “एतो” भनिन्छ।`,
+      `“ဧတို” သည် အမှန်တွင် ဆယ်ပင်စည် (甲၊ 乙…) နှင့် ဆယ့်နှစ်ကိုင်းကို ပေါင်းထားခြင်း ဖြစ်ပြီး ၆၀ တွင် တစ်ပတ်ပြည့်သည်။ အသက် ၆၀ ပွဲ “ကန်ရဲကိ” သည် ဤနေရာမှ လာသည်။ “ဧတို” ဟူသော စကားလုံးသည် ဆယ်ပင်စည်၏ “ဧ (အစ်ကို)” နှင့် “တို (ညီ)” မှ လာသည်။ ယခု တိရစ္ဆာန် ၁၂ ကောင်ကိုသာ “ဧတို” ဟု ခေါ်လေ့ ရှိသည်။`),
+    X(`ねずみが うしの せなかに のって 1ばんに なった、と いう {神様|かみさま}の かけっこの {昔話|むかしばなし}も {有名|ゆうめい}ですが、これは あとから できた お{話|はなし}です。また、{干支|えと}を {使|つか}わない {国|くに}や {地域|ちいき}も たくさん あります。{下|した}の「くにによって ちがう {干支|えと}」も {見|み}て ください。`,
+      `The folk tale of the gods' race, in which the rat rode on the ox's back and came first, is famous, but it was made up later. Also, many countries and regions do not use the zodiac at all. See "How the zodiac differs by country" below.`,
+      `老鼠骑在牛背上抢得第一的“动物赛跑”故事很有名，但那是后来才有的传说。另外，也有很多国家和地区不使用十二生肖。请看下面的“各国生肖的不同”。`,
+      `Câu chuyện cuộc đua của các con vật, chuột cưỡi trên lưng trâu mà về nhất, rất nổi tiếng, nhưng đó là chuyện có về sau. Ngoài ra, cũng có nhiều nước và vùng không dùng con giáp. Hãy xem phần “Con giáp khác nhau ở mỗi nước” ở dưới.`,
+      `मुसा गोरुको ढाडमा चढेर पहिलो भएको देवताको दौडको लोककथा चर्चित छ, तर त्यो पछि बनेको कथा हो। साथै, राशि जनावर प्रयोग नगर्ने धेरै देश र क्षेत्र पनि छन्। तलको “देशअनुसार फरक राशि जनावर” पनि हेर्नुहोस्।`,
+      `ကြွက်က နွားကျောပေါ်စီးပြီး ပထမ ရခဲ့သည်ဟူသော နတ်ဘုရား၏ အပြေးပြိုင်ပွဲ ပုံပြင်သည် နာမည်ကြီးသော်လည်း နောက်မှ ပေါ်လာသော ပုံပြင် ဖြစ်သည်။ ထို့အပြင် တိရစ္ဆာန်နှစ်ကို မသုံးသော နိုင်ငံနှင့် ဒေသများလည်း အများအပြား ရှိသည်။ အောက်ရှိ “နိုင်ငံအလိုက် ကွာခြားသော တိရစ္ဆာန်နှစ်” ကိုလည်း ကြည့်ပါ။`)
+  ]
+};
+let etoAboutOpen = false;
+function etoAbout(){
+  return `<details class="eto-world" id="etoAbout"${etoAboutOpen?" open":""}><summary>${L(ETO_ABOUT.t)}</summary>
+   <ul>${ETO_ABOUT.rows.map(r=>`<li><p>${L(r,{tag:"span",say:true})}</p>${sayBtn(kana(r.ja),"きく")}</li>`).join("")}</ul></details>`;
+}
+document.addEventListener("toggle", e => { if(e.target.id === "etoAbout") etoAboutOpen = e.target.open; }, true);
 let etoWorldOpen = false;
 function etoWorld(){
   return `<details class="eto-world" id="etoWorld"${etoWorldOpen?" open":""}><summary>${L(ETO_WORLD.t)}</summary>
@@ -853,6 +895,7 @@ function etoWidget(){
   <div class="born"><label for="bornYear">${L(BORN.lab)}</label>
    <div class="born-row"><input type="number" id="bornYear" inputmode="numeric" min="1900" max="${now}" placeholder="${now-30}" autocomplete="off"><div id="bornOut" aria-live="polite"></div></div>
    <p class="hint">${L(BORN.note)}</p><p class="hint">${L(BORN.save)}</p></div>
+  ${etoAbout()}
   ${etoWorld()}`;
 }
 document.addEventListener("input", e => {
@@ -1085,7 +1128,7 @@ function renderLearn(){
   <div class="grid cols">${LEARN.map((c,i)=>`<article class="card${c.eto?" wide":""}"><h3><span class="num">${"一二三四五六"[i]}</span><span>${L(c.t)}</span></h3><p>${L(c.b,{tag:"span",say:true})}</p>${sayBtn(kana(c.b.ja),"きく")}${c.fact?`<div class="fact">${c.fact}</div>`:""}${c.eto?etoWidget():""}</article>`).join("")}
   <article class="card wide"><h3><span class="num">七</span><span>${L(DELIVERY.t)}</span></h3><p>${L(DELIVERY.b,{tag:"span",say:true})}</p>
    <ol class="flow">${DELIVERY.steps.map((st,i)=>`<li><b>${i+1}</b><span>${L(st,{say:true})}</span></li>`).join("")}</ol></article></div>
-  <p class="src">出典：日本郵便「手紙の書き方体験授業」2026年度 中学生用テキストP3・P14、同指導書P10–11、小学校高学年用指導書（寒中見舞いの時期）／日本郵便 年賀はがきに関する報道資料（各年。登録済みの年のみ具体的な日付を表示）／国立天文台 暦要項（立春）／日本郵便『楽しい年賀状を作ろう！』令和9年版（小学校低・中・高学年用、令和8年9月発行）：年賀はがきの「ひみつ」3つ・コンビニでも買える・抽選日、十二支の由来と「自分が生まれた年の十二支は何かな？」、「1月8日からは年賀状ではなく『寒中見まい』」、「年賀状がとどくまで」の7段階／国による干支の違い：Wikipedia英語版 "Vietnamese zodiac" "Cat (zodiac)" "Tamu Lhosar" "Sonam Lhosar" "Burmese zodiac" "Western astrology"、AFPBB（東方新報）「子どもの出産時期にまで影響する中国の干支」2021年2月3日、Nepalnews・eKantipur（ソナム・ロサル）、bbt.org.sg（ミャンマーの8曜日）、フィリピン通信社（PNA）・Manila Bulletin・Inquirer USA（フィリピンの春節と新年の習慣）</p>`;
+  <p class="src">出典：日本郵便「手紙の書き方体験授業」2026年度 中学生用テキストP3・P14、同指導書P10–11、小学校高学年用指導書（寒中見舞いの時期）／日本郵便 年賀はがきに関する報道資料（各年。登録済みの年のみ具体的な日付を表示）／国立天文台 暦要項（立春）／日本郵便『楽しい年賀状を作ろう！』令和9年版（小学校低・中・高学年用、令和8年9月発行）：年賀はがきの「ひみつ」3つ・コンビニでも買える・抽選日、十二支の由来と「自分が生まれた年の十二支は何かな？」、「1月8日からは年賀状ではなく『寒中見まい』」、「年賀状がとどくまで」の7段階／干支の考え方と読み方の由来：国立国会図書館「日本の暦」干支①六十干支、国立天文台 暦Wiki「干支」、小学館HugKum（十二支の漢字にはもともと動物の意味はない）、中国非物質文化遺産網（秦の竹簡『日書』）／国による干支の違い：Wikipedia英語版 "Vietnamese zodiac" "Cat (zodiac)" "Tamu Lhosar" "Sonam Lhosar" "Burmese zodiac" "Western astrology"、AFPBB（東方新報）「子どもの出産時期にまで影響する中国の干支」2021年2月3日、Nepalnews・eKantipur（ソナム・ロサル）、bbt.org.sg（ミャンマーの8曜日）、フィリピン通信社（PNA）・Manila Bulletin・Inquirer USA（フィリピンの春節と新年の習慣）</p>`;
   $("#p-learn").querySelectorAll(".say").forEach(b=>{b.style.marginTop="10px"});
 }
 
@@ -1521,6 +1564,7 @@ ${teacherYearHTML()}
     <li>日本郵便株式会社『手紙の書き方体験授業』2026年度教材：中学生用テキスト P3（季節のお便り）、P4–5（様々なあて名の書き方）、P14–15（年賀状の書き方）／中学生用指導書 P10–11・P14／小学校高学年用指導書（年賀状・寒中見舞いを出す期間）</li>
     <li>（2027年用の登録データの出典）<a href="https://files.japanpost.jp/assets/34d9d11432734cfaa759e78fe395b688/159168aef19d465baf3350d358e46fa9/20260831_02_06.pdf" target="_blank" rel="noopener">日本郵便 報道資料「2027（令和9）年用年賀はがき等の発行・販売」</a></li>
     <li><a href="https://kumanichi.com/articles/2030915" target="_blank" rel="noopener">熊本日日新聞「年賀はがき、16年連続発行数減 27年、利用促進策も」</a>（85円・差出し目安12/27）</li>
+    <li>干支の考え方：<a href="https://www.ndl.go.jp/koyomi/chapter3/s1.html" target="_blank" rel="noopener">国立国会図書館「日本の暦」干支①六十干支</a>（十干と十二支の組み合わせ、60通り、還暦）／<a href="https://eco.mtk.nao.ac.jp/koyomi/wiki/B4B3BBD9.html" target="_blank" rel="noopener">国立天文台 暦Wiki「干支」</a>／<a href="https://hugkum.sho.jp/670865" target="_blank" rel="noopener">小学館HugKum「巳には『ヘビ』の意味はない」</a>（十二支の字と動物の対応、ね・うし・とら…）／<a href="https://www.ihchina.cn/art/detail/id/30798.html" target="_blank" rel="noopener">中国非物質文化遺産網（秦漢の『日書』と十二生肖）</a>。12の動物がそろう最古の文献を後漢・王充『論衡』とする点、かけっこの話を後世の伝説とする点は一般的な説明に基づく（要確認の場合は原典で）。</li>
     <li>国による干支の違い：<a href="https://en.wikipedia.org/wiki/Vietnamese_zodiac" target="_blank" rel="noopener">Vietnamese zodiac</a>・<a href="https://en.wikipedia.org/wiki/Cat_(zodiac)" target="_blank" rel="noopener">Cat (zodiac)</a>（卯＝Mão と mèo の音の類似。ただし公式な説明はないとされる）／<a href="https://www.afpbb.com/articles/-/3329721" target="_blank" rel="noopener">AFPBB「子どもの出産時期にまで影響する中国の干支」</a>（中国は旧暦・春節で区切る、亥は豚）／<a href="https://en.wikipedia.org/wiki/Tamu_Lhosar" target="_blank" rel="noopener">Tamu Lhosar</a>（グルンの12動物）／<a href="https://english.nepalnews.com/?p=192883" target="_blank" rel="noopener">Nepalnews</a>・<a href="https://ekantipur.com/news/2026/01/19/en/today-is-magh-shukla-pratipada-sonam-lhosar-being-celebrated-with-joy-49-17.html" target="_blank" rel="noopener">eKantipur 2026-01-19</a>（タマンのソナム・ロサル）／<a href="https://en.wikipedia.org/wiki/Burmese_zodiac" target="_blank" rel="noopener">Burmese zodiac</a>・<a href="https://www.bbt.org.sg/?p=2878" target="_blank" rel="noopener">bbt.org.sg</a>（ミャンマーの曜日の8つの動物）／<a href="https://en.wikipedia.org/wiki/Western_astrology" target="_blank" rel="noopener">Western astrology</a>（誕生日による星座）</li>
     <li>フィリピン：<a href="https://alpha.pna.gov.ph/articles/1061008" target="_blank" rel="noopener">PNA「Chinese New Year in PH, more than attracting luck」</a>（春節は特別休日、風水・中国の占いを読む）／<a href="https://mb.com.ph/2025/1/22/celebrating-chinese-new-year-as-a-filipino" target="_blank" rel="noopener">Manila Bulletin「Celebrating Chinese New Year as a Filipino」</a>（中国系でない人も風水に関心）／<a href="https://usa.inquirer.net/162935/10-filipino-traditions-to-bring-luck-and-prosperity-for-the-new-year" target="_blank" rel="noopener">Inquirer USA「10 Filipino traditions…」</a>（12の丸い果物・水玉もよう）</li>
     <li><a href="https://eco.mtk.nao.ac.jp/koyomi/yoko/2027/rekiyou272.html" target="_blank" rel="noopener">国立天文台 令和9年（2027）暦要項</a>（立春 2月4日）</li></ul>
