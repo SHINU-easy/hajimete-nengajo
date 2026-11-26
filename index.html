@@ -343,8 +343,11 @@ blockquote{margin:6px 0;padding:6px 12px;border-left:3px solid var(--line);color
 /* confirm bar */
 .confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:10px;border:1.5px solid var(--shu);border-radius:8px;background:var(--shu-soft);font-size:.9rem}
 
-@media (max-width:400px){ .top .brand h1{font-size:1.06rem} .top .brand{gap:8px} .top .top-inner{column-gap:10px} }
+@media (max-width:400px){ .top .brand h1{font-size:1.06rem} .top .brand{gap:8px} .top .top-inner{column-gap:10px} .top .hide-head{margin-left:-2px} }
 footer{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px 30px;color:var(--muted);font-size:.78rem}
+.credit-hide{float:right;margin:0 0 6px 12px;display:inline-flex;flex-direction:column;align-items:center;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:999px;padding:3px 10px;cursor:pointer;font-size:.74rem;line-height:1.2}
+.credit-hide small{font-size:.62rem;color:var(--muted)}
+body.credit-hidden #credit{display:none}
 
 /* 中くらいの横長画面（電子黒板・タブレット横向き）：言語ボタンの列を1行に収める（2026-11-26） */
 @media (min-width:721px) and (max-width:1099px){
@@ -375,8 +378,9 @@ footer{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-
   .brand small{display:none}
   .ctl-toggle{display:inline-flex}
   .hide-head small{display:none}
-  .hide-head{top:15px}
-  .ctl-toggle{margin-right:84px}
+  /* 「言語・表示」と「かくす」を同じ行・同じ高さにそろえる（2026-11-26） */
+  .hide-head{position:static;align-self:center;height:36px;box-sizing:border-box;margin-left:-10px}
+  .ctl-toggle{margin-right:0;height:36px;box-sizing:border-box}
   .controls{margin-right:0}
   .controls{display:none;flex-basis:100%;margin-left:0;padding-bottom:6px}
   .top.open .controls{display:flex}
@@ -384,9 +388,8 @@ footer{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-
 }
 @media (max-width:520px){
   .seal{width:34px;height:34px;font-size:.88rem;letter-spacing:0}
-  .hide-head{top:12px;padding:5px}
+  .hide-head{padding:5px 8px}
   .hide-head span{display:none}
-  .ctl-toggle{margin-right:42px}
   .ctl-toggle .ct-lab{display:none}
   .brand h1{font-size:1.25rem}
   .controls{margin-left:0}
@@ -440,7 +443,8 @@ footer{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-
   <section class="panel" id="p-teacher" role="tabpanel" hidden></section>
 </main>
 
-<footer>
+<footer id="credit">
+  <button type="button" class="credit-hide" id="creditHide" title="「先生へ」タブで もう一度 表示できます / You can show it again in the For teachers tab">クレジットを かくす<small>Hide credits</small></button>
   © 上野振宇　学校教育・個人の学習での利用は自由です。商用利用の際は作者へご一報ください。　参考：日本郵便「手紙の書き方体験授業」2026年度教材（中学生用 P3・P4–5・P14–15、同指導書）、日本郵便 年賀はがきに関する報道資料（各年）、国立天文台 暦要項（各年）。
 </footer>
 
@@ -465,15 +469,19 @@ const LANGS = [["ja","日本語だけ"],["en","英語"],["zh","中国語"],["vi"
 
 /* ---------- state ---------- */
 const KEY = "hajimete-nengajo-v1";
+const SAMPLE_NAME = "上野振宇"; // 見本の差出人名（2026-11-26 「マイ」から変更）
 const SAMPLE_CARD = {partner:"teacher", gashi:"g1", thanks:"b1",
   news:[{id:"n3", fill:"ひらがなが読めること"},{id:"n1", fill:"漢字"}],
-  free:"", memo:"", closing:"c1", date:"d1", name:"マイ", pic:"eto", dir:"tate", drawing:null, sample:true};
+  free:"", memo:"", closing:"c1", date:"d1", name:SAMPLE_NAME, pic:"eto", dir:"tate", drawing:null, sample:true};
 const SAMPLE_ADDR = {toZip:"1234567", toAddr1:"東京都みどり区さくら町1-2-3", toAddr2:"みどり夜間中学校", toAddr3:"", toName:"山田 花子", keisho:"先生",
-  fromZip:"1234568", fromAddr1:"東京都みどり区もみじ町4-5-6", fromAddr2:"", fromName:"マイ", kanji:true, real:false, nenga:false, sample:true};
+  fromZip:"1234568", fromAddr1:"東京都みどり区もみじ町4-5-6", fromAddr2:"", fromName:SAMPLE_NAME, kanji:true, real:false, nenga:false, sample:true};
 let state = {langs:["en"], yearOverride:null, furi:true, big:false, tab:"learn", card:clone(SAMPLE_CARD), addr:clone(SAMPLE_ADDR), quiz:{}};
 function clone(o){return JSON.parse(JSON.stringify(o))}
 try{ const s = JSON.parse(localStorage.getItem(KEY) || "null"); if(s && s.card){ state = Object.assign(state, s); if(!Array.isArray(s.langs)) state.langs = (s.lang && s.lang!=="ja") ? [s.lang] : (s.lang==="ja" ? [] : ["en"]); delete state.lang; } }catch(e){}
 const LANG_ORDER = ["en","zh","vi","ne","my"];
+// 以前の見本名「マイ」のまま保存されている見本データを新しい見本名に置きかえる（自分で書いた名前は変えない）
+if(state.card && state.card.sample && state.card.name === "マイ") state.card.name = SAMPLE_NAME;
+if(state.addr && state.addr.sample && state.addr.fromName === "マイ") state.addr.fromName = SAMPLE_NAME;
 if(state.card && state.card.pic === "sheep") state.card.pic = "eto";
 const LCODE = {en:"EN",zh:"中",vi:"VI",ne:"NE",my:"MY"};
 state.langs = LANG_ORDER.filter(l => (state.langs||[]).includes(l));
@@ -1012,7 +1020,7 @@ const PARTS = [
 ];
 const PARTS_SAMPLE = {gashi:"{明|あ}けましておめでとうございます",
   body:["{昨年|さくねん}は{大変|たいへん}お{世話|せわ}になりました。","{日本|にほん}に{来|き}て、ひらがなが{読|よ}めるようになりました。","{今年|ことし}は{漢字|かんじ}をがんばります。"],
-  close:"{今年|ことし}もよろしくお{願|ねが}いいたします。", date:"", name:"マイ"};
+  close:"{今年|ことし}もよろしくお{願|ねが}いいたします。", date:"", name:SAMPLE_NAME};
 
 const QUIZ = [
   {q:X("{年賀状|ねんがじょう}は いつ とどくように {出|だ}しますか？","When should a nengajō arrive?","年贺状要在什么时候送达？","Nengajō nên đến vào ngày nào?","नेन्गाजो कहिले पुग्ने गरी पठाउने?","နင်ဂါဂျောကို ဘယ်နေ့ ရောက်အောင် ပို့ရမလဲ။"),
@@ -1288,7 +1296,7 @@ function renderParts(){
   <div class="parts-wrap"><div id="partsCard">${cardHTML(model,"parts")}</div>
   <div class="part-list">${PARTS.map(p=>`<div class="part k${p.k}" data-part="${p.k}" tabindex="0" role="button"><h4><span class="dot">${p.k}</span><span>${L(p.h)}</span></h4><div>${L(p.b,{say:true})}</div></div>`).join("")}
   <div class="card" style="font-size:.9rem">${L(X("{右|みぎ}から {左|ひだり}へ、{上|うえ}から {下|した}へ {読|よ}みます（たてがき）。","Vertical writing: read from top to bottom, right to left.","竖写：从上到下、从右到左阅读。","Viết dọc: đọc từ trên xuống, từ phải sang trái.","ठाडो लेखाइ: माथिबाट तल, दायाँबाट बायाँ पढिन्छ।","ဒေါင်လိုက်ရေး: အပေါ်မှအောက်၊ ညာမှဘယ်သို့ ဖတ်သည်။"))}</div>
-  ${sayBtn(kana([s.gashi,...s.body,s.close,s.date].join("。"))+"。マイ")}
+  ${sayBtn(kana([s.gashi,...s.body,s.close,s.date].join("。"))+"。"+SAMPLE_NAME)}
   <p class="src">出典：中学生用テキストP14（前文・主文・末文・後付けの4部構成、色分け）・同指導書P10。手本の文はこのアプリ用に作成した例文です。</p></div></div>`;
   fitAll();
 }
@@ -1575,6 +1583,7 @@ function renderTeacher(){
      <li>ネパール語・ミャンマー語の訳は試訳です。読み上げで不自然な箇所があれば、母語話者の確認の手がかりにもなります。</li>
     </ul>
     <button type="button" class="btn" id="voiceRefresh" style="margin-top:8px">表を更新</button></div>
+   <div class="card"><h3>表示の設定</h3><label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" id="creditShow"${state.creditHidden?"":" checked"}> ページの下に クレジット（作者・利用条件・参考資料）を 表示する</label><p style="margin:6px 0 0;font-size:.85rem;color:var(--muted)">生徒の画面や電子黒板で じゃまな ときは、ページの下の「クレジットを かくす」か、ここで 消せます。この設定は この端末の ブラウザに 保存されます。</p></div>
 ${teacherYearHTML()}
    <div class="card"><h3>出典</h3><ul>
     <li>日本郵便株式会社『楽しい年賀状を作ろう！』令和9年版（小学校低学年・中学年・高学年用、令和8年9月発行、監修：郵便教育推進委員会）：かんたんモードの3部構成、なぞりがきの中心線、年賀はがきの「ひみつ」、十二支、届くまでの7段階、連名、寒中見舞い</li>
@@ -1662,6 +1671,10 @@ function setHead(hidden, focus){
   fitAll(); const pv = $("#cardPreview .hagaki"); if(pv) fit(pv);
 }
 setHead(!!state.headHidden, false);
+function setCredit(hidden){ document.body.classList.toggle("credit-hidden", hidden); const c = document.getElementById("creditShow"); if(c) c.checked = !hidden; }
+setCredit(!!state.creditHidden);
+$("#creditHide").addEventListener("click", () => { state.creditHidden = true; save(); setCredit(true); });
+document.addEventListener("change", e => { if(e.target.id === "creditShow"){ state.creditHidden = !e.target.checked; save(); setCredit(state.creditHidden); } });
 hideB.addEventListener("click", () => { state.headHidden = true; save(); setHead(true, true); });
 showB.addEventListener("click", () => { state.headHidden = false; save(); setHead(false, true); });
 ctlT.addEventListener("click", () => { state.ctlOpen = !topEl.classList.contains("open"); save(); setCtl(state.ctlOpen); });
