@@ -340,6 +340,11 @@ body.multi .opt .tr[data-l]::before{display:none}
 .tdoc .card h3{font-size:1.08rem}
 .tdoc ul,.tdoc ol{margin:6px 0 0;padding-left:1.3em}
 .tdoc li{margin:3px 0}
+.post-doc a{color:var(--pine);text-decoration:underline;text-underline-offset:2px}
+.post-doc .links{margin:8px 0 0;font-size:.9rem;line-height:1.9}
+.post-doc .btn-links{display:flex;flex-wrap:wrap;gap:8px}
+.post-doc .btn-links a{display:inline-block;padding:5px 12px;border:1.5px solid var(--pine);border-radius:999px;text-decoration:none;font-weight:700;font-size:.88rem}
+.post-doc .note-card{background:var(--surface-2)}
 .tdoc table{border-collapse:collapse;width:100%;font-size:.9rem}
 .tdoc th,.tdoc td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
 .tdoc th{background:var(--surface-2);white-space:nowrap}
@@ -355,7 +360,7 @@ footer{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-
 .credit-hide{float:right;margin:0 0 6px 12px;display:inline-flex;flex-direction:column;align-items:center;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:999px;padding:3px 10px;cursor:pointer;font-size:.74rem;line-height:1.2}
 .credit-hide small{font-size:.62rem;color:var(--muted)}
 body.credit-hidden #credit{display:none}
-body.credit-hidden main .src:not(#p-teacher .src){display:none} /* 出典もクレジットと一緒にかくす（「先生へ」タブは残す） */
+body.credit-hidden main .src:not(#p-teacher .src):not(#p-post .src){display:none} /* 出典もクレジットと一緒にかくす（「先生へ」「郵便局」タブは残す） */
 
 /* 中くらいの横長画面（電子黒板・タブレット横向き）：言語ボタンの列を1行に収める（2026-11-26） */
 @media (min-width:721px) and (max-width:1099px){
@@ -448,6 +453,7 @@ body.credit-hidden main .src:not(#p-teacher .src){display:none} /* 出典もク�
   <section class="panel" id="p-write" role="tabpanel" hidden></section>
   <section class="panel" id="p-address" role="tabpanel" hidden></section>
   <section class="panel" id="p-quiz" role="tabpanel" hidden></section>
+  <section class="panel" id="p-post" role="tabpanel" hidden></section>
   <section class="panel" id="p-teacher" role="tabpanel" hidden></section>
 </main>
 
@@ -757,6 +763,7 @@ const UI = {
     ["write", X("{書|か}く","Write","写贺卡","Viết thiệp","लेख्नुहोस्","ရေးရန်")],
     ["address", X("あてな","Address","写地址","Địa chỉ","ठेगाना","လိပ်စာ")],
     ["quiz", X("クイズ","Quiz","测验","Câu đố","प्रश्नोत्तरी","ပဟေဠိ")],
+    ["post", X("{郵便局|ゆうびんきょく}","Japan Post","邮局","Bưu điện","हुलाक","စာတိုက်")],
     ["teacher", X("{先生|せんせい}へ","For teachers","教师用","Cho giáo viên","शिक्षकका लागि","ဆရာများအတွက်")]
   ]
 };
@@ -1665,6 +1672,85 @@ $("#p-quiz").addEventListener("click", e => {
 });
 
 /* ---------- teacher ---------- */
+/* ---------- 郵便局の授業支援（日本郵便「手紙の書き方体験授業」の紹介・申込・アンケート）2026-11-26 確認 ---------- */
+const SP = "https://www.schoolpost.jp";
+const PL = (href, text) => `<a href="${href}" target="_blank" rel="noopener">${text}</a>`;
+function renderPost(){
+  $("#p-post").innerHTML = `<div class="lead"><h2>${rb("{郵便局|ゆうびんきょく}の {授業|じゅぎょう}{支援|しえん}：「{手紙|てがみ}の{書|か}き{方|かた}{体験|たいけん}{授業|じゅぎょう}」")}</h2>
+  <p>${TR(X("","For teachers: Japan Post's free letter-writing lesson program (in Japanese).","教师用：日本邮政免费的“书信写作体验课”（日语）。","Dành cho giáo viên: chương trình giờ học viết thư miễn phí của Bưu điện Nhật Bản (tiếng Nhật).","शिक्षकका लागि: जापान पोस्टको निःशुल्क पत्र लेखन कक्षा कार्यक्रम (जापानीमा)।","ဆရာများအတွက်- ဂျပန်စာတိုက်၏ အခမဲ့ စာရေးနည်း သင်ခန်းစာ အစီအစဉ် (ဂျပန်ဘာသာ)။"))}</p></div>
+  <div class="tdoc post-doc">
+   <div class="card note-card"><p>このタブは先生向けです。内容は日本郵便のサイト「手紙の書き方体験授業」（${PL(SP+"/","schoolpost.jp")}）を<b>2026年11月26日</b>に確認したもので、<b>2026年度</b>の情報です。日付・枚数・特典などは毎年かわるので、申し込む前に必ずリンク先で確かめてください。</p></div>
+
+   <div class="card"><h3>1. どんなサービス？</h3>
+    <ul>
+     <li>日本郵便が行う郵便教育で、学校の授業で「実際の手紙のやり取り」を体験し、手紙を書く楽しさや受け取る喜びを味わってもらうものです。2010年度に始まりました（${PL(SP+"/elementary/write/Introduction","はじめに（小学校向け）")}）。</li>
+     <li><b>費用は無料</b>：「教材、郵便はがきの料金、送料等は一切いただいておりません」（${PL(SP+"/junior/write/qa","よくあるご質問（中学校）")}）。</li>
+     <li>授業は<b>先生が自分のクラスで行う</b>形式です（教材が学校に届く）。</li>
+     <li>参加の規模（2025年度）：中学校 約4,890校・約107万人（特別支援学校を含む）、小学校 約12,260校・約250万人。<b>夜間中学も申し込めます</b>（2024年度は約19校が参加）。</li>
+     <li>このアプリの「ことば」「かたち」「書く」などは、この授業の2026年度 中学生用テキスト・指導書を参考に作っています。</li>
+    </ul>
+    <p class="links">${PL("https://data.schoolpost.jp/4217/7700/9941/2026_26.04.24.pdf","「手紙の書き方体験授業とは？」（PDF）")}　${PL("https://data.schoolpost.jp/3717/7700/9653/2026.04.24.pdf","郵便教育推進委員会（PDF）")}　${PL(SP+"/junior/write/introduction","はじめに（中学校）")}　${PL(SP+"/junior/write/position","各教科における位置づけ（中学校）")}</p></div>
+
+   <div class="card"><h3>2. もらえる教材</h3>
+    <ul>
+     <li><b>テキスト（冊子）</b>：中学校用は、行事や季節のお便り（P2）、あて名の書き方（P4）、お礼状（P6・P8）、頭語・結語・時候のあいさつ（P11）、暑中・残暑見舞い（P12）、<b>年賀状（P14）</b>、はがき・切手の種類（裏表紙）。学校内でコピーして使えます。</li>
+     <li><b>郵便はがき</b>（切手をはらずに出せる本物のはがき）：生徒・先生<b>1人につき年度内に最大2枚</b>。「通常はがき2枚」または「通常はがき1枚＋年賀はがき1枚」（年賀はがきは1人1枚まで）。はがきだけ欲しいときは「テキスト不要」にチェック。</li>
+     <li><b>年賀はがき</b>：2026年度の申込は<b>2026年11月末（予定）まで</b>。11月中旬から順次届く予定で、予定数に達した場合は通常はがきが届きます。</li>
+     <li><b>くぼみ入りはがき</b>（目の不自由な人が上下・表裏を区別できる）も選べます。</li>
+     <li><b>便箋・封筒</b>（先着順）：1人につき便箋2枚・封筒1枚（封筒に切手はありません）。</li>
+    </ul>
+    <p class="links">${PL(SP+"/junior/write/teaching","教材紹介（中学校）")}　${PL(SP+"/elementary/write/teaching","教材紹介（小学校）")}</p></div>
+
+   <div class="card"><h3>3. 申し込みのしかた（夜間中学の場合）</h3>
+    <ol>
+     <li><b>申込ページを選ぶ</b>：夜間中学は「特別支援学校（学級）・夜間中学・インターナショナルスクール」用のページから申し込みます。中学校の教材のほか、生徒の状況に合わせて<b>小学校（低・中・高学年）の教材</b>も選べます。</li>
+     <li><b>同じ学年でそろえる</b>：テキスト・はがき・便箋・封筒は同じ学年で申し込みます（例：小学校高学年のテキスト＋中学年のはがき、は不可）。</li>
+     <li><b>WEBかFAXで申し込む</b>：<b>電話では申し込めません</b>。FAXは中・高等学校 03-3553-1610、小学校 03-3555-2477。</li>
+     <li><b>届くまで</b>：ゆうパックで<b>学校あて</b>に届きます（自宅あて不可、日付指定不可）。最長で約2週間、休暇中や混雑時はそれ以上かかることがあります。急ぎの発送はできません。</li>
+     <li><b>あとから追加</b>：転入生・編入生の分は、もう一度WEBかFAXで必要な数だけ申し込みます。</li>
+     <li><b>使わなかったとき</b>：学校の都合で授業をしなかった場合は返却が必要なことがあり、送料（ゆうパック）は学校負担です。</li>
+    </ol>
+    <p class="links btn-links">${PL(SP+"/lesson/app_special-support","▶ 夜間中学などの教材申込")}${PL(SP+"/junior/app_form","▶ 中学校の教材申込")}${PL(SP+"/elementary/app_form","▶ 小学校の教材申込")}</p></div>
+
+   <div class="card"><h3>4. 授業で使えるウェブ教材</h3>
+    <ul>
+     <li>${PL(SP+"/lesson/online_accept","年賀コンテンツ・GIGAスクール対応 授業用コンテンツ")}：「年賀状の書き方」を指導するときのデジタル教材（令和9年用が2026年10月30日に公開）。</li>
+     <li>${PL(SP+"/junior/lesson/online","オンライン授業用コンテンツ（中学校）")}・${PL(SP+"/elementary/lesson/online","（小学校）")}</li>
+     <li>${PL(SP+"/lesson/recipe","いろいろなお便りの作り方")}（動画「ひつじ年の年賀状」など）</li>
+     <li>${PL(SP+"/lesson/address","あて名書きテンプレート")}　${PL(SP+"/lesson/movie","おたよりがとどくまで（郵便の流れ）")}　${PL(SP+"/lesson/quiz","郵便クイズ")}　${PL(SP+"/lesson/knowledge","郵便の豆知識")}</li>
+     <li>${PL(SP+"/junior/lesson/initiatives","授業風景紹介（中学校）")}　${PL(SP+"/junior/lesson/visiting_lesson","出前授業（中学校）")}　${PL(SP+"/lesson/seminar_teacher","郵便教育セミナー（先生向け）")}　${PL(SP+"/buntsu/login","文通相手校お探しサイト")}</li>
+    </ul></div>
+
+   <div class="card"><h3>5. 授業のあと：アンケート</h3>
+    <ul>
+     <li>授業の<b>前</b>に「手紙の認識度調査」、<b>後</b>に「授業実施報告調査」に答えます。</li>
+     <li><b>必須ではありません</b>が、協力が求められています。回答した学校には粗品が届きます。</li>
+     <li>2026年度の回答受付は<b>2026年5月1日〜12月25日</b>です。</li>
+     <li>夜間中学で小学校の教材を使った場合に、どちらのアンケートに答えるかはサイトに書かれていません。迷ったら事務局に確認してください。</li>
+    </ul>
+    <p class="links btn-links">${PL(SP+"/junior/answer","▶ 中学校 アンケート（授業前）")}${PL(SP+"/junior/answer2","▶ 中学校 アンケート（授業後）")}${PL(SP+"/elementary/answer","▶ 小学校（授業前）")}${PL(SP+"/elementary/answer2","▶ 小学校（授業後）")}</p>
+    <p class="links">${PL(SP+"/junior/write/questionnaire","アンケート調査結果（中学校）")}　${PL(SP+"/elementary/write/questionnaire","（小学校）")}　${PL(SP+"/voice","授業を実施した先生の声")}</p></div>
+
+   <div class="card"><h3>6. 年賀状のコンクールなど</h3>
+    <ul>
+     <li>${PL("https://www.post.japanpost.jp/contest/nenga/index.html","全日本年賀状大賞コンクール")}：第24回の作品応募は<b>2026年10月5日〜2027年1月8日</b>（当日消印有効）。</li>
+     <li>${PL("https://www.post.japanpost.jp/contest_text/tegamisakubun/","手紙作文コンクール")}　${PL("http://www.pfc.post.japanpost.jp/","世界にペンパルつくろうよ!!")}　${PL("https://www.post.japanpost.jp/kids/","ゆうびんきょくキッズサイト")}</li>
+    </ul></div>
+
+   <div class="card"><h3>7. 問い合わせ</h3>
+    <p><b>手紙授業支援事務局</b>（平日10:00〜18:00）<br>電話：中・高等学校 03-6280-3770／小学校 03-3555-0995<br>FAX（教材申込）：中・高等学校 03-3553-1610／小学校 03-3555-2477</p>
+    <p class="links btn-links">${PL(SP+"/contact","▶ お問い合わせフォーム")}${PL(SP+"/junior/write/qa","▶ よくあるご質問（中学校）")}</p></div>
+
+   <div class="card"><h3>8. このアプリといっしょに使うなら</h3>
+    <ol>
+     <li>秋のうちに教材と<b>年賀はがき</b>を申し込む（年賀はがきは11月末までの予定）。</li>
+     <li>アプリの「知る」〜「クイズ」で学び、「書く」で下書き・なぞりがきをする。</li>
+     <li>届いた年賀はがきに清書し、「あてな」を見ながら宛名を書いて、12月25日ごろまでに出す。</li>
+     <li>授業のあと、日本郵便のアンケート（授業後）に答える。</li>
+    </ol>
+    <p class="src">出典：日本郵便「手紙の書き方体験授業」サイト（トップ、はじめに（小学校）、中学校・高等学校トップ、教材紹介（中学校）、よくあるご質問（中学校）、特別支援学校・夜間中学・インターナショナルスクール向け教材申込）。2026年11月26日確認。</p></div>
+  </div>`;
+}
 function renderTeacher(){
   $("#p-teacher").innerHTML = `<div class="lead"><h2>先生へ：授業での使い方</h2></div>${missingBanner()}
   <div class="tdoc">
@@ -1759,7 +1845,7 @@ function doPrint(kind, mode){
 function renderAll(){
   document.body.classList.toggle("multi", state.langs.length > 1);
   document.documentElement.lang = "ja";
-  renderTabs(); renderLearn(); renderWords(); renderParts(); renderWrite(); renderAddress(); renderQuiz(); renderTeacher(); renderVoiceStatus();
+  renderTabs(); renderLearn(); renderWords(); renderParts(); renderWrite(); renderAddress(); renderQuiz(); renderPost(); renderTeacher(); renderVoiceStatus();
   showTab(state.tab);
 }
 function renderLangBtns(){
