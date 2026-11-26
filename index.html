@@ -324,6 +324,9 @@ h3.sec .tr{display:inline;margin-left:.6em;font-weight:400}
 .q h3{font-size:1.05rem}
 .opts{display:grid;gap:6px;margin-top:8px}
 .opt{text-align:left;border:1.5px solid var(--line);background:var(--surface-2);border-radius:8px;padding:8px 12px;cursor:pointer;font-family:var(--f-card);font-size:1.05rem}
+.opt .ja{display:block}
+.opt .tr{display:block;font-family:var(--f-ui);font-size:.72rem;color:var(--muted);margin-top:2px}
+body.multi .opt .tr[data-l]::before{display:none}
 .opt.right{border-color:var(--pine);background:var(--pine-soft)}
 .opt.wrong{border-color:var(--shu);background:var(--shu-soft)}
 .exp{margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--surface-2);font-size:.92rem}
@@ -1605,19 +1608,60 @@ $("#p-address").addEventListener("change", e => { const t = e.target; if(t.datas
 $("#p-address").addEventListener("click", e => { if(e.target.closest("[data-aprint]")) doPrint("addr"); });
 
 /* ---------- quiz ---------- */
-function renderQuiz(){
-  const ans = state.quiz || {};
-  const done = Object.keys(ans).length, right = QUIZ.filter((q,i)=>ans[i]===q.a).length;
-  $("#p-quiz").innerHTML = `<div class="lead"><h2>${L(X("{年賀状|ねんがじょう}クイズ","Nengajō quiz","年贺状测验","Câu đố nengajō","नेन्गाजो प्रश्नोत्तरी","နင်ဂါဂျော ပဟေဠိ"))}</h2></div>
-  <div class="score"><span>${rb("せいかい")}</span><strong>${right} / ${QUIZ.length}</strong><button type="button" class="chip" id="quizReset">${rb("もう{一度|いちど}")}</button></div>
-  <div class="quiz">${QUIZ.map((q,i)=>{const a=ans[i]; const answered = a!==undefined; return `<div class="card q"><h3><span class="num">${i+1}</span><span>${L(q.q,{say:true})}</span></h3>
-   <div class="opts">${q.o.map((o,j)=>`<button type="button" class="opt ${answered&&j===q.a?"right":""} ${answered&&j===a&&a!==q.a?"wrong":""}" data-q="${i}" data-o="${j}" ${answered?"disabled":""}>${rb(o)}</button>`).join("")}</div>
+// 「知る」の国際比較（干支・お正月）からのクイズ（出典は「知る」⑥⑦と同じ。vi/ne/myは試訳）
+const QUIZ_W = [
+  {q:X("ベトナムの {干支|えと}で、「{卯|う}」の {動物|どうぶつ}は？","In the Vietnamese zodiac, what animal is 卯?","越南的生肖中，“卯”是什么动物？","Trong 12 con giáp của Việt Nam, “Mão” là con gì?","भियतनामी राशिमा “卯” कुन जनावर हो?","ဗီယက်နမ် တိရစ္ဆာန်နှစ်တွင် “卯” သည် ဘာတိရစ္ဆာန်လဲ။"),
+   o:[X("うさぎ","Rabbit","兔子","Thỏ","खरायो","ယုန်"),X("ねこ","Cat","猫","Mèo","बिरालो","ကြောင်"),X("いぬ","Dog","狗","Chó","कुकुर","ခွေး")], a:1,
+   e:X("ベトナムでは「ねこ」です。「{卯|う}」の {読|よ}み「Mão」が「ねこ（mèo）」に にているからだと いわれています。","In Vietnam it is the cat. It is said this is because 卯 (Mão) sounds like mèo (cat).","在越南是“猫”。据说是因为“卯”读作“Mão”，和“猫（mèo）”发音相近。","Ở Việt Nam là con mèo. Người ta cho rằng vì “Mão” nghe gần giống “mèo”.","भियतनाममा बिरालो हो। 卯 लाई “माओ (Mão)” भनिन्छ, जुन “मेओ (mèo, बिरालो)” सँग मिल्छ भनिन्छ।","ဗီယက်နမ်တွင် ကြောင် ဖြစ်သည်။ “Mão” သည် ကြောင် (mèo) နှင့် အသံဆင်သောကြောင့်ဟု ဆိုကြသည်။")},
+  {q:X("{中国|ちゅうごく}の {干支|えと}で、「{亥|い}」の {動物|どうぶつ}は？","In the Chinese zodiac, what animal is 亥?","中国的生肖中，“亥”是什么动物？","Trong con giáp Trung Quốc, “Hợi” là con gì?","चिनियाँ राशिमा “亥” कुन जनावर हो?","တရုတ် တိရစ္ဆာန်နှစ်တွင် “亥” သည် ဘာတိရစ္ဆာန်လဲ။"),
+   o:[X("いのしし","Wild boar","野猪","Lợn rừng","बँदेल","တောဝက်"),X("くま","Bear","熊","Gấu","भालु","ဝက်ဝံ"),X("ぶた","Pig","猪","Lợn","सुँगुर","ဝက်")], a:2,
+   e:X("{中国|ちゅうごく}では「ぶた」です。{日本|にほん}では「いのしし」です。","In China it is the pig; in Japan it is the wild boar.","在中国是“猪”，在日本是“野猪”。","Ở Trung Quốc là con lợn; ở Nhật là lợn rừng.","चीनमा सुँगुर, जापानमा बँदेल हो।","တရုတ်တွင် ဝက်၊ ဂျပန်တွင် တောဝက် ဖြစ်သည်။")},
+  {q:X("{中国|ちゅうごく}で {干支|えと}の {年|とし}が かわるのは いつ？","When does the zodiac year change in China?","在中国，生肖年从什么时候开始更换？","Ở Trung Quốc, năm con giáp đổi vào lúc nào?","चीनमा राशि जनावरको वर्ष कहिले फेरिन्छ?","တရုတ်တွင် တိရစ္ဆာန်နှစ် ဘယ်အချိန် ပြောင်းသလဲ။"),
+   o:[X("{春節|しゅんせつ}（{旧暦|きゅうれき}の お{正月|しょうがつ}）","Spring Festival (lunar New Year)","春节（农历新年）","Xuân Tiết (Tết âm lịch)","वसन्त उत्सव (चन्द्र नयाँ वर्ष)","နွေဦးပွဲတော် (လပြက္ခဒိန် နှစ်သစ်)"),X("1{月|がつ}1{日|ついたち}","January 1","1月1日","Ngày 1 tháng 1","जनवरी १","ဇန်နဝါရီ ၁ ရက်"),X("4{月|がつ}1{日|ついたち}","April 1","4月1日","Ngày 1 tháng 4","अप्रिल १","ဧပြီ ၁ ရက်")], a:0,
+   e:X("{旧暦|きゅうれき}の お{正月|しょうがつ}「{春節|しゅんせつ}」から かわります。{春節|しゅんせつ}は {毎年|まいとし} {日|ひ}が ちがいます。","It changes at the lunar New Year, the Spring Festival, whose date differs every year.","从农历新年“春节”开始更换。春节每年日期不同。","Năm con giáp đổi vào Tết âm lịch. Ngày Tết mỗi năm một khác.","चन्द्र पात्रोको नयाँ वर्ष (वसन्त उत्सव) बाट फेरिन्छ। यसको मिति हरेक वर्ष फरक हुन्छ।","လပြက္ခဒိန် နှစ်သစ် (နွေဦးပွဲတော်) တွင် ပြောင်းသည်။ ထိုနေ့သည် နှစ်စဉ် မတူပါ။")},
+  {q:X("ミャンマーでは、{動物|どうぶつ}は {生|う}まれた {何|なに}で きまる？","In Myanmar, your animal sign is decided by what?","在缅甸，动物是根据出生的什么来决定的？","Ở Myanmar, con vật được tính theo gì khi bạn sinh ra?","म्यानमारमा जनावर जन्मको कुन कुराले तय हुन्छ?","မြန်မာတွင် တိရစ္ဆာန်ကို မွေးဖွားသော ဘာဖြင့် သတ်မှတ်သလဲ။"),
+   o:[X("{年|とし}","Year","年份","Năm","वर्ष","နှစ်"),X("{月|つき}","Month","月份","Tháng","महिना","လ"),X("{曜日|ようび}","Day of the week","星期几","Thứ trong tuần","बार","နေ့ (နေ့နံ)")], a:2,
+   e:X("{生|う}まれた {曜日|ようび}で きまります。{水曜日|すいようび}は {午前|ごぜん}と {午後|ごご}で わかれるので、ぜんぶで 8つです。","By the day of the week you were born. Wednesday is split into morning and afternoon, so there are 8 signs.","根据出生那天是星期几来决定。星期三分上午和下午，所以一共8种。","Theo thứ trong tuần bạn sinh ra. Thứ Tư chia buổi sáng và buổi chiều nên có tất cả 8 con.","जन्मेको बारले तय हुन्छ। बुधबार बिहान र दिउँसोमा छुट्टिने हुनाले जम्मा ८ वटा छन्।","မွေးနေ့ (နေ့နံ) ဖြင့် သတ်မှတ်သည်။ ဗုဒ္ဓဟူးကို နံနက်နှင့် ညနေ ခွဲသဖြင့် စုစုပေါင်း ၈ မျိုး ဖြစ်သည်။")},
+  {q:X("ネパールの グルンの {人|ひと}たちの 12の {動物|どうぶつ}に {入|はい}って いるのは？","Which animal is among the 12 animals of the Gurung people of Nepal?","尼泊尔古隆族的十二种动物中，有哪一种？","Con vật nào có trong 12 con vật của người Gurung ở Nepal?","नेपालका गुरुङहरूको १२ जनावरमा कुन पर्छ?","နီပေါ ဂူရုန်လူမျိုး၏ တိရစ္ဆာန် ၁၂ ကောင်တွင် ဘာ ပါသလဲ။"),
+   o:[X("しか","Deer","鹿","Hươu","मृग","သမင်"),X("ライオン","Lion","狮子","Sư tử","सिंह","ခြင်္သေ့"),X("パンダ","Panda","熊猫","Gấu trúc","पान्डा","ပန်ဒါ")], a:0,
+   e:X("グルンの「タム・ロサル」では、わし・へび・うま・ひつじ・さる・とり・いぬ・しか・ねずみ・うし・とら・ねこ の 12です。","In the Gurung Tamu Lhosar, the 12 are eagle, snake, horse, sheep, monkey, bird, dog, deer, mouse, cow, tiger and cat.","古隆族的“塔姆洛萨”使用鹰、蛇、马、羊、猴、鸟、狗、鹿、鼠、牛、虎、猫。","Trong Tamu Lhosar của người Gurung, 12 con là đại bàng, rắn, ngựa, cừu, khỉ, chim, chó, hươu, chuột, bò, hổ, mèo.","गुरुङको तमु ल्होसारमा गरुड, सर्प, घोडा, भेडा, बाँदर, चरा, कुकुर, मृग, मुसा, गाई, बाघ र बिरालो हुन्छन्।","ဂူရုန်၏ “တာမူ လိုဆာ” တွင် လင်းယုန်၊ မြွေ၊ မြင်း၊ သိုး၊ မျောက်၊ ငှက်၊ ခွေး၊ သမင်၊ ကြွက်၊ နွား၊ ကျား၊ ကြောင် ဖြစ်သည်။")},
+  {q:X("{日本|にほん}の「ね・うし・とら…」の「ね」は {何|なん}の {動物|どうぶつ}？","In Japanese ne, ushi, tora…, which animal is ne?","日本“ね、うし、とら……”中的“ね”是什么动物？","Trong “ne, ushi, tora…” của Nhật, “ne” là con gì?","जापानी “ने, उसी, तोरा…” मा “ने” कुन जनावर हो?","ဂျပန် “နဲ၊ ဥရှိ၊ တိုရ…” ၏ “နဲ” သည် ဘာတိရစ္ဆာန်လဲ။"),
+   o:[X("ねこ","Cat","猫","Mèo","बिरालो","ကြောင်"),X("ねずみ","Rat","鼠","Chuột","मुसा","ကြွက်"),X("へび","Snake","蛇","Rắn","सर्प","မြွေ")], a:1,
+   e:X("「ね」は ねずみです。「う」は うさぎ、「み」は へび、「い」は いのししです。","Ne is the rat. U is the rabbit, mi the snake, and i the wild boar.","“ね”是鼠。“う”是兔，“み”是蛇，“い”是野猪。","“Ne” là chuột. “U” là thỏ, “mi” là rắn, “i” là lợn rừng.","“ने” मुसा हो। “उ” खरायो, “मी” सर्प, “इ” बँदेल हो।","“နဲ” သည် ကြွက် ဖြစ်သည်။ “ဥ” ယုန်၊ “မိ” မြွေ၊ “အိ” တောဝက် ဖြစ်သည်။")},
+  {q:X("{十干|じっかん}と {十二支|じゅうにし}を {組|く}み{合|あ}わせた {干支|えと}は、{何年|なんねん}で ひとまわり？","The full eto (ten stems × twelve branches) goes round once in how many years?","十天干和十二地支组合的“干支”，多少年一轮回？","Can chi (thập can kết hợp thập nhị chi) quay hết một vòng sau bao nhiêu năm?","दस स्टेम र बाह्र शाखा मिलेर बनेको एतो कति वर्षमा एक फन्को पूरा गर्छ?","ဆယ်ပင်စည်နှင့် ဆယ့်နှစ်ကိုင်း ပေါင်းထားသော ဧတိုသည် နှစ်ဘယ်နှနှစ်တွင် တစ်ပတ်ပြည့်သလဲ။"),
+   o:[X("12{年|ねん}","12 years","12年","12 năm","१२ वर्ष","၁၂ နှစ်"),X("60{年|ねん}","60 years","60年","60 năm","६० वर्ष","၆၀ နှစ်"),X("100{年|ねん}","100 years","100年","100 năm","१०० वर्ष","၁၀၀ နှစ်")], a:1,
+   e:X("60{年|ねん}です。60さいの お{祝|いわ}い「{還暦|かんれき}」は ここから きています。","60 years. This is why the 60th birthday is celebrated as kanreki.","60年。日本60岁的“还历”庆祝就是由此而来。","60 năm. Lễ mừng 60 tuổi “kanreki” bắt nguồn từ đây.","६० वर्ष। ६० वर्षको उत्सव “कानरेकी” यहीँबाट आएको हो।","၆၀ နှစ် ဖြစ်သည်။ အသက် ၆၀ ပွဲ “ကန်ရဲကိ” သည် ဤနေရာမှ လာသည်။")},
+  {q:X("{日本|にほん}が {旧暦|きゅうれき}から {西暦|せいれき}に かえたのは いつ？","When did Japan change from the traditional calendar to the Western calendar?","日本是什么时候从旧历改用公历的？","Nhật Bản chuyển từ âm lịch sang dương lịch khi nào?","जापानले परम्परागत पात्रोबाट ईस्वी पात्रो कहिले अपनायो?","ဂျပန်သည် ရိုးရာပြက္ခဒိန်မှ ခရစ်နှစ် ပြက္ခဒိန်သို့ ဘယ်တုန်းက ပြောင်းသလဲ။"),
+   o:[X("{明治|めいじ}6{年|ねん}（1873{年|ねん}）","Meiji 6 (1873)","明治6年（1873年）","Năm Minh Trị thứ 6 (1873)","मेइजी ६ (सन् १८७३)","မေဂျိ ၆ (၁၈၇၃)"),X("{昭和|しょうわ}{元年|がんねん}（1926{年|ねん}）","Shōwa 1 (1926)","昭和元年（1926年）","Năm Chiêu Hòa thứ 1 (1926)","शोवा १ (सन् १९२६)","ရှိုးဝ ၁ (၁၉၂၆)"),X("{平成|へいせい}{元年|がんねん}（1989{年|ねん}）","Heisei 1 (1989)","平成元年（1989年）","Năm Bình Thành thứ 1 (1989)","हेइसेइ १ (सन् १९८९)","ဟဲစဲ ၁ (၁၉၈၉)")], a:0,
+   e:X("{明治|めいじ}5{年|ねん}12{月|がつ}3{日|か}が、{明治|めいじ}6{年|ねん}1{月|がつ}1{日|にち}に なりました。","The 3rd day of the 12th month of Meiji 5 became January 1, Meiji 6.","明治5年12月3日变成了明治6年1月1日。","Ngày 3 tháng 12 năm Minh Trị thứ 5 trở thành ngày 1 tháng 1 năm Minh Trị thứ 6.","मेइजी ५ को १२ महिनाको ३ गते मेइजी ६ को जनवरी १ बन्यो।","မေဂျိ ၅ ခုနှစ် ၁၂ လပိုင်း ၃ ရက်သည် မေဂျိ ၆ ခုနှစ် ဇန်နဝါရီ ၁ ရက် ဖြစ်သွားသည်။")},
+  {q:X("ネパールの {国|くに}の こよみ（ビクラム・サンバット）の お{正月|しょうがつ}は いつごろ？","Around when is New Year in Nepal's national calendar (Bikram Sambat)?","尼泊尔国家历法（维克拉姆历）的新年大约在什么时候？","Năm mới theo lịch quốc gia Nepal (Bikram Sambat) vào khoảng khi nào?","नेपालको राष्ट्रिय पात्रो (विक्रम संवत्) को नयाँ वर्ष कहिलेतिर पर्छ?","နီပေါ နိုင်ငံ့ပြက္ခဒိန် (ဗစ်ကရမ် ဆမ်ဘတ်) ၏ နှစ်သစ်ကူးသည် ဘယ်အချိန်လောက်လဲ။"),
+   o:[X("1{月|がつ}1{日|ついたち}","January 1","1月1日","Ngày 1 tháng 1","जनवरी १","ဇန်နဝါရီ ၁ ရက်"),X("8{月|がつ}の はじめ","Early August","8月初","Đầu tháng 8","अगस्टको सुरु","ဩဂုတ်လ အစ"),X("4{月|がつ}の {中|なか}ごろ","Mid-April","4月中旬","Giữa tháng 4","अप्रिलको मध्य","ဧပြီလ လယ်")], a:2,
+   e:X("4{月|がつ}{中|なか}ごろの バイサーク{月|づき}1{日|にち}です。{西暦|せいれき}2026{年|ねん}4{月|がつ}14{日|か}に 2083{年|ねん}が はじまりました。","Baisakh 1, in mid-April. The year 2083 began on April 14, 2026.","是4月中旬的拜萨克月1日。公历2026年4月14日开始了2083年。","Là ngày 1 tháng Baisakh, giữa tháng 4. Năm 2083 bắt đầu ngày 14/4/2026.","अप्रिलको मध्यतिर पर्ने बैशाख १ गते हो। सन् २०२६ अप्रिल १४ मा वि.सं. २०८३ सुरु भयो।","ဧပြီလလယ်ရှိ ဗိုင်ဆာခ ၁ ရက် ဖြစ်သည်။ ၂၀၂၆ ဧပြီ ၁၄ ရက်တွင် ၂၀၈၃ ခုနှစ် စတင်ခဲ့သည်။")},
+  {q:X("フィリピンの 1{月|がつ}1{日|ついたち}の お{正月|しょうがつ}に よく する ことは？","What do people in the Philippines often do at New Year on January 1?","菲律宾人在1月1日新年常做什么？","Người Philippines thường làm gì vào năm mới ngày 1 tháng 1?","फिलिपिन्समा जनवरी १ को नयाँ वर्षमा प्रायः के गरिन्छ?","ဖိလစ်ပိုင်တွင် ဇန်နဝါရီ ၁ ရက် နှစ်သစ်ကူး၌ မကြာခဏ ဘာလုပ်ကြသလဲ။"),
+   o:[X("まるい くだものを 12こ ならべる","Set out 12 round fruits","摆上12种圆形水果","Bày 12 loại quả tròn","१२ वटा गोलो फलफूल राख्ने","အလုံးဝိုင်း သစ်သီး ၁၂ မျိုး တင်ထားသည်"),X("{水|みず}を かけあう","Splash water on each other","互相泼水","Té nước vào nhau","एकअर्कालाई पानी छ्याप्ने","ရေ အပြန်အလှန် ပက်သည်"),X("{雪|ゆき}だるまを つくる","Make snowmen","堆雪人","Nặn người tuyết","हिउँको मान्छे बनाउने","နှင်းလူ လုပ်သည်")], a:0,
+   e:X("まるい くだものを 12こ ならべたり、{水玉|みずたま}もようの {服|ふく}を {着|き}たりします。まるい {形|かたち}は お{金|かね}を あらわします。{水|みず}を かけあうのは ミャンマーの ティンジャンです。","People set out 12 round fruits and wear polka dots; round shapes stand for money. Splashing water is Myanmar's Thingyan.","人们摆上12种圆形水果、穿圆点衣服，圆形象征钱财。互相泼水是缅甸的泼水节。","Người ta bày 12 loại quả tròn và mặc áo chấm bi; hình tròn tượng trưng cho tiền. Té nước là lễ Thingyan của Myanmar.","१२ वटा गोलो फलफूल राख्ने र थोप्ले बुट्टाको लुगा लगाउने चलन छ; गोलो आकारले पैसा जनाउँछ। पानी छ्याप्ने चाहिँ म्यानमारको थिङ्ग्यान हो।","အလုံးဝိုင်း သစ်သီး ၁၂ မျိုး တင်ပြီး အစက်ပြောက် အဝတ် ဝတ်ကြသည်။ အဝိုင်းပုံသည် ငွေကို ကိုယ်စားပြုသည်။ ရေပက်ခြင်းမှာ မြန်မာ၏ သင်္ကြန် ဖြစ်သည်။")}
+];
+function quizBlock(list, ans, key){
+  return `<div class="quiz">${list.map((q,i)=>{const a=ans[i]; const answered = a!==undefined; return `<div class="card q"><h3><span class="num">${i+1}</span><span>${L(q.q,{say:true})}</span></h3>
+   <div class="opts">${q.o.map((o,j)=>`<button type="button" class="opt ${answered&&j===q.a?"right":""} ${answered&&j===a&&a!==q.a?"wrong":""}" data-qset="${key}" data-q="${i}" data-o="${j}" ${answered?"disabled":""}>${typeof o==="string"?rb(o):`<span class="ja">${rb(o.ja)}</span>${TR(o)}`}</button>`).join("")}</div>
    ${answered?`<div class="exp">${a===q.a?`<span class="ok">${rb("せいかい！")}</span> `:`<span class="ng2">${rb("ざんねん")}</span> `}${L(q.e,{say:true})}</div>`:""}</div>`}).join("")}</div>`;
+}
+function renderQuiz(){
+  const ans = state.quiz || {}, ansW = state.quizW || {};
+  const right = QUIZ.filter((q,i)=>ans[i]===q.a).length, rightW = QUIZ_W.filter((q,i)=>ansW[i]===q.a).length;
+  $("#p-quiz").innerHTML = `<div class="lead"><h2>${L(X("{年賀状|ねんがじょう}クイズ","Nengajō quiz","年贺状测验","Câu đố nengajō","नेन्गाजो प्रश्नोत्तरी","နင်ဂါဂျော ပဟေဠိ"))}</h2></div>
+  <div class="score"><span>${rb("せいかい")}</span><strong>${right} / ${QUIZ.length}</strong><button type="button" class="chip" data-qreset="j">${rb("もう{一度|いちど}")}</button></div>
+  ${quizBlock(QUIZ, ans, "j")}
+  <div class="lead" style="margin-top:28px"><h2>${L(X("せかいの {干支|えと}と お{正月|しょうがつ} クイズ","Quiz: the zodiac and New Year around the world","世界的生肖与新年测验","Câu đố: con giáp và năm mới trên thế giới","संसारका राशि जनावर र नयाँ वर्ष प्रश्नोत्तरी","ကမ္ဘာ့ တိရစ္ဆာန်နှစ်နှင့် နှစ်သစ် ပဟေဠိ"))}</h2>
+   <p>${L(X("「{知|し}る」の ⑥{干支|えと}と ⑦お{正月|しょうがつ}から {出|で}ます。","Questions come from ⑥ (zodiac) and ⑦ (New Year) in the Learn tab.","题目出自“了解”页的⑥生肖和⑦新年。","Câu hỏi lấy từ mục ⑥ (con giáp) và ⑦ (năm mới) ở trang “Tìm hiểu”.","प्रश्नहरू “जान्नुहोस्” पृष्ठको ⑥ (राशि) र ⑦ (नयाँ वर्ष) बाट आउँछन्।","မေးခွန်းများသည် “သိရန်” စာမျက်နှာ၏ ⑥ (တိရစ္ဆာန်နှစ်) နှင့် ⑦ (နှစ်သစ်) မှ ဖြစ်သည်။"),{tag:"span"})}</p></div>
+  <div class="score"><span>${rb("せいかい")}</span><strong>${rightW} / ${QUIZ_W.length}</strong><button type="button" class="chip" data-qreset="w">${rb("もう{一度|いちど}")}</button></div>
+  ${quizBlock(QUIZ_W, ansW, "w")}`;
 }
 $("#p-quiz").addEventListener("click", e => {
   const b = e.target.closest("[data-q]");
-  if(b){ state.quiz[b.dataset.q] = +b.dataset.o; save(); renderQuiz(); return; }
-  if(e.target.closest("#quizReset")){ state.quiz = {}; save(); renderQuiz(); }
+  if(b){ const k = b.dataset.qset === "w" ? "quizW" : "quiz"; state[k] = state[k] || {}; state[k][b.dataset.q] = +b.dataset.o; save(); renderQuiz(); return; }
+  const r = e.target.closest("[data-qreset]");
+  if(r){ state[r.dataset.qreset === "w" ? "quizW" : "quiz"] = {}; save(); renderQuiz(); }
 });
 
 /* ---------- teacher ---------- */
