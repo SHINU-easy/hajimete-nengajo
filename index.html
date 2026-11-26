@@ -154,6 +154,13 @@ main{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-le
 #bornOut{font-size:1.15rem;font-weight:700;min-width:0}
 #bornOut .tr{font-weight:400;font-size:.8em}
 .born .hint{margin:0;font-size:.8rem;color:var(--muted)}
+.eto-world{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.eto-world summary{cursor:pointer;font-weight:700;list-style-position:outside}
+.eto-world summary .tr{font-weight:400}
+.eto-world ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:10px}
+.eto-world li{padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.eto-world li p{margin:0 0 6px}
+.eto-world .eto-ask{margin:10px 0 0;font-weight:700}
 .mode-switch{display:flex;flex-wrap:wrap;gap:8px}
 .easy-fixed{font-family:var(--f-card);font-size:1.2rem;padding:8px 12px;background:var(--surface-2);border-radius:8px}
 .guides{position:absolute;inset:0;pointer-events:none}
@@ -745,12 +752,68 @@ function etoTr(e){
   };
   return state.langs.map(l => `<small class="eto-tr" lang="${l}">${esc(t[l])}</small>`).join("");
 }
+// 国によってちがう干支（出典：Wikipedia "Vietnamese zodiac" "Cat (zodiac)" "Tamu Lhosar" "Sonam Lhosar" "Burmese zodiac" "Western astrology"、AFPBB/東方新報 2021-02-03、Nepalnews、eKantipur 2026-01-19ほか。vi/ne/myは試訳）
+const ETO_WORLD = {
+  t: X("くにによって ちがう {干支|えと}","How the zodiac differs by country","各国生肖的不同","Con giáp khác nhau ở mỗi nước","देशअनुसार फरक राशि जनावर","နိုင်ငံအလိုက် ကွာခြားသော တိရစ္ဆာန်နှစ်"),
+  rows: [
+    X(`{日本|にほん}：{中国|ちゅうごく}から つたわった 12の {動物|どうぶつ}を {使|つか}います。{亥|い}は「いのしし」です。{年賀状|ねんがじょう}には、1{月|がつ}1{日|にち}から はじまる {年|とし}の {干支|えと}を かきます。`,
+      `Japan: uses the 12 animals that came from China. 亥 is the wild boar. On nengajō, people write the zodiac animal of the year that starts on January 1.`,
+      `日本：使用从中国传来的十二生肖。亥是“野猪”。年贺状上写从1月1日开始的那一年的生肖。`,
+      `Nhật Bản: dùng 12 con vật truyền từ Trung Quốc sang. Hợi là con lợn rừng. Trên nengajō, người ta viết con giáp của năm bắt đầu từ ngày 1 tháng 1.`,
+      `जापान: चीनबाट आएका १२ जनावर प्रयोग गरिन्छ। 亥 (इ) बँदेल हो। नेन्गाजोमा जनवरी १ देखि सुरु हुने वर्षको जनावर लेखिन्छ।`,
+      `ဂျပန်- တရုတ်ပြည်မှ ရောက်လာသော တိရစ္ဆာန် ၁၂ ကောင်ကို သုံးသည်။ 亥 (အိ) သည် တောဝက် ဖြစ်သည်။ နင်ဂါဂျောတွင် ဇန်နဝါရီ ၁ ရက်မှ စသော နှစ်၏ တိရစ္ဆာန်ကို ရေးသည်။`),
+    X(`{中国|ちゅうごく}：{亥|い}は「ぶた」です。{干支|えと}の {年|とし}は、{旧暦|きゅうれき}の お{正月|しょうがつ}（{春節|しゅんせつ}）から かわります。{春節|しゅんせつ}は {毎年|まいとし} {日|ひ}が ちがい、1{月|がつ}の おわりから 2{月|がつ}の あいだです。`,
+      `China: 亥 is the pig. The zodiac year changes at the lunar New Year (Spring Festival), which falls on a different day each year, between late January and February.`,
+      `中国：亥是“猪”。生肖年从农历新年（春节）开始更换。春节每年日期不同，在1月下旬到2月之间。`,
+      `Trung Quốc: Hợi là con lợn. Năm con giáp đổi vào Tết âm lịch (Xuân Tiết). Ngày này mỗi năm một khác, rơi vào khoảng cuối tháng 1 đến tháng 2.`,
+      `चीन: 亥 सुँगुर हो। राशि जनावरको वर्ष चन्द्र पात्रोको नयाँ वर्ष (वसन्त उत्सव) बाट फेरिन्छ। यो मिति हरेक वर्ष फरक हुन्छ, जनवरीको अन्त्यदेखि फेब्रुअरीसम्म पर्छ।`,
+      `တရုတ်- 亥 သည် ဝက် ဖြစ်သည်။ တိရစ္ဆာန်နှစ်သည် လပြက္ခဒိန် နှစ်သစ်ကူး (နွေဦးပွဲတော်) တွင် ပြောင်းသည်။ ထိုနေ့သည် နှစ်စဉ် မတူဘဲ ဇန်နဝါရီလကုန်မှ ဖေဖော်ဝါရီလအတွင်း ကျသည်။`),
+    X(`ベトナム：{丑|うし}は「すいぎゅう」、{卯|う}は「ねこ」、{未|ひつじ}は「やぎ」です。「{卯|う}」を ベトナム{語|ご}で「Mão」と {読|よ}み、「ねこ」を あらわす「mèo」と {音|おと}が にているからだと いわれています。{年|とし}は テト（{旧暦|きゅうれき}の お{正月|しょうがつ}）から かわります。`,
+      `Vietnam: 丑 is the water buffalo, 卯 is the cat, and 未 is the goat. It is said that the cat came in because 卯, read "Mão" in Vietnamese, sounds like "mèo" (cat). The year changes at Tết (lunar New Year).`,
+      `越南：丑是“水牛”，卯是“猫”，未是“山羊”。据说是因为“卯”在越南语中读作“Mão”，和“猫（mèo）”发音相近。生肖年从越南春节（Tết，农历新年）开始更换。`,
+      `Việt Nam: Sửu là con trâu, Mão là con mèo, Mùi là con dê. Người ta cho rằng vì chữ 卯 đọc là “Mão”, gần giống âm “mèo”. Năm con giáp đổi vào Tết Nguyên Đán (Tết âm lịch).`,
+      `भियतनाम: 丑 भैंसी, 卯 बिरालो र 未 बाख्रा हो। भियतनामी भाषामा 卯 लाई “माओ (Mão)” भनिन्छ, जुन बिरालो जनाउने “मेओ (mèo)” सँग मिल्दोजुल्दो सुनिन्छ भनिन्छ। वर्ष तेत (चन्द्र पात्रोको नयाँ वर्ष) बाट फेरिन्छ।`,
+      `ဗီယက်နမ်- 丑 သည် ကျွဲ၊ 卯 သည် ကြောင်၊ 未 သည် ဆိတ် ဖြစ်သည်။ 卯 ကို ဗီယက်နမ်လို “Mão” ဟု ဖတ်ပြီး ကြောင်ကို ဆိုလိုသော “mèo” နှင့် အသံဆင်သောကြောင့်ဟု ဆိုကြသည်။ နှစ်သည် တက် (လပြက္ခဒိန် နှစ်သစ်ကူး) တွင် ပြောင်းသည်။`),
+    X(`ネパール：{民族|みんぞく}によって ちがいます。グルンの {人|ひと}たちの お{正月|しょうがつ}「タム・ロサル」では、わし・へび・うま・ひつじ・さる・とり・いぬ・しか・ねずみ・うし・とら・ねこ の 12です。タマンの {人|ひと}たちの「ソナム・ロサル」では、{中国|ちゅうごく}と ほぼ おなじ 12の {動物|どうぶつ}（ねずみ〜ぶた）を {使|つか}います。`,
+      `Nepal: it differs by community. In Tamu Lhosar, the Gurung New Year, the 12 animals are eagle, snake, horse, sheep, monkey, bird, dog, deer, mouse, cow, tiger and cat. In Sonam Lhosar, the Tamang New Year, people use 12 animals almost the same as China's (rat to pig).`,
+      `尼泊尔：不同民族各不相同。古隆族的新年“塔姆洛萨”使用鹰、蛇、马、羊、猴、鸟、狗、鹿、鼠、牛、虎、猫十二种动物。塔芒族的新年“索南洛萨”使用和中国几乎相同的十二种动物（从鼠到猪）。`,
+      `Nepal: khác nhau tùy dân tộc. Trong Tamu Lhosar (Tết của người Gurung), 12 con vật là đại bàng, rắn, ngựa, cừu, khỉ, chim, chó, hươu, chuột, bò, hổ và mèo. Trong Sonam Lhosar (Tết của người Tamang), người ta dùng 12 con vật gần giống Trung Quốc (từ chuột đến lợn).`,
+      `नेपाल: जातिअनुसार फरक हुन्छ। गुरुङहरूको नयाँ वर्ष “तमु ल्होसार” मा गरुड (चील), सर्प, घोडा, भेडा, बाँदर, चरा, कुकुर, मृग, मुसा, गाई, बाघ र बिरालो गरी १२ जनावर हुन्छन्। तामाङहरूको “सोनाम ल्होसार” मा चीनको जस्तै १२ जनावर (मुसादेखि सुँगुरसम्म) प्रयोग गरिन्छ।`,
+      `နီပေါ- လူမျိုးအလိုက် မတူပါ။ ဂူရုန်လူမျိုး၏ နှစ်သစ် “တာမူ လိုဆာ” တွင် လင်းယုန်၊ မြွေ၊ မြင်း၊ သိုး၊ မျောက်၊ ငှက်၊ ခွေး၊ သမင်၊ ကြွက်၊ နွား၊ ကျား၊ ကြောင် ၁၂ ကောင် ဖြစ်သည်။ တာမန်လူမျိုး၏ “ဆိုနမ် လိုဆာ” တွင် တရုတ်နှင့် အတော်တူသော တိရစ္ဆာန် ၁၂ ကောင် (ကြွက်မှ ဝက်အထိ) ကို သုံးသည်။`),
+    X(`ミャンマー：{生|う}まれた {年|とし}ではなく、{生|う}まれた {曜日|ようび}で {動物|どうぶつ}が きまります（8つ）。{日曜|にちよう}は ガルーダ（{伝説|でんせつ}の {鳥|とり}）、{月曜|げつよう}は とら、{火曜|かよう}は ライオン、{水曜|すいよう}の {午前|ごぜん}は きばの ある ぞう、{午後|ごご}は きばの ない ぞう、{木曜|もくよう}は ねずみ、{金曜|きんよう}は モルモット、{土曜|どよう}は ナーガ（りゅう）です。`,
+      `Myanmar: the animal is decided not by the year but by the day of the week you were born (8 signs): Sunday garuda (a mythical bird), Monday tiger, Tuesday lion, Wednesday morning tusked elephant, Wednesday afternoon tuskless elephant, Thursday rat, Friday guinea pig, Saturday naga (dragon).`,
+      `缅甸：不是看出生年份，而是看出生那天是星期几来决定动物（共8种）：星期日是迦楼罗（传说中的鸟），星期一是虎，星期二是狮子，星期三上午是有象牙的象，下午是没有象牙的象，星期四是鼠，星期五是豚鼠，星期六是那伽（龙）。`,
+      `Myanmar: con vật không tính theo năm sinh mà theo thứ trong tuần bạn sinh ra (8 con): Chủ nhật là Garuda (chim thần), thứ Hai là hổ, thứ Ba là sư tử, sáng thứ Tư là voi có ngà, chiều thứ Tư là voi không ngà, thứ Năm là chuột, thứ Sáu là chuột lang, thứ Bảy là Naga (rồng).`,
+      `म्यानमार: जन्मेको वर्षले होइन, जन्मेको बारले जनावर तय हुन्छ (८ वटा): आइतबार गरुड (पौराणिक चरा), सोमबार बाघ, मङ्गलबार सिंह, बुधबार बिहान दाँत भएको हात्ती, बुधबार दिउँसो दाँत नभएको हात्ती, बिहीबार मुसा, शुक्रबार गिनी पिग, शनिबार नाग।`,
+      `မြန်မာ- မွေးနှစ်ဖြင့် မဟုတ်ဘဲ မွေးနေ့ (နေ့နံ) ဖြင့် တိရစ္ဆာန်ကို သတ်မှတ်သည် (၈ မျိုး)။ တနင်္ဂနွေ ဂဠုန်၊ တနင်္လာ ကျား၊ အင်္ဂါ ခြင်္သေ့၊ ဗုဒ္ဓဟူး (နံနက်) ဆင်၊ ဗုဒ္ဓဟူး (ညနေ) ဟိုင်း၊ ကြာသပတေး ကြွက်၊ သောကြာ ပူး၊ စနေ နဂါး။`),
+    X(`イギリス・アメリカなど {英語|えいご}の {国|くに}：{干支|えと}は ふつう {使|つか}いません。{生|う}まれた {日|ひ}で きまる 12の {星座|せいざ}（おひつじ{座|ざ}・おうし{座|ざ}など）が よく {知|し}られています。`,
+      `English-speaking countries such as the UK and the USA: the zodiac animals are not usually used. The 12 star signs decided by your birthday (Aries, Taurus, etc.) are well known.`,
+      `英国、美国等英语国家：一般不用生肖，而是常说按生日决定的十二星座（白羊座、金牛座等）。`,
+      `Các nước nói tiếng Anh như Anh, Mỹ: thường không dùng con giáp. Người ta hay nói về 12 cung hoàng đạo theo ngày sinh (Bạch Dương, Kim Ngưu, v.v.).`,
+      `बेलायत, अमेरिका जस्ता अङ्ग्रेजी बोल्ने देश: राशि जनावर प्रायः प्रयोग हुँदैन। जन्मदिनअनुसार तय हुने १२ राशि (मेष, वृष आदि) धेरै चर्चित छन्।`,
+      `ယူကေ၊ အမေရိကန် စသော အင်္ဂလိပ်စကားပြော နိုင်ငံများ- တိရစ္ဆာန်နှစ်ကို အများအားဖြင့် မသုံးပါ။ မွေးနေ့အလိုက် သတ်မှတ်သော ရာသီခွင် ၁၂ ခု (မိဿ၊ ပြိဿ စသည်) ကို လူသိများသည်။`)
+  ],
+  ask: X(`あなたの {国|くに}では どうですか？ {家族|かぞく}にも きいて、みんなに {教|おし}えて ください。`,
+    `What about your country? Ask your family too, and tell the class.`,
+    `你的国家是怎样的？也问问家人，然后告诉大家吧。`,
+    `Ở nước bạn thì sao? Hãy hỏi cả gia đình rồi kể cho cả lớp nghe.`,
+    `तपाईंको देशमा कस्तो छ? परिवारलाई पनि सोधेर कक्षामा सबैलाई सुनाउनुहोस्।`,
+    `သင့်နိုင်ငံမှာ ဘယ်လိုလဲ။ မိသားစုကိုလည်း မေးပြီး အတန်းထဲက လူတွေကို ပြောပြပေးပါ။`)
+};
+let etoWorldOpen = false;
+function etoWorld(){
+  return `<details class="eto-world" id="etoWorld"${etoWorldOpen?" open":""}><summary>${L(ETO_WORLD.t)}</summary>
+   <ul>${ETO_WORLD.rows.map(r=>`<li><p>${L(r,{tag:"span",say:true})}</p>${sayBtn(kana(r.ja),"きく")}</li>`).join("")}</ul>
+   <p class="eto-ask">${L(ETO_WORLD.ask,{tag:"span"})}</p></details>`;
+}
+document.addEventListener("toggle", e => { if(e.target.id === "etoWorld") etoWorldOpen = e.target.open; }, true);
 function etoWidget(){
   const Y = cardYear(), cur = etoOf(Y), now = new Date().getFullYear();
   return `<div class="eto-ring" aria-label="十二支">${ETO.map(e=>`<span class="eto ${e===cur?"on":""}"><b>${rb(`{${e.k}|${e.r}}`)}</b><small>${e.a}</small>${etoTr(e)}</span>`).join("")}</div>
   <div class="born"><label for="bornYear">${L(BORN.lab)}</label>
    <div class="born-row"><input type="number" id="bornYear" inputmode="numeric" min="1900" max="${now}" placeholder="${now-30}" autocomplete="off"><div id="bornOut" aria-live="polite"></div></div>
-   <p class="hint">${L(BORN.note)}</p><p class="hint">${L(BORN.save)}</p></div>`;
+   <p class="hint">${L(BORN.note)}</p><p class="hint">${L(BORN.save)}</p></div>
+  ${etoWorld()}`;
 }
 document.addEventListener("input", e => {
   if(e.target.id !== "bornYear") return;
@@ -982,7 +1045,7 @@ function renderLearn(){
   <div class="grid cols">${LEARN.map((c,i)=>`<article class="card${c.eto?" wide":""}"><h3><span class="num">${"一二三四五六"[i]}</span><span>${L(c.t)}</span></h3><p>${L(c.b,{tag:"span",say:true})}</p>${sayBtn(kana(c.b.ja),"きく")}${c.fact?`<div class="fact">${c.fact}</div>`:""}${c.eto?etoWidget():""}</article>`).join("")}
   <article class="card wide"><h3><span class="num">七</span><span>${L(DELIVERY.t)}</span></h3><p>${L(DELIVERY.b,{tag:"span",say:true})}</p>
    <ol class="flow">${DELIVERY.steps.map((st,i)=>`<li><b>${i+1}</b><span>${L(st,{say:true})}</span></li>`).join("")}</ol></article></div>
-  <p class="src">出典：日本郵便「手紙の書き方体験授業」2026年度 中学生用テキストP3・P14、同指導書P10–11、小学校高学年用指導書（寒中見舞いの時期）／日本郵便 年賀はがきに関する報道資料（各年。登録済みの年のみ具体的な日付を表示）／国立天文台 暦要項（立春）／日本郵便『楽しい年賀状を作ろう！』令和9年版（小学校低・中・高学年用、令和8年9月発行）：年賀はがきの「ひみつ」3つ・コンビニでも買える・抽選日、十二支の由来と「自分が生まれた年の十二支は何かな？」、「1月8日からは年賀状ではなく『寒中見まい』」、「年賀状がとどくまで」の7段階</p>`;
+  <p class="src">出典：日本郵便「手紙の書き方体験授業」2026年度 中学生用テキストP3・P14、同指導書P10–11、小学校高学年用指導書（寒中見舞いの時期）／日本郵便 年賀はがきに関する報道資料（各年。登録済みの年のみ具体的な日付を表示）／国立天文台 暦要項（立春）／日本郵便『楽しい年賀状を作ろう！』令和9年版（小学校低・中・高学年用、令和8年9月発行）：年賀はがきの「ひみつ」3つ・コンビニでも買える・抽選日、十二支の由来と「自分が生まれた年の十二支は何かな？」、「1月8日からは年賀状ではなく『寒中見まい』」、「年賀状がとどくまで」の7段階／国による干支の違い：Wikipedia英語版 "Vietnamese zodiac" "Cat (zodiac)" "Tamu Lhosar" "Sonam Lhosar" "Burmese zodiac" "Western astrology"、AFPBB（東方新報）「子どもの出産時期にまで影響する中国の干支」2021年2月3日、Nepalnews・eKantipur（ソナム・ロサル）、bbt.org.sg（ミャンマーの8曜日）</p>`;
   $("#p-learn").querySelectorAll(".say").forEach(b=>{b.style.marginTop="10px"});
 }
 
@@ -1418,6 +1481,7 @@ ${teacherYearHTML()}
     <li>日本郵便株式会社『手紙の書き方体験授業』2026年度教材：中学生用テキスト P3（季節のお便り）、P4–5（様々なあて名の書き方）、P14–15（年賀状の書き方）／中学生用指導書 P10–11・P14／小学校高学年用指導書（年賀状・寒中見舞いを出す期間）</li>
     <li>（2027年用の登録データの出典）<a href="https://files.japanpost.jp/assets/34d9d11432734cfaa759e78fe395b688/159168aef19d465baf3350d358e46fa9/20260831_02_06.pdf" target="_blank" rel="noopener">日本郵便 報道資料「2027（令和9）年用年賀はがき等の発行・販売」</a></li>
     <li><a href="https://kumanichi.com/articles/2030915" target="_blank" rel="noopener">熊本日日新聞「年賀はがき、16年連続発行数減 27年、利用促進策も」</a>（85円・差出し目安12/27）</li>
+    <li>国による干支の違い：<a href="https://en.wikipedia.org/wiki/Vietnamese_zodiac" target="_blank" rel="noopener">Vietnamese zodiac</a>・<a href="https://en.wikipedia.org/wiki/Cat_(zodiac)" target="_blank" rel="noopener">Cat (zodiac)</a>（卯＝Mão と mèo の音の類似。ただし公式な説明はないとされる）／<a href="https://www.afpbb.com/articles/-/3329721" target="_blank" rel="noopener">AFPBB「子どもの出産時期にまで影響する中国の干支」</a>（中国は旧暦・春節で区切る、亥は豚）／<a href="https://en.wikipedia.org/wiki/Tamu_Lhosar" target="_blank" rel="noopener">Tamu Lhosar</a>（グルンの12動物）／<a href="https://english.nepalnews.com/?p=192883" target="_blank" rel="noopener">Nepalnews</a>・<a href="https://ekantipur.com/news/2026/01/19/en/today-is-magh-shukla-pratipada-sonam-lhosar-being-celebrated-with-joy-49-17.html" target="_blank" rel="noopener">eKantipur 2026-01-19</a>（タマンのソナム・ロサル）／<a href="https://en.wikipedia.org/wiki/Burmese_zodiac" target="_blank" rel="noopener">Burmese zodiac</a>・<a href="https://www.bbt.org.sg/?p=2878" target="_blank" rel="noopener">bbt.org.sg</a>（ミャンマーの曜日の8つの動物）／<a href="https://en.wikipedia.org/wiki/Western_astrology" target="_blank" rel="noopener">Western astrology</a>（誕生日による星座）</li>
     <li><a href="https://eco.mtk.nao.ac.jp/koyomi/yoko/2027/rekiyou272.html" target="_blank" rel="noopener">国立天文台 令和9年（2027）暦要項</a>（立春 2月4日）</li></ul>
     <p style="margin-top:8px;font-size:.88rem">英語・中国語以外（ベトナム語・ネパール語・ミャンマー語）の訳は作成者の確認前の試訳です。授業で使う前に母語話者のチェックを受けてください。</p></div>
   </div>`;
