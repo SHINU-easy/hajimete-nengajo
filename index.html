@@ -408,6 +408,64 @@ body.credit-hidden main .src:not(#p-teacher .src):not(#p-post .src){display:none
   .controls{margin-left:0}
 }
 
+
+/* れんしゅう */
+.pr-menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-bottom:14px}
+.pr-mbtn{display:flex;gap:8px;align-items:flex-start;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--ink);font:inherit;line-height:1.35}
+.pr-mbtn[aria-pressed="true"]{border-color:var(--pine);background:var(--surface-2);box-shadow:inset 4px 0 0 var(--pine)}
+.pr-mbtn .tr{display:block;font-size:.72rem;color:var(--muted)}
+body.multi .pr-mbtn .tr[data-l]::before{display:none}
+.pr-act p{margin:6px 0}
+.pr-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}
+.pr-box{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface)}
+.pr-box h4,.pr-h{margin:10px 0 6px;font-size:.98rem}
+.pr-box h4{margin-top:0}
+.pr-h .tr{font-weight:400}
+.pr-pre{white-space:pre-wrap;font-family:var(--f-card);font-size:1rem;margin:0 0 6px;line-height:1.7}
+.pr-ta,.pr-in{width:100%;box-sizing:border-box;border:1.5px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--surface);color:var(--ink);font:inherit;font-size:1rem}
+.pr-checks{display:grid;gap:6px}
+.pr-ck{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.pr-ck input{margin-top:.35em;flex:none;width:18px;height:18px}
+.pr-ck .tr{display:block;font-size:.78rem;color:var(--muted)}
+.pr-row{display:flex;flex-wrap:wrap;gap:6px 14px;margin:6px 0;align-items:flex-start}
+.pr-radio{display:inline-flex;gap:6px;align-items:flex-start;cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--surface)}
+.pr-radio .tr{display:block;font-size:.72rem;color:var(--muted)}
+body.multi .pr-radio .tr[data-l]::before,body.multi .pr-ck .tr[data-l]::before,body.multi .pr-box h4 .tr[data-l]::before{display:none}
+.pr-res{font-weight:700}
+.pr-tate{writing-mode:vertical-rl;font-family:var(--f-card);font-size:1.15rem;line-height:2;border:1px solid var(--line);border-radius:8px;background:#fffdf8;color:#222;padding:14px;height:300px;overflow-x:auto;max-width:100%;margin:6px 0}
+.pr-tate p{margin:0 0 0 .4em}
+.pr-tate .pr-date{margin-top:1.5em}
+.pr-tate .pr-name{margin-top:auto;padding-top:3em;font-weight:600}
+.pr-step{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.pr-cs{margin-top:14px!important;font-size:.8rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.pr-form{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.pr-form label{display:grid;gap:3px}
+.pr-form label .tr{font-size:.72rem}
+.in-card{border:2px solid var(--shu);border-radius:12px;padding:12px 16px;background:var(--surface);font-size:1.1rem;line-height:2.1;margin:6px 0}
+.in-card:empty{display:none}
+.in-card.big{position:fixed;inset:4vh 4vw;z-index:60;font-size:clamp(1.4rem,3.4vw,2.6rem);overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.kg-list{display:grid;gap:10px;margin:8px 0}
+.kg-item{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface)}
+.kg-item .opts{display:grid;gap:6px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.kg-item .exp{grid-column:2}
+.sh-wrap{overflow-x:auto;margin:8px 0;padding:6px;background:#fff;border:1px solid var(--line);border-radius:8px}
+.sh-sheet{color:#111}
+.sh-grid{display:flex;flex-direction:row-reverse;justify-content:flex-start;width:max-content}
+.sh-col{display:flex;flex-direction:column}
+.sh-cell{width:var(--cell);height:var(--cell);box-sizing:border-box;border:.3mm solid #888;margin:0 -.15mm -.15mm 0;display:grid;place-items:center;font-family:var(--f-card);font-size:calc(var(--cell) * .74);line-height:1;color:#111;background:linear-gradient(#0000 calc(50% - .1mm),#ccc calc(50% - .1mm),#ccc calc(50% + .1mm),#0000 0),linear-gradient(90deg,#0000 calc(50% - .1mm),#ccc calc(50% - .1mm),#ccc calc(50% + .1mm),#0000 0)}
+.sh-cell.trace{color:#c4c4c4}
+.sh-wrap .sh-sheet{zoom:.55}
+.sh-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4mm;font-size:12pt}
+.sh-foot{font-size:8.5pt;color:#555;margin-top:4mm}
+#printArea.sheet{width:190mm}
+#printArea.sheet .sh-sheet,#printArea.sheet .iv-sheet{font-family:var(--f-ui);color:#111}
+#printArea.sheet .sh-grid{margin-left:auto}
+.iv-sheet{font-size:10.5pt;line-height:1.5}
+.iv-q{margin:3mm 0;break-inside:avoid}
+.iv-q p{margin:0 0 1.5mm}
+.iv-tr{font-size:8.5pt;color:#444}
+.iv-a{border:.3mm solid #888;border-radius:2mm;min-height:22mm;padding:2mm;white-space:pre-wrap}
+.iv-a.big{min-height:34mm}
 /* print */
 #printArea{position:fixed;left:-20000px;top:0;visibility:hidden;width:100mm}
 #printArea .hagaki{width:100mm;height:148mm;aspect-ratio:auto;box-shadow:none;border-radius:0}
@@ -453,6 +511,7 @@ body.credit-hidden main .src:not(#p-teacher .src):not(#p-post .src){display:none
   <section class="panel" id="p-write" role="tabpanel" hidden></section>
   <section class="panel" id="p-address" role="tabpanel" hidden></section>
   <section class="panel" id="p-quiz" role="tabpanel" hidden></section>
+  <section class="panel" id="p-practice" role="tabpanel" hidden></section>
   <section class="panel" id="p-post" role="tabpanel" hidden></section>
   <section class="panel" id="p-teacher" role="tabpanel" hidden></section>
 </main>
@@ -763,6 +822,7 @@ const UI = {
     ["write", X("{書|か}く","Write","写贺卡","Viết thiệp","लेख्नुहोस्","ရေးရန်")],
     ["address", X("あてな","Address","写地址","Địa chỉ","ठेगाना","လိပ်စာ")],
     ["quiz", X("クイズ","Quiz","测验","Câu đố","प्रश्नोत्तरी","ပဟေဠိ")],
+    ["practice", X("れんしゅう","Practice","练习","Luyện tập","अभ्यास","လေ့ကျင့်")],
     ["post", X("{郵便局|ゆうびんきょく}","Japan Post","邮局","Bưu điện","हुलाक","စာတိုက်")],
     ["teacher", X("{先生|せんせい}へ","For teachers","教师用","Cho giáo viên","शिक्षकका लागि","ဆရာများအတွက်")]
   ]
@@ -1672,6 +1732,282 @@ $("#p-quiz").addEventListener("click", e => {
 });
 
 /* ---------- teacher ---------- */
+/* ---------- れんしゅう（学習指導要領にもとづく追加の学習活動 7つ）2026-11-26 ---------- */
+// 入力はこの端末のブラウザ（state.practice）にだけ保存。vi/ne/my は試訳。
+const PR_ACTS = [
+  {id:"compare", t:X("はがき・メール・SNSで {書|か}き{比|くら}べ","Compare: postcard, email, social media","比较：明信片、邮件、社交软件","So sánh: bưu thiếp, email, mạng xã hội","तुलना: पोस्टकार्ड, इमेल, सामाजिक सञ्जाल","နှိုင်းယှဉ်- ပို့စကတ်၊ အီးမေးလ်၊ SNS"), cs:"中2 B書くこと(2)イ「社会生活に必要な手紙や電子メールを書くなど，伝えたいことを相手や媒体を考慮して書く活動。」"},
+  {id:"reply", t:X("{返事|へんじ}を {書|か}く（{寒中見舞|かんちゅうみま}い）","Write a reply (kanchū mimai)","写回信（寒中问候）","Viết thư trả lời (kanchū mimai)","जवाफ लेख्नुहोस् (कान्चु मिमाई)","ပြန်စာ ရေးရန် (ကန်ချူ မိမိုင်)"), cs:"中1 B書くこと(2)イ「行事の案内や報告の文章を書くなど，伝えるべきことを整理して書く活動。」"},
+  {id:"shosha", t:X("{賀詞|がし}を {書写|しょしゃ}する","Practise writing greetings by hand","练习书写贺词","Luyện viết tay lời chúc","शुभकामना शब्द हातले अभ्यास","နှုတ်ခွန်းဆက်စကား လက်ရေး လေ့ကျင့်"), cs:"中1〔知識及び技能〕(3)エ ア「字形を整え，文字の大きさ，配列などについて理解して，楷書で書くこと。」／中2(3)ウ イ「目的や必要に応じて，楷書又は行書を選んで書くこと。」"},
+  {id:"interview", t:X("ことばの {移|うつ}り{変|か}わりを {聞|き}く","Interview: how greetings have changed","采访：问候语的变化","Phỏng vấn: lời chào thay đổi thế nào","अन्तर्वार्ता: शुभकामना कसरी बदलियो","အင်တာဗျူး- နှုတ်ခွန်းဆက် ပြောင်းလဲပုံ"), cs:"中3〔知識及び技能〕(3)ウ「時間の経過による言葉の変化や世代による言葉の違いについて理解すること。」"},
+  {id:"intro", t:X("{自分|じぶん}の {国|くに}の あいさつを {紹介|しょうかい}","Introduce your country's greeting","介绍自己国家的新年问候","Giới thiệu lời chào năm mới của nước bạn","आफ्नो देशको शुभकामना परिचय","ကိုယ့်နိုင်ငံ၏ နှုတ်ခွန်းဆက် မိတ်ဆက်"), cs:"「知る」⑥⑦の問いかけを発表につなげる活動（日本語で短く説明する）。"},
+  {id:"keigo", t:X("{先生|せんせい}あて・{友|とも}だちあて","To a teacher / to a friend","写给老师・写给朋友","Gửi thầy cô / gửi bạn","शिक्षकलाई / साथीलाई","ဆရာထံ / သူငယ်ချင်းထံ"), cs:"中2〔知識及び技能〕(1)カ「敬語の働きについて理解し，話や文章の中で使うこと。」／小5・6(1)キ「日常よく使われる敬語を理解し使い慣れること。」"},
+  {id:"real", t:X("{本物|ほんもの}の はがきで {出|だ}す","Send a real postcard","用真的明信片寄出","Gửi bằng bưu thiếp thật","साँच्चिकै पोस्टकार्डमा पठाउनुहोस्","တကယ့် ပို့စကတ်ဖြင့် ပို့ရန်"), cs:"「郵便局」タブの年賀はがき（手紙の書き方体験授業）を使って、書いて出し、届いた返事を読み合う。"}
+];
+const PR = () => (state.practice = state.practice || {});
+const prGet = (k, d) => { const p = PR(); if(p[k] === undefined) p[k] = d; return p[k]; };
+const stripTags = h => String(h||"").replace(/<rt>.*?<\/rt>/g,"").replace(/<[^>]+>/g,"").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"').replace(/&#39;/g,"'");
+function myCardLines(){
+  const m = cardModel("plain");
+  return [m.gashi, ...(m.body||[]), m.close, m.date, m.name].map(stripTags).map(s=>s.trim()).filter(Boolean);
+}
+const prTA = (key, ph, rows) => `<textarea class="pr-ta" data-pr="${key}" rows="${rows||4}" placeholder="${esc(ph||"")}">${esc(prGet(key,""))}</textarea>`;
+const prCk = (key, label) => `<label class="pr-ck"><input type="checkbox" data-prck="${key}"${prGet(key,false)?" checked":""}> <span>${label}</span></label>`;
+
+/* 1. 書き比べ */
+const CMP = {
+  lead:X("おなじ {相手|あいて}に、{年賀状|ねんがじょう}・メール・メッセージ（SNS）で あいさつを {書|か}いて、ちがいを {比|くら}べましょう。","Write a greeting to the same person as a nengajō, an email and a message (social media), and compare them.","给同一个人分别用年贺状、邮件和社交软件消息写问候，比较它们的不同。","Hãy viết lời chào cho cùng một người bằng nengajō, email và tin nhắn (mạng xã hội), rồi so sánh.","एउटै व्यक्तिलाई नेन्गाजो, इमेल र सन्देश (सामाजिक सञ्जाल) मा शुभकामना लेखेर तुलना गर्नुहोस्।","လူတစ်ယောက်တည်းထံ နင်ဂါဂျော၊ အီးမေးလ်၊ မက်ဆေ့ချ် (SNS) ဖြင့် နှုတ်ခွန်းဆက် ရေးပြီး နှိုင်းယှဉ်ပါ။"),
+  mine:X("あなたの {年賀状|ねんがじょう}（「{書|か}く」より）","Your nengajō (from Write)","你的年贺状（来自“写贺卡”）","Nengajō của bạn (từ “Viết thiệp”)","तपाईंको नेन्गाजो (“लेख्नुहोस्” बाट)","သင့် နင်ဂါဂျော (“ရေးရန်” မှ)"),
+  mail:X("メール","Email","邮件","Email","इमेल","အီးမေးလ်"),
+  sns:X("メッセージ（SNS）","Message (social media)","消息（社交软件）","Tin nhắn (mạng xã hội)","सन्देश (सामाजिक सञ्जाल)","မက်ဆေ့ချ် (SNS)"),
+  ex:X("れいを {見|み}る","See examples","看例子","Xem ví dụ","उदाहरण हेर्नुहोस्","နမူနာ ကြည့်ရန်"),
+  exMail:"件名：あけましておめでとうございます\n\n山田先生\n\nあけましておめでとうございます。\n昨年は大変お世話になりました。\n今年もよろしくお願いいたします。\n\n" + "上野振宇",
+  exSns:"あけましておめでとう！🎍\n今年もよろしくね！",
+  diff:X("ちがう ところに チェックしましょう","Tick the differences","请勾选不同之处","Hãy đánh dấu những điểm khác nhau","फरक कुरामा चिनो लगाउनुहोस्","ကွာခြားချက်များကို အမှန်ခြစ်ပါ"),
+  checks:[
+    X("{長|なが}さが ちがう","The length is different","长度不同","Độ dài khác nhau","लम्बाइ फरक छ","အရှည် ကွာသည်"),
+    X("ていねいな ことば（です・ます、いたします）の {使|つか}い{方|かた}が ちがう","Polite words (desu/masu, itashimasu) are used differently","礼貌用语（です・ます、いたします）的用法不同","Cách dùng từ lịch sự (desu/masu, itashimasu) khác nhau","विनम्र शब्द (देसु/मासु, इताशिमासु) को प्रयोग फरक छ","ယဉ်ကျေးသော စကား (ဒဲစု/မာစု၊ အိတရှိမာစု) သုံးပုံ ကွာသည်"),
+    X("メールには {件名|けんめい}が ある","An email has a subject line","邮件有标题","Email có tiêu đề","इमेलमा विषय हुन्छ","အီးမေးလ်တွင် ခေါင်းစဉ် ပါသည်"),
+    X("{絵文字|えもじ}や「！」を {使|つか}う","Emoji and \"!\" are used","使用表情符号和“！”","Dùng biểu tượng cảm xúc và dấu “!”","इमोजी र “!” प्रयोग हुन्छ","အီမိုဂျီနှင့် “!” သုံးသည်"),
+    X("{日付|ひづけ}や {名前|なまえ}の {書|か}き{方|かた}が ちがう","Date and name are written differently","日期和姓名的写法不同","Cách ghi ngày và tên khác nhau","मिति र नाम लेख्ने तरिका फरक छ","ရက်စွဲနှင့် အမည် ရေးပုံ ကွာသည်"),
+    X("{手書|てが}きの はがきは {形|かたち}に のこる","A handwritten postcard stays as a keepsake","手写的明信片可以保存下来","Bưu thiếp viết tay được giữ lại làm kỷ niệm","हातले लेखेको पोस्टकार्ड सम्झनाको रूपमा रहन्छ","လက်ရေး ပို့စကတ်သည် အမှတ်တရ ကျန်ရစ်သည်")
+  ],
+  note:X("{気|き}づいたこと","What I noticed","我注意到的","Điều tôi nhận ra","मैले देखेको कुरा","သတိထားမိသည်များ")
+};
+function prCompare(){
+  const lines = myCardLines();
+  return `<p>${L(CMP.lead,{tag:"span",say:true})}</p>
+  <div class="pr-cols">
+   <div class="pr-box"><h4>${L(CMP.mine)}</h4>${lines.length ? `<pre class="pr-pre">${esc(lines.join("\n"))}</pre>` : `<p class="hint">${rb("まだ {書|か}いていません。「{書|か}く」タブで {書|か}きましょう。")}</p>`}<button type="button" class="chip" data-goto="write">${rb("「{書|か}く」へ")}</button></div>
+   <div class="pr-box"><h4>${L(CMP.mail)}</h4>${prTA("cmpMail","",7)}</div>
+   <div class="pr-box"><h4>${L(CMP.sns)}</h4>${prTA("cmpSns","",4)}</div>
+  </div>
+  <details class="pr-ex"><summary>${L(CMP.ex)}</summary><div class="pr-cols"><div class="pr-box"><h4>${rb("メール（{先生|せんせい}あて）")}</h4><pre class="pr-pre">${esc(CMP.exMail)}</pre></div><div class="pr-box"><h4>${rb("メッセージ（{友|とも}だちあて）")}</h4><pre class="pr-pre">${esc(CMP.exSns)}</pre></div></div></details>
+  <h4 class="pr-h">${L(CMP.diff)}</h4><div class="pr-checks">${CMP.checks.map((c,i)=>prCk("cmpD"+i, L(c))).join("")}</div>
+  <h4 class="pr-h">${L(CMP.note)}</h4>${prTA("cmpNote","",3)}`;
+}
+
+/* 2. 返事・寒中見舞い */
+const RP = {
+  q:X("{返事|へんじ}は いつ とどきますか？","When will your reply arrive?","回信什么时候送到？","Thư trả lời của bạn sẽ đến khi nào?","तपाईंको जवाफ कहिले पुग्छ?","သင့်ပြန်စာ ဘယ်အချိန် ရောက်မလဲ။"),
+  early:X("1{月|がつ}7{日|なのか}までに とどく","By January 7","1月7日之前送到","Đến trước ngày 7 tháng 1","जनवरी ७ भित्र पुग्छ","ဇန်နဝါရီ ၇ ရက်အမီ ရောက်မည်"),
+  late:X("1{月|がつ}8{日|ようか}より あとに とどく","After January 8","1月8日以后送到","Đến sau ngày 8 tháng 1","जनवरी ८ पछि पुग्छ","ဇန်နဝါရီ ၈ ရက်နောက်ပိုင်း ရောက်မည်"),
+  nenga:X("→ {年賀状|ねんがじょう}で {返事|へんじ}を {書|か}きます。","→ Reply with a nengajō.","→ 用年贺状回信。","→ Trả lời bằng nengajō.","→ नेन्गाजोबाट जवाफ लेख्नुहोस्।","→ နင်ဂါဂျောဖြင့် ပြန်စာ ရေးပါ။"),
+  kanchu:X("→ 「{寒中見舞|かんちゅうみま}い」で {返事|へんじ}を {書|か}きます。「{明|あ}けまして おめでとう」などの {賀詞|がし}は {使|つか}いません。","→ Reply with a kanchū mimai (winter greeting). Do not use New Year greetings such as \"akemashite omedetō\".","→ 用“寒中问候”回信，不使用“新年快乐”之类的贺词。","→ Trả lời bằng kanchū mimai (thiệp hỏi thăm mùa lạnh). Không dùng lời chúc năm mới như “akemashite omedetō”.","→ कान्चु मिमाई (जाडोको शुभकामना) बाट जवाफ लेख्नुहोस्। “अकेमासिते ओमेदेतो” जस्ता नयाँ वर्षका शुभकामना प्रयोग नगर्नुहोस्।","→ ကန်ချူ မိမိုင် (ဆောင်းရာသီ နှုတ်ခွန်းဆက်) ဖြင့် ပြန်စာ ရေးပါ။ “အာကဲမာရှိတဲ အိုမဲဒဲတို” ကဲ့သို့ နှစ်သစ်ဆုတောင်းစကား မသုံးပါ။"),
+  pick:X("{使|つか}う {文|ぶん}を えらびましょう","Choose the sentences to use","选择要用的句子","Chọn các câu sẽ dùng","प्रयोग गर्ने वाक्य छान्नुहोस्","သုံးမည့် စာကြောင်းများကို ရွေးပါ"),
+  prev:X("できあがり","Result","完成","Kết quả","नतिजा","ရလဒ်"),
+  nengaLines:[
+    {id:"n1", ja:"{明|あ}けましておめでとうございます", m:X("","Happy New Year","新年快乐","Chúc mừng năm mới","नयाँ वर्षको शुभकामना","နှစ်သစ်မင်္ဂလာပါ")},
+    {id:"n2", ja:"ごていねいな {年賀状|ねんがじょう}を ありがとうございました。", m:X("","Thank you for your kind nengajō.","谢谢您寄来的年贺状。","Cảm ơn nengajō chu đáo của bạn.","तपाईंको नेन्गाजोका लागि धन्यवाद।","နင်ဂါဂျော ပို့ပေးသည့်အတွက် ကျေးဇူးတင်ပါသည်။")},
+    {id:"n3", ja:"{昨年|さくねん}は {大変|たいへん} お{世話|せわ}に なりました。", m:X("","Thank you for all your help last year.","去年承蒙您多方关照。","Năm ngoái cảm ơn bạn đã giúp đỡ nhiều.","गत वर्ष धेरै सहयोग गर्नुभएकोमा धन्यवाद।","မနှစ်က အများကြီး ကူညီခဲ့သည့်အတွက် ကျေးဇူးတင်ပါသည်။")},
+    {id:"n4", ja:"{今年|ことし}も よろしく お{願|ねが}いいたします。", m:X("","I look forward to your support this year too.","今年也请多多关照。","Năm nay cũng mong được giúp đỡ.","यो वर्ष पनि सहयोगको अपेक्षा गर्छु।","ယခုနှစ်လည်း ကူညီပေးပါရန် မျှော်လင့်ပါသည်။")}
+  ],
+  kanchuLines:[
+    {id:"k1", ja:"{寒中|かんちゅう}お{見舞|みま}い{申|もう}し{上|あ}げます", m:X("","I send you my winter greetings (kanchū mimai).","寒中问候。","Xin gửi lời hỏi thăm mùa lạnh.","जाडोको शुभकामना।","ဆောင်းရာသီ နှုတ်ခွန်းဆက်ပါသည်။")},
+    {id:"k2", ja:"ごていねいな {年賀状|ねんがじょう}を いただき、ありがとうございました。", m:X("","Thank you for your kind nengajō.","谢谢您寄来的年贺状。","Cảm ơn nengajō chu đáo bạn đã gửi.","तपाईंको नेन्गाजोका लागि धन्यवाद।","နင်ဂါဂျော ပို့ပေးသည့်အတွက် ကျေးဇူးတင်ပါသည်။")},
+    {id:"k3", ja:"ごあいさつが おくれて もうしわけ ありません。", m:X("","I am sorry for my late greeting.","问候迟了，非常抱歉。","Xin lỗi vì gửi lời chào muộn.","शुभकामना ढिलो भएकोमा माफ गर्नुहोस्।","နှုတ်ခွန်းဆက် နောက်ကျသည့်အတွက် တောင်းပန်ပါသည်။")},
+    {id:"k4", ja:"{寒|さむ}さが きびしい ころですが、どうぞ お{元気|げんき}で お{過|す}ごしください。", m:X("","It is very cold now; please take care of yourself.","天气严寒，请多保重。","Trời đang rất lạnh, xin hãy giữ gìn sức khỏe.","धेरै जाडो छ, आफ्नो ख्याल राख्नुहोस्।","အလွန် အေးသော အချိန် ဖြစ်၍ ကျန်းမာစွာ နေပါ။")},
+    {id:"k5", ja:"{今年|ことし}も よろしく お{願|ねが}いいたします。", m:X("","I look forward to your support this year too.","今年也请多多关照。","Năm nay cũng mong được giúp đỡ.","यो वर्ष पनि सहयोगको अपेक्षा गर्छु।","ယခုနှစ်လည်း ကူညီပေးပါရန် မျှော်လင့်ပါသည်။")}
+  ]
+};
+function prReply(){
+  const when = prGet("rpWhen", ""), Y = cardYear(), P = CONFIG.posts[Y];
+  const list = when === "late" ? RP.kanchuLines : when === "early" ? RP.nengaLines : [];
+  const picks = prGet("rpPick_"+when, list.map(x=>x.id));
+  const chosen = list.filter(x=>picks.includes(x.id));
+  const dateLine = when === "late" ? `${eraPlainJ(Y)}　一月` : when === "early" ? `${eraPlainJ(Y)}　正月` : "";
+  const name = state.card.name || "";
+  return `<p>${L(RP.q,{tag:"span",say:true})}</p>
+  <div class="pr-row">${["early","late"].map(w=>`<label class="pr-radio"><input type="radio" name="rpWhen" value="${w}" data-prradio="rpWhen"${when===w?" checked":""}> <span>${L(RP[w])}</span></label>`).join("")}</div>
+  ${when ? `<p class="pr-res">${L(when==="late"?RP.kanchu:RP.nenga,{tag:"span"})}</p>
+   ${when==="late" && P && P.kanchuEnd ? `<p class="hint">${rb(`{寒中見舞|かんちゅうみま}いは ${D.ja(P.kanchuEnd)}までに とどくように {出|だ}します（{立春|りっしゅん}の {前|まえ}の {日|ひ}）。`)}</p>` : ""}
+   <h4 class="pr-h">${L(RP.pick)}</h4><div class="pr-checks">${list.map(x=>`<label class="pr-ck"><input type="checkbox" data-prpick="rpPick_${when}" value="${x.id}"${picks.includes(x.id)?" checked":""}> <span><span class="ja">${rb(x.ja)}</span>${TR(x.m)}</span></label>`).join("")}</div>
+   <h4 class="pr-h">${L(RP.prev)}</h4>
+   <div class="pr-tate">${chosen.map(x=>`<p>${esc(plain(x.ja).replace(/\s+/g,""))}</p>`).join("")}<p class="pr-date">${esc(dateLine)}</p><p class="pr-name">${esc(name)}</p></div>
+   ${sayBtn(chosen.map(x=>kana(x.ja)).join("。"),"きく")}` : ""}`;
+}
+
+/* 3. 書写 */
+const SH = {
+  lead:X("{賀詞|がし}を えらんで、{書写|しょしゃ}の れんしゅう{用紙|ようし}を {印刷|いんさつ}しましょう。1{列|れつ}{目|め}は お{手本|てほん}、2・3{列|れつ}{目|め}は なぞり、そのあとは {自分|じぶん}で {書|か}きます。","Choose a greeting and print a practice sheet. Column 1 is the model, columns 2–3 are for tracing, and the rest are for writing on your own.","选择贺词，打印书写练习纸。第1列是范字，第2、3列描红，之后自己写。","Chọn lời chúc và in tờ luyện viết. Cột 1 là chữ mẫu, cột 2–3 để tô theo, các cột sau tự viết.","शुभकामना छानेर अभ्यास पाना छाप्नुहोस्। पहिलो लहर नमुना, दोस्रो–तेस्रो लहर ट्रेस गर्न, बाँकी आफैँ लेख्न।","နှုတ်ခွန်းဆက်ကို ရွေးပြီး လေ့ကျင့်စာရွက် ပုံနှိပ်ပါ။ ပထမကော်လံ နမူနာ၊ ဒုတိယ-တတိယ ကော်လံ လိုက်ရေးရန်၊ ကျန်သည် ကိုယ်တိုင်ရေးရန်။"),
+  tips:X("{楷書|かいしょ}で、{字|じ}の {形|かたち}・{大|おお}きさ・ならべ{方|かた}（まんなかを そろえる）に {気|き}をつけて {書|か}きます。","Write in standard script (kaisho), paying attention to the shape and size of each character and lining them up along the centre.","用楷书书写，注意字形、大小和排列（对齐中心线）。","Viết chữ khải (kaisho), chú ý hình dáng, kích cỡ chữ và cách xếp (thẳng hàng ở giữa).","काइशो (मानक लिपि) मा, अक्षरको आकार, साइज र मिलान (बीचमा मिलाउने) मा ध्यान दिएर लेख्नुहोस्।","ကိုင်းရှော (စံလက်ရေး) ဖြင့် စာလုံးပုံသဏ္ဌာန်၊ အရွယ်အစား၊ စီစဉ်ပုံ (အလယ်တည့်) ကို ဂရုစိုက်၍ ရေးပါ။"),
+  gyo:X("{行書|ぎょうしょ}で {書|か}くときは、{教科書|きょうかしょ}の {手本|てほん}を {見|み}ましょう（この アプリの {字|じ}は {楷書|かいしょ}に {近|ちか}い {教科書体|きょうかしょたい}です）。","For semi-cursive (gyōsho), look at the model in your textbook (this app's font is close to standard kaisho).","写行书时请看课本的范字（本应用的字体接近楷书的教科书体）。","Khi viết chữ hành (gyōsho), hãy xem chữ mẫu trong sách giáo khoa (phông chữ của ứng dụng gần với chữ khải).","ग्योशो (अर्ध-घुमाउरो लिपि) लेख्दा पाठ्यपुस्तकको नमुना हेर्नुहोस् (यो एपको फन्ट काइशो जस्तै छ)।","ဂျိုးရှော (တစ်ပိုင်းစက်ဝိုင်းလက်ရေး) ရေးလျှင် ပြဋ္ဌာန်းစာအုပ်၏ နမူနာကို ကြည့်ပါ (ဤအက်ပ်၏ ဖောင့်သည် ကိုင်းရှောနှင့် နီးစပ်သည်)။"),
+  print:X("{印刷|いんさつ}する（A4）","Print (A4)","打印（A4）","In (A4)","छाप्नुहोस् (A4)","ပုံနှိပ်ရန် (A4)"),
+  own:X("{自分|じぶん}の {名前|なまえ}","Your own name","自己的名字","Tên của bạn","आफ्नो नाम","ကိုယ့်အမည်")
+};
+const SH_WORDS = () => [...GASHI.map(g=>({id:g.id, text:plain(g.ja), ja:g.ja})), {id:"own", text:(state.card.name||"").replace(/\s+/g,""), ja:""}];
+function shSheet(word, forPrint){
+  const chars = [...word].slice(0, 16), n = Math.max(chars.length, 1);
+  const cell = n <= 4 ? 26 : n <= 8 ? 20 : n <= 12 ? 16 : 14; // mm
+  const cols = Math.max(3, Math.floor(180 / cell));
+  const col = k => `<div class="sh-col">${chars.map(c=>`<span class="sh-cell ${k===0?"model":k<3?"trace":""}">${k<3?esc(c):""}</span>`).join("")}</div>`;
+  return `<div class="sh-sheet${forPrint?" print":""}" style="--cell:${cell}mm">
+   ${forPrint?`<div class="sh-head"><b>書写のれんしゅう：${esc(word)}</b><span>なまえ（　　　　　　　　　）</span></div>`:""}
+   <div class="sh-grid">${Array.from({length:cols},(_,k)=>col(k)).join("")}</div>
+   ${forPrint?`<p class="sh-foot">1列目：お手本　2・3列目：なぞる　4列目から：自分で書く（楷書で、字の形・大きさ・まんなかに気をつける）　— はじめての年賀状</p>`:""}</div>`;
+}
+function prShosha(){
+  const words = SH_WORDS(), sel = prGet("shWord","g2"), w = words.find(x=>x.id===sel) || words[1];
+  const text = w.text || "";
+  return `<p>${L(SH.lead,{tag:"span",say:true})}</p>
+  <div class="pr-row">${words.map(x=>`<label class="pr-radio"><input type="radio" name="shWord" value="${x.id}" data-prradio="shWord"${x.id===w.id?" checked":""}> <span>${x.id==="own"?L(SH.own):rb(x.ja)}</span></label>`).join("")}</div>
+  ${text ? `<div class="sh-wrap">${shSheet(text,false)}</div><button type="button" class="btn" data-shprint="1">${L(SH.print)}</button>` : `<p class="hint">${rb("「{書|か}く」で {名前|なまえ}を {入|い}れると、{名前|なまえ}も れんしゅう できます。")}</p>`}
+  <p class="hint">${L(SH.tips,{tag:"span"})}</p><p class="hint">${L(SH.gyo,{tag:"span"})}</p>`;
+}
+
+/* 4. インタビュー */
+const IV = {
+  lead:X("{家族|かぞく}や {近|ちか}くの {人|ひと}に {聞|き}いて みましょう。あなたの ことばで {聞|き}いても いいです。{名前|なまえ}は {書|か}かなくて いいです。","Ask your family or people near you. You may ask in your own language. You don't need to write their names.","问问家人或身边的人。可以用你自己的语言问。不用写对方的名字。","Hãy hỏi gia đình hoặc người xung quanh. Bạn có thể hỏi bằng tiếng mẹ đẻ. Không cần ghi tên họ.","परिवार वा नजिकका मानिसलाई सोध्नुहोस्। आफ्नै भाषामा सोध्न सक्नुहुन्छ। उनीहरूको नाम लेख्नु पर्दैन।","မိသားစု သို့မဟုတ် အနီးရှိ လူများကို မေးကြည့်ပါ။ ကိုယ့်ဘာသာစကားဖြင့် မေးနိုင်သည်။ အမည် ရေးရန် မလိုပါ။"),
+  who:X("{聞|き}いた {人|ひと}（れい：{母|はは}、となりの {人|ひと}）","Who you asked (e.g. mother, neighbour)","采访的人（例：妈妈、邻居）","Người được hỏi (ví dụ: mẹ, hàng xóm)","सोधिएको व्यक्ति (जस्तै: आमा, छिमेकी)","မေးသူ (ဥပမာ- အမေ၊ အိမ်နီးချင်း)"),
+  qs:[
+    X("{子|こ}どもの ころ、お{正月|しょうがつ}に どんな あいさつを しましたか？","When you were a child, what greetings did you say at New Year?","小时候，新年时说什么问候语？","Hồi nhỏ, dịp năm mới bạn chào nhau thế nào?","सानो छँदा नयाँ वर्षमा कस्तो शुभकामना भन्नुहुन्थ्यो?","ငယ်စဉ်က နှစ်သစ်ကူးတွင် ဘယ်လို နှုတ်ခွန်းဆက်ခဲ့သလဲ။"),
+    X("{年賀状|ねんがじょう}や {新年|しんねん}の カードを {出|だ}したことが ありますか？ {今|いま}も {出|だ}しますか？","Have you ever sent a nengajō or New Year card? Do you still send them?","你寄过年贺状或新年贺卡吗？现在还寄吗？","Bạn đã từng gửi nengajō hoặc thiệp năm mới chưa? Bây giờ còn gửi không?","नेन्गाजो वा नयाँ वर्षको कार्ड कहिल्यै पठाउनुभएको छ? अहिले पनि पठाउनुहुन्छ?","နင်ဂါဂျော သို့မဟုတ် နှစ်သစ်ကတ် ပို့ဖူးသလား။ ယခုလည်း ပို့သေးသလား။"),
+    X("{今|いま}は メールや SNSで あいさつしますか？ それは なぜですか？","Do you greet people by email or social media now? Why?","现在用邮件或社交软件问候吗？为什么？","Bây giờ bạn có chào qua email hay mạng xã hội không? Vì sao?","अहिले इमेल वा सामाजिक सञ्जालबाट शुभकामना दिनुहुन्छ? किन?","ယခု အီးမေးလ် သို့မဟုတ် SNS ဖြင့် နှုတ်ခွန်းဆက်သလား။ ဘာကြောင့်လဲ။"),
+    X("{年賀状|ねんがじょう}では「{去年|きょねん}」ではなく「{昨年|さくねん}」と {書|か}きます。なぜだと {思|おも}いますか？（ヒント：「{去|さ}る」）","On nengajō people write 昨年 (sakunen) instead of 去年 (kyonen). Why do you think so? (Hint: 去る = to leave)","年贺状上不写“去年”而写“昨年”，你觉得为什么？（提示：“去る”＝离去）","Trên nengajō người ta viết “昨年” chứ không viết “去年”. Bạn nghĩ vì sao? (Gợi ý: “去る” = rời đi)","नेन्गाजोमा “去年” को सट्टा “昨年” लेखिन्छ। किन होला? (संकेत: “去る” = छोडेर जानु)","နင်ဂါဂျောတွင် “去年” အစား “昨年” ဟု ရေးသည်။ ဘာကြောင့်ဟု ထင်သလဲ။ (အရိပ်အမြွက်- “去る” = ထွက်ခွာသည်)"),
+    X("{国|くに}や {年齢|ねんれい}によって、あいさつは どう ちがいますか？","How do greetings differ by country or age?","问候语因国家或年龄有什么不同？","Lời chào khác nhau thế nào theo quốc gia hoặc lứa tuổi?","देश वा उमेरअनुसार शुभकामना कसरी फरक हुन्छ?","နိုင်ငံ သို့မဟုတ် အသက်အလိုက် နှုတ်ခွန်းဆက် ဘယ်လို ကွာသလဲ။")
+  ],
+  sum:X("わかったこと（{発表|はっぴょう}しましょう）","What I found out (share it with the class)","我了解到的（请发表）","Điều tôi biết được (hãy trình bày)","मैले थाहा पाएको कुरा (कक्षामा सुनाउनुहोस्)","သိရှိခဲ့သည်များ (တင်ပြပါ)"),
+  print:X("ワークシートを {印刷|いんさつ}（A4）","Print the worksheet (A4)","打印学习单（A4）","In phiếu học tập (A4)","कार्यपाना छाप्नुहोस् (A4)","လုပ်ငန်းစာရွက် ပုံနှိပ်ရန် (A4)")
+};
+function prInterview(){
+  return `<p>${L(IV.lead,{tag:"span",say:true})}</p>
+  <h4 class="pr-h">${L(IV.who)}</h4><input type="text" class="pr-in" data-pr="ivWho" value="${esc(prGet("ivWho",""))}" autocomplete="off">
+  ${IV.qs.map((q,i)=>`<h4 class="pr-h">${i+1}. ${L(q,{tag:"span",say:true})}</h4>${prTA("ivA"+i,"",2)}`).join("")}
+  <h4 class="pr-h">${L(IV.sum)}</h4>${prTA("ivSum","",3)}
+  <button type="button" class="btn" data-ivprint="1">${L(IV.print)}</button>`;
+}
+function ivSheet(){
+  const langs = state.langs;
+  return `<div class="iv-sheet"><div class="sh-head"><b>インタビュー：お正月のあいさつの移り変わり</b><span>なまえ（　　　　　　　　　）</span></div>
+  <p>聞いた人：${esc(prGet("ivWho",""))}</p>
+  ${IV.qs.map((q,i)=>`<div class="iv-q"><p><b>${i+1}. ${esc(plain(q.ja))}</b>${langs.map(l=>`<br><span class="iv-tr" lang="${l}">${esc(q[l])}</span>`).join("")}</p><div class="iv-a">${esc(prGet("ivA"+i,""))}</div></div>`).join("")}
+  <div class="iv-q"><p><b>わかったこと</b></p><div class="iv-a big">${esc(prGet("ivSum",""))}</div></div>
+  <p class="sh-foot">はじめての年賀状　れんしゅう④</p></div>`;
+}
+
+/* 5. 自分の国のあいさつ */
+const IN = {
+  lead:X("{自分|じぶん}の {国|くに}の {新年|しんねん}の あいさつを {書|か}いて、{日本語|にほんご}で {紹介|しょうかい}しましょう。","Write your country's New Year greeting and introduce it in Japanese.","写下自己国家的新年问候语，用日语介绍。","Viết lời chào năm mới của nước bạn và giới thiệu bằng tiếng Nhật.","आफ्नो देशको नयाँ वर्षको शुभकामना लेखेर जापानीमा परिचय दिनुहोस्।","ကိုယ့်နိုင်ငံ၏ နှစ်သစ် နှုတ်ခွန်းဆက်ကို ရေးပြီး ဂျပန်ဘာသာဖြင့် မိတ်ဆက်ပါ။"),
+  f:[
+    ["inCountry", X("{国|くに}・{地域|ちいき}","Country / region","国家・地区","Quốc gia / vùng","देश / क्षेत्र","နိုင်ငံ / ဒေသ")],
+    ["inGreet", X("あいさつ（あなたの ことばの {文字|もじ}で）","Greeting (in your language's script)","问候语（用你的语言的文字）","Lời chào (bằng chữ của ngôn ngữ bạn)","शुभकामना (आफ्नो भाषाको लिपिमा)","နှုတ်ခွန်းဆက် (ကိုယ့်ဘာသာ၏ စာလုံးဖြင့်)")],
+    ["inRead", X("{読|よ}み{方|かた}（カタカナ）","How to read it (in katakana)","读法（片假名）","Cách đọc (katakana)","पढ्ने तरिका (काताकानामा)","ဖတ်ပုံ (ခတခနဖြင့်)")],
+    ["inMean", X("{意味|いみ}（{日本語|にほんご}で）","Meaning (in Japanese)","意思（用日语）","Ý nghĩa (bằng tiếng Nhật)","अर्थ (जापानीमा)","အဓိပ္ပာယ် (ဂျပန်ဘာသာဖြင့်)")],
+    ["inWhen", X("いつ {言|い}いますか（れい：1{月|がつ}1{日|ついたち}、{旧正月|きゅうしょうがつ}、4{月|がつ}）","When do you say it (e.g. Jan 1, lunar New Year, April)","什么时候说（例：1月1日、春节、4月）","Khi nào nói (ví dụ: 1/1, Tết âm lịch, tháng 4)","कहिले भनिन्छ (जस्तै: जनवरी १, चन्द्र नयाँ वर्ष, अप्रिल)","ဘယ်အချိန် ပြောသလဲ (ဥပမာ- ဇန်နဝါရီ ၁၊ လပြက္ခဒိန် နှစ်သစ်၊ ဧပြီ)")]
+  ],
+  near:X("{日本語|にほんご}で いちばん {近|ちか}い あいさつ","The closest Japanese greeting","日语中最接近的问候语","Lời chào tiếng Nhật gần nhất","सबैभन्दा मिल्दो जापानी शुभकामना","အနီးစပ်ဆုံး ဂျပန် နှုတ်ခွန်းဆက်"),
+  card:X("{発表|はっぴょう}カード","Presentation card","发表卡片","Thẻ trình bày","प्रस्तुति कार्ड","တင်ပြကတ်"),
+  big:X("{大|おお}きく {見|み}せる","Show large","放大显示","Hiển thị lớn","ठूलो देखाउनुहोस्","ကြီးကြီး ပြရန်")
+};
+function inSentences(forSpeech){
+  const v = k => (prGet(k,"")||"").replace(/[{}|]/g,"").trim(), g = find(GASHI, prGet("inNear","g1"));
+  const s = [];
+  if(v("inCountry")) s.push(`わたしの {国|くに}（{地域|ちいき}）は ${v("inCountry")}です。`);
+  if(v("inGreet")) s.push(forSpeech ? `${v("inCountry")||"わたしの {国|くに}"}では、{新年|しんねん}に「${v("inRead")||"……"}」と {言|い}います。` : `${v("inCountry")||"わたしの {国|くに}"}では、{新年|しんねん}に「${v("inGreet")}」${v("inRead")?`（${v("inRead")}）`:""}と {言|い}います。`);
+  if(v("inMean")) s.push(`{意味|いみ}は「${v("inMean")}」です。`);
+  if(v("inWhen")) s.push(`${v("inWhen")}に {言|い}います。`);
+  if(g) s.push(`{日本語|にほんご}の「${g.ja}」に {近|ちか}い あいさつです。`);
+  return s;
+}
+function prIntro(){
+  const s = inSentences(false);
+  return `<p>${L(IN.lead,{tag:"span",say:true})}</p>
+  <div class="pr-form">${IN.f.map(([k,lab])=>`<label><span>${L(lab)}</span><input type="text" class="pr-in" data-pr="${k}" value="${esc(prGet(k,""))}" autocomplete="off"></label>`).join("")}
+   <label><span>${L(IN.near)}</span><select class="pr-in" data-pr="inNear">${GASHI.map(g=>`<option value="${g.id}"${prGet("inNear","g1")===g.id?" selected":""}>${esc(plain(g.ja))}</option>`).join("")}</select></label></div>
+  <h4 class="pr-h">${L(IN.card)}</h4>
+  <div id="inOut">${inCardHTML()}</div> <button type="button" class="chip" data-inbig="1">${L(IN.big)}</button>`;
+}
+function inCardHTML(){
+  const s = inSentences(false), sp = inSentences(true);
+  const esR = t => rb(t.replace(/[<>&"]/g, c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c])));
+  return `<div class="in-card" id="inCard">${s.map(t=>`<p>${esR(t)}</p>`).join("")}</div>${sp.length?sayBtn(sp.map(t=>kana(t)).join(""),"きく"):""}`;
+}
+
+/* 6. 先生あて・友だちあて */
+const KG = [
+  {t:"{謹賀新年|きんがしんねん}", f:"あけまして おめでとう！", e:X("{目上|めうえ}の {人|ひと}には 4{文字|もじ}{以上|いじょう}の {賀詞|がし}。{友|とも}だちには くだけた {言|い}い{方|かた}でも いいです。","Use a greeting of 4+ characters for people above you; casual words are fine for friends.","对长辈用四个字以上的贺词，对朋友可以用随意的说法。","Với người trên, dùng lời chúc từ 4 chữ trở lên; với bạn bè có thể nói thân mật.","मान्यजनलाई ४ वा बढी अक्षरको शुभकामना; साथीलाई अनौपचारिक भए पनि हुन्छ।","အကြီးအကဲထံ စာလုံး ၄ လုံးနှင့်အထက်၊ သူငယ်ချင်းထံ ရင်းနှီးသော စကားဖြင့် ရသည်။")},
+  {t:"{昨年|さくねん}は {大変|たいへん} お{世話|せわ}に なりました。", f:"この{前|まえ}は いっしょに {遊|あそ}べて {楽|たの}しかったね。", e:X("「お{世話|せわ}に なりました」は、{相手|あいて}への ていねいな お{礼|れい}の {言|い}い{方|かた}です。","\"Osewa ni narimashita\" is a polite way to thank someone.","“お世話になりました”是对对方礼貌的感谢说法。","“Osewa ni narimashita” là cách cảm ơn lịch sự.","“ओसेवा नि नारिमासिता” विनम्र धन्यवाद दिने तरिका हो।","“အိုဆဲဝ နိ နရိမာရှိတ” သည် ယဉ်ကျေးသော ကျေးဇူးတင်စကား ဖြစ်သည်။")},
+  {t:"{今年|ことし}も よろしく お{願|ねが}いいたします。", f:"{今年|ことし}も よろしくね！", e:X("「いたします」は「する」を へりくだって {言|い}う ことば（{謙譲語|けんじょうご}）です。","\"Itashimasu\" is a humble form of \"suru\" (to do) (kenjōgo).","“いたします”是“する”的自谦说法（谦让语）。","“Itashimasu” là cách nói khiêm nhường của “suru” (khiêm nhường ngữ).","“इताशिमासु” “सुरु” (गर्नु) को नम्र रूप हो (केन्जोगो)।","“အိတရှိမာစု” သည် “စုရု” (လုပ်သည်) ၏ နှိမ့်ချ ပုံစံ (ခဲန်ဂျိုးဂို) ဖြစ်သည်။")},
+  {t:"ご{健康|けんこう}と ご{活躍|かつやく}を お{祈|いの}り{申|もう}し{上|あ}げます。", f:"{元気|げんき}でね！", e:X("「ご{健康|けんこう}」の「ご」は {相手|あいて}を {高|たか}める ことば、「お〜{申|もう}し{上|あ}げます」は {自分|じぶん}が する ことを へりくだって {言|い}う {形|かたち}です。","The \"go\" in \"go-kenkō\" raises the other person; \"o-… mōshiagemasu\" is a humble form for what you do.","“ご健康”的“ご”是抬高对方的说法，“お〜申し上げます”是对自己的行为表示谦逊的形式。","“Go” trong “go-kenkō” là tôn kính người kia; “o-… mōshiagemasu” là cách nói khiêm nhường về việc mình làm.","“गो-केन्को” को “गो” ले अर्कोलाई सम्मान गर्छ; “ओ-… मोसिआगेमासु” आफूले गर्ने कामको नम्र रूप हो।","“ဂို-ခဲန်ခို” ၏ “ဂို” သည် တစ်ဖက်လူကို မြှင့်တင်ပြီး “အို-… မိုရှိအာဂဲမာစု” သည် ကိုယ်တိုင်လုပ်သည်ကို နှိမ့်ချ၍ ပြောသော ပုံစံ ဖြစ်သည်။")}
+];
+const KGT = {
+  lead:X("どちらが {先生|せんせい}あて でしょう？ えらんでから、{理由|りゆう}を {読|よ}みましょう。","Which one is for the teacher? Choose, then read the reason.","哪一个是写给老师的？选完后读一读理由。","Câu nào gửi thầy cô? Hãy chọn rồi đọc lý do.","कुन शिक्षकलाई हो? छानेर कारण पढ्नुहोस्।","ဘယ်ဟာက ဆရာထံလဲ။ ရွေးပြီး အကြောင်းရင်းကို ဖတ်ပါ။"),
+  own:X("{自分|じぶん}でも {書|か}いて みましょう。ちがう ところに {線|せん}を {引|ひ}いて（ノートに）、{理由|りゆう}を {言|い}いましょう。","Now write your own. Underline the differences (in your notebook) and explain why.","自己也写一写。在不同之处画线（写在本子上），说说理由。","Hãy tự viết. Gạch dưới chỗ khác nhau (trong vở) và nói lý do.","आफैँ पनि लेख्नुहोस्। फरक ठाउँमा रेखा तान्नुहोस् (कापीमा) र कारण भन्नुहोस्।","ကိုယ်တိုင်လည်း ရေးကြည့်ပါ။ ကွာသည့်နေရာကို (မှတ်စုစာအုပ်တွင်) မျဉ်းသားပြီး အကြောင်းပြောပါ။"),
+  t:X("{先生|せんせい}あて","To the teacher","写给老师","Gửi thầy cô","शिक्षकलाई","ဆရာထံ"),
+  f:X("{友|とも}だちあて","To a friend","写给朋友","Gửi bạn","साथीलाई","သူငယ်ချင်းထံ")
+};
+function prKeigo(){
+  const ans = prGet("kgAns",{});
+  return `<p>${L(KGT.lead,{tag:"span",say:true})}</p>
+  <div class="kg-list">${KG.map((k,i)=>{ const order = i % 2 ? ["f","t"] : ["t","f"], a = ans[i];
+    return `<div class="kg-item"><span class="num">${i+1}</span><div class="opts">${order.map(w=>`<button type="button" class="opt ${a!==undefined&&w==="t"?"right":""} ${a===w&&w==="f"?"wrong":""}" data-kg="${i}" data-kgw="${w}" ${a!==undefined?"disabled":""}>${rb(w==="t"?k.t:k.f)}</button>`).join("")}</div>
+    ${a!==undefined?`<div class="exp">${a==="t"?`<span class="ok">${rb("せいかい！")}</span> `:`<span class="ng2">${rb("ざんねん")}</span> `}${L(k.e,{say:true})}</div>`:""}</div>`; }).join("")}</div>
+  <button type="button" class="chip" data-kgreset="1">${rb("もう{一度|いちど}")}</button>
+  <h4 class="pr-h">${L(KGT.own,{tag:"span"})}</h4>
+  <div class="pr-cols"><div class="pr-box"><h4>${L(KGT.t)}</h4>${prTA("kgT","",4)}</div><div class="pr-box"><h4>${L(KGT.f)}</h4>${prTA("kgF","",4)}</div></div>`;
+}
+
+/* 7. 本物のはがきで出す */
+function prReal(){
+  const Y = cardYear(), P = CONFIG.posts[Y];
+  const by = P && P.by ? D.ja(P.by) : "12{月|がつ}25{日|にち}ごろ";
+  const items = [
+    ["post", X("（{先生|せんせい}）{年賀|ねんが}はがきを {申|もう}し{込|こ}む","(Teacher) Order New Year postcards","（老师）申请年贺明信片","(Giáo viên) Đăng ký bưu thiếp năm mới","(शिक्षक) नयाँ वर्षको पोस्टकार्ड माग्ने","(ဆရာ) နှစ်သစ်ပို့စကတ် လျှောက်ရန်")],
+    ["write", X("「{書|か}く」で {下書|したが}きを する","Make a draft in Write","在“写贺卡”中写草稿","Viết nháp ở “Viết thiệp”","“लेख्नुहोस्” मा मस्यौदा लेख्ने","“ရေးရန်” တွင် မူကြမ်း ရေးရန်")],
+    ["write", X("「なぞりがき」を {印刷|いんさつ}して れんしゅうする","Print the tracing sheet and practise","打印描红纸练习","In bản tô chữ và luyện tập","ट्रेस गर्ने पाना छापेर अभ्यास गर्ने","လိုက်ရေးစာရွက် ပုံနှိပ်၍ လေ့ကျင့်ရန်")],
+    ["", X("はがきに {清書|せいしょ}する","Write the final copy on the postcard","在明信片上誊写","Viết bản chính lên bưu thiếp","पोस्टकार्डमा सफा प्रति लेख्ने","ပို့စကတ်ပေါ်တွင် သန့်ရှင်းစွာ ရေးရန်")],
+    ["address", X("あて{名|な}を {書|か}く","Write the address","写收件人地址姓名","Viết địa chỉ người nhận","ठेगाना लेख्ने","လိပ်စာ ရေးရန်")],
+    ["learn", X("ふつうの はがきなら、{切手|きって}の {下|した}に {赤|あか}で「{年賀|ねんが}」と {書|か}く","On an ordinary postcard, write 年賀 in red under the stamp","如果是普通明信片，在邮票下方用红字写“年贺”","Nếu là bưu thiếp thường, viết “年賀” màu đỏ dưới tem","साधारण पोस्टकार्ड भए टिकटमुनि रातोले “年賀” लेख्ने","သာမန်ပို့စကတ်ဆိုလျှင် တံဆိပ်ခေါင်းအောက်တွင် အနီဖြင့် “年賀” ရေးရန်")],
+    ["", X(`${by}までに ポストに {出|だ}す`,"Post it by the deadline on the left","在上述日期前投进邮筒","Bỏ vào hòm thư trước ngày ghi bên trái","माथिको मितिभित्र पोस्टबक्समा हाल्ने","ဖော်ပြပါ ရက်အမီ စာတိုက်ပုံးထဲ ထည့်ရန်")],
+    ["", X("{返事|へんじ}が とどいたら、みんなで {読|よ}み{合|あ}う","When replies arrive, read them together","收到回信后，大家一起读","Khi nhận được thư trả lời, cùng nhau đọc","जवाफ आएपछि सबैले मिलेर पढ्ने","ပြန်စာ ရောက်လျှင် အတူတကွ ဖတ်ရန်")]
+  ];
+  return `<p>${L(X("できたら チェックしましょう。","Tick each step when you finish it.","完成后打勾。","Đánh dấu khi hoàn thành.","सकेपछि चिनो लगाउनुहोस्।","ပြီးလျှင် အမှန်ခြစ်ပါ။"),{tag:"span",say:true})}</p>
+  <div class="pr-checks real">${items.map(([tab,o],i)=>`<div class="pr-step">${prCk("real"+i, `<span class="ja">${rb(o.ja)}</span>${TR(o)}`)}${tab?`<button type="button" class="chip" data-goto="${tab}">${tab==="post"?rb("「{郵便局|ゆうびんきょく}」へ"):tab==="write"?rb("「{書|か}く」へ"):tab==="address"?rb("「あてな」へ"):rb("「{知|し}る」へ")}</button>`:""}</div>`).join("")}</div>`;
+}
+
+const PR_RENDER = {compare:prCompare, reply:prReply, shosha:prShosha, interview:prInterview, intro:prIntro, keigo:prKeigo, real:prReal};
+function renderPractice(){
+  const cur = prGet("act","compare"), a = PR_ACTS.find(x=>x.id===cur) || PR_ACTS[0];
+  $("#p-practice").innerHTML = `<div class="lead"><h2>${L(X("れんしゅう","Practice","练习","Luyện tập","अभ्यास","လေ့ကျင့်ခန်း"))}</h2>
+   <p>${L(X("{年賀状|ねんがじょう}を {書|か}いたあとに、もっと れんしゅう しましょう。","After writing your nengajō, practise more.","写完年贺状后，再多练习一下吧。","Sau khi viết nengajō, hãy luyện tập thêm.","नेन्गाजो लेखेपछि थप अभ्यास गरौँ।","နင်ဂါဂျော ရေးပြီးနောက် ထပ်လေ့ကျင့်ကြစို့။"),{tag:"span"})}</p></div>
+  <div class="pr-menu" role="tablist">${PR_ACTS.map((x,i)=>`<button type="button" class="pr-mbtn" data-pract="${x.id}" aria-pressed="${x.id===a.id}"><span class="num">${i+1}</span><span>${L(x.t)}</span></button>`).join("")}</div>
+  <div class="card pr-act" id="prAct"><h3><span class="num">${PR_ACTS.indexOf(a)+1}</span><span>${L(a.t)}</span></h3>${PR_RENDER[a.id]()}
+   <p class="pr-cs">先生へ（学習指導要領）：${esc(a.cs)}</p></div>`;
+}
+function printSheet(html){
+  const area = $("#printArea");
+  let st = $("#pageStyle"); if(!st){ st = document.createElement("style"); st.id = "pageStyle"; document.head.appendChild(st); }
+  st.textContent = "@page{size:A4 portrait;margin:10mm}";
+  area.className = "sheet"; area.innerHTML = html; // 終わったら afterprint で sheet を外す
+  const reset = () => { area.classList.remove("sheet"); window.removeEventListener("afterprint", reset); };
+  window.addEventListener("afterprint", reset);
+  setTimeout(()=>{ try{ window.print(); }catch(e){} }, 60);
+}
+(function bindPractice(){
+  const root = document.getElementById("p-practice");
+  root.addEventListener("click", e => {
+    const t = e.target;
+    const m = t.closest("[data-pract]"); if(m){ PR().act = m.dataset.pract; save(); renderPractice(); return; }
+    const g = t.closest("[data-goto]"); if(g){ showTab(g.dataset.goto); window.scrollTo(0,0); return; }
+    const k = t.closest("[data-kg]"); if(k){ const a = prGet("kgAns",{}); a[k.dataset.kg] = k.dataset.kgw; save(); renderPractice(); return; }
+    if(t.closest("[data-kgreset]")){ PR().kgAns = {}; save(); renderPractice(); return; }
+    if(t.closest("[data-shprint]")){ const w = SH_WORDS().find(x=>x.id===prGet("shWord","g2")); if(w && w.text) printSheet(shSheet(w.text, true)); return; }
+    if(t.closest("[data-ivprint]")){ printSheet(ivSheet()); return; }
+    if(t.closest("[data-inbig]")){ const c = document.getElementById("inCard"); if(c) c.classList.toggle("big"); return; }
+  });
+  root.addEventListener("input", e => {
+    const t = e.target;
+    if(t.dataset.pr){ PR()[t.dataset.pr] = t.value; save();
+      if(t.dataset.pr.startsWith("in")){ const o = document.getElementById("inOut"), big = document.getElementById("inCard")?.classList.contains("big"); if(o){ o.innerHTML = inCardHTML(); if(big) document.getElementById("inCard").classList.add("big"); } } }
+  });
+  root.addEventListener("change", e => {
+    const t = e.target;
+    if(t.dataset.prck){ PR()[t.dataset.prck] = t.checked; save(); return; }
+    if(t.dataset.prradio){ PR()[t.dataset.prradio] = t.value; save(); renderPractice(); return; }
+    if(t.dataset.prpick){ const key = t.dataset.prpick, cur = new Set(prGet(key, [])); t.checked ? cur.add(t.value) : cur.delete(t.value); PR()[key] = [...cur]; save(); renderPractice(); return; }
+    if(t.tagName === "SELECT" && t.dataset.pr){ PR()[t.dataset.pr] = t.value; save(); const o = document.getElementById("inOut"); if(o) o.innerHTML = inCardHTML(); }
+  });
+})();
+
 /* ---------- 郵便局の授業支援（日本郵便「手紙の書き方体験授業」の紹介・申込・アンケート）2026-11-26 確認 ---------- */
 const SP = "https://www.schoolpost.jp";
 const PL = (href, text) => `<a href="${href}" target="_blank" rel="noopener">${text}</a>`;
@@ -1745,7 +2081,7 @@ function renderPost(){
     <ol>
      <li>秋のうちに教材と<b>年賀はがき</b>を申し込む（年賀はがきは11月末までの予定）。</li>
      <li>アプリの「知る」〜「クイズ」で学び、「書く」で下書き・なぞりがきをする。</li>
-     <li>届いた年賀はがきに清書し、「あてな」を見ながら宛名を書いて、12月25日ごろまでに出す。</li>
+     <li>届いた年賀はがきに清書し、「あてな」を見ながら宛名を書いて、${(CONFIG.posts[cardYear()] && CONFIG.posts[cardYear()].by) ? D.jaT(CONFIG.posts[cardYear()].by) : "12月25日ごろ"}までに出す（元日に届けるための目安）。</li>
      <li>授業のあと、日本郵便のアンケート（授業後）に答える。</li>
     </ol>
     <p class="src">出典：日本郵便「手紙の書き方体験授業」サイト（トップ、はじめに（小学校）、中学校・高等学校トップ、教材紹介（中学校）、よくあるご質問（中学校）、特別支援学校・夜間中学・インターナショナルスクール向け教材申込）。2026年11月26日確認。</p></div>
@@ -1784,7 +2120,7 @@ function renderTeacher(){
     <p style="margin-top:8px;font-size:.9rem"><b>次の学習指導要領に向けた検討</b>（答申前の資料で、確定した基準ではありません）：国語ワーキンググループの取りまとめ案（令和8年7月）では、小・中で書写の指導を重視し手書きの丁寧な指導を推進すること、外国籍など多様な背景をもつ児童生徒が学びやすいよう学校全体で配慮・支援する視点を重視することなどが示されています。実物のはがきへの手書き、母語の訳と音声は、この方向とも合っています。</p>
     <p class="src">出典：文部科学省『中学校学習指導要領（平成29年告示）』第2章第1節 国語、『小学校学習指導要領（平成29年告示）』第2章第1節 国語（いずれも本文PDF）／文部科学省 教育課程部会 国語ワーキンググループ（第12回）資料1「国語ワーキンググループ取りまとめ案」（令和8年7月24日）。</p></div>
    <div class="card"><h3>追加できる学習活動（例）</h3>
-    <p style="font-size:.9rem">上の事項にそって、このアプリの学習に加えられる活動の例です（Claudeの提案。授業の時間や生徒の様子に合わせて選んでください）。</p>
+    <p style="font-size:.9rem">上の事項にそって、このアプリの学習に加えられる活動の例です（Claudeの提案。授業の時間や生徒の様子に合わせて選んでください）。7つとも「れんしゅう」タブで、同じ番号の練習として使えます（入力はこの端末のブラウザにだけ保存されます）。</p>
     <ol>
      <li><b>同じあいさつを、はがき・メール・SNSで書き比べる</b>（中2 B書くこと(2)イ「相手や媒体を考慮して書く」）：年賀状の文と、同じ相手に送るメールやメッセージアプリの文を書き、言葉づかい・長さ・書き方の違いを話し合う。</li>
      <li><b>返事を書く</b>（中1 B書くこと(2)イ）：もらった年賀状への返事を書く。1月7日（松の内）を過ぎたら寒中見舞いにすることを、「知る」⑤と「クイズ」で確かめてから書く。</li>
@@ -1857,6 +2193,7 @@ function doPrint(kind, mode){
   let st = $("#pageStyle"); if(!st){ st = document.createElement("style"); st.id = "pageStyle"; document.head.appendChild(st); }
   const framed = state.printFrame !== false;
   st.textContent = framed ? "@page{size:A4 portrait;margin:0}" : "@page{size:100mm 148mm;margin:0}";
+  area.classList.remove("sheet");
   area.classList.toggle("framed", framed);
   if(kind==="card"){
     area.innerHTML = cardHTML(cardModel(mode), mode);
@@ -1873,7 +2210,7 @@ function doPrint(kind, mode){
 function renderAll(){
   document.body.classList.toggle("multi", state.langs.length > 1);
   document.documentElement.lang = "ja";
-  renderTabs(); renderLearn(); renderWords(); renderParts(); renderWrite(); renderAddress(); renderQuiz(); renderPost(); renderTeacher(); renderVoiceStatus();
+  renderTabs(); renderLearn(); renderWords(); renderParts(); renderWrite(); renderAddress(); renderQuiz(); renderPractice(); renderPost(); renderTeacher(); renderVoiceStatus();
   showTab(state.tab);
 }
 function renderLangBtns(){
